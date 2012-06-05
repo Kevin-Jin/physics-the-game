@@ -25,7 +25,7 @@ public abstract class CollidableDrawable extends AbstractDrawable {
 
 	public boolean collidesWith(List<CollidableDrawable> others) {
 		for (CollidableDrawable curDrawable : others) {
-			if (!(curDrawable instanceof Beam) && curDrawable != this) {
+			if (curDrawable != this) {
 				// ignore beam and self
 				CollisionResult cr = PolygonCollision.boundingPolygonCollision(curDrawable.getBoundingPolygon(), getBoundingPolygon());
 				if (cr.collision() && (cr.getCollisionInformation().getMinimumTranslationVector().getX() != 0 || cr.getCollisionInformation().getMinimumTranslationVector().getY() != 0))
@@ -38,7 +38,7 @@ public abstract class CollidableDrawable extends AbstractDrawable {
 	public List<CollisionResult> getCollisions(List<CollidableDrawable> others) {
 		List<CollisionResult> cols = new ArrayList<CollisionResult>(others.size());
 		for (CollidableDrawable curDrawable : others) {
-			if (curDrawable instanceof Beam || curDrawable == this)
+			if (curDrawable == this)
 				continue;
 			CollisionResult cr = PolygonCollision.boundingPolygonCollision(curDrawable.getBoundingPolygon(), getBoundingPolygon());
 			if (cr.collision()) {

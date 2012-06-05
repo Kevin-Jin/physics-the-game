@@ -4,12 +4,12 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-public class JetpackFire extends StationaryEntity {
-	private Player parent;
+public class Blast extends StationaryEntity {
+	private Canon parent;
 	private boolean animate, flip;
 	private Animation fireAnim;
 
-	public JetpackFire(Player parent) {
+	public Blast(Canon parent) {
 		this.parent = parent;
 		fireAnim = new Animation(new String[] { "flame1", "flame2", "flame3", "flame4" }, .2);
 		animate = true;

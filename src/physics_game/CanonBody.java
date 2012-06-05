@@ -2,9 +2,8 @@ package physics_game;
 
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
-import java.util.List;
 
-public class AvatarBody extends MobileEntity {
+public class CanonBody extends StationaryEntity {
     public static final BoundingPolygon BOUNDING_POLYGON = new BoundingPolygon(new Polygon[] { new Polygon(new Point2D[] { new Point2D.Double(30, 12), new Point2D.Double(18, 22), new Point2D.Double(9, 42), new Point2D.Double(9, 58), new Point2D.Double(16, 76), new Point2D.Double(27, 86), new Point2D.Double(38, 86), new Point2D.Double(50, 75), new Point2D.Double(56, 57), new Point2D.Double(56, 42), new Point2D.Double(49, 24), new Point2D.Double(35, 12) }), new Polygon(new Point2D[] { new Point2D.Double(30, 0), new Point2D.Double(30, 11), new Point2D.Double(35, 11), new Point2D.Double(35, 0) }), new Polygon(new Point2D[] { new Point2D.Double(1, 36), new Point2D.Double(9, 36), new Point2D.Double(9, 65), new Point2D.Double(1, 65) }) });
     private static final Point2D ARM_COORDINATES = new Point2D.Double(26, 55);
     private static final Point2D LEG_COORDINATES = new Point2D.Double(8, 132);
@@ -12,22 +11,13 @@ public class AvatarBody extends MobileEntity {
 
 	private double rot;
 	private boolean flip;
-	private Player parent;
+	private Canon parent;
 
-	public AvatarBody(Player parent) {
-		super(new EntityPhysicalBehavior(100, 200, -400, 150, 800, 1.7));
+	public CanonBody(Canon parent) {
 		baseBoundPoly = BOUNDING_POLYGON;
 		boundPoly = BOUNDING_POLYGON;
 		pos = new Position(100, 100);
 		this.parent = parent;
-	}
-
-	@Override
-	public void recalculate(List<CollidableDrawable> others, double xMin, double yAcceleration, double yVelocityMin, double tDelta) {
-		parent.getJetPackFire().setAnimate(moves.contains(Direction.UP) && remainingJump > 0);
-		parent.getLeg().setAnimate(moves.contains(Direction.LEFT) || moves.contains(Direction.RIGHT));
-		super.recalculate(others, xMin, yAcceleration, yVelocityMin, tDelta);
-		parent.bodyUpdated();
 	}
 
 	public double lookAt(Position pos) {
@@ -90,7 +80,8 @@ public class AvatarBody extends MobileEntity {
 
 	@Override
 	public Point2D getOrigin() {
-		return new Point2D.Double(getTexture().getWidth() / 2d, ARM_COORDINATES.getY() + AvatarArm.BEAM_SOURCE.getY());
+		//TODO: figure this out
+		return null;
 	}
 
 	@Override

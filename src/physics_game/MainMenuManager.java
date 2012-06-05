@@ -11,25 +11,18 @@ import java.util.List;
 public class MainMenuManager {
 	public static final int SIDE_LENGTH = 3;
 
-	private Star[] stars;
 	private Rectangle bounds;
-	private Rectangle innerBounds;
 
-	private Player p;
+	private Canon p;
 	private float logoScale;
 	private boolean growLogo;
 
 	private List<MenuButton> buttons;
 
 	public MainMenuManager(int width, int height, int numOf) {
-		stars = new Star[numOf];
 		bounds = new Rectangle(0, 0, width, height);
-		innerBounds = new Rectangle((int) bounds.getCenterX() - SIDE_LENGTH, (int) bounds.getCenterY() - SIDE_LENGTH, SIDE_LENGTH, SIDE_LENGTH);
-		LightSpeedStar.setDestinationRect(innerBounds);
-		for (int i = 0; i < stars.length; ++i)
-			stars[i] = new LightSpeedStar(bounds);
 
-		p = new Player();
+		p = new Canon();
 		logoScale = 1;
 
 		buttons = new ArrayList<MenuButton>();
@@ -37,11 +30,6 @@ public class MainMenuManager {
 
 	public List<MenuButton> getButtons() {
 		return buttons;
-	}
-
-	public void reset() {
-		for (Star s : stars)
-			s.reset();
 	}
 
 	public void update(InputHandler controller, double tDelta) {
@@ -56,9 +44,6 @@ public class MainMenuManager {
 
 		p.setPosition(new Position(50, 600));
 		p.bodyUpdated();
-
-		for (Star s : stars)
-			s.update(tDelta);
 
 		for (MenuButton btn : buttons) {
 			if (btn.isPointInButton(controller.getMousePosition()))
@@ -80,7 +65,7 @@ public class MainMenuManager {
 		AffineTransform newTransform = AffineTransform.getTranslateInstance(0, bounds.height);
 		newTransform.concatenate(AffineTransform.getScaleInstance(1, -1));
 		g2d.setTransform(newTransform);
-		for (Entity ent : new Entity[] { p.getLeg(), p.getBody(), p.getArm(), p.getJetPackFire() })
+		for (Entity ent : new Entity[] { p.getLeg(), p.getBody(), p.getSmoke() })
 			g2d.drawImage(ent.getTexture(), ent.getTransformationMatrix(), null);
 		g2d.setTransform(originalTransform);
 		BufferedImage logoTexture = TextureCache.getTexture("logo");
@@ -88,8 +73,6 @@ public class MainMenuManager {
 		newTransform.concatenate(AffineTransform.getScaleInstance(logoScale, logoScale));
 		newTransform.concatenate(AffineTransform.getTranslateInstance(-logoTexture.getWidth() / 2d, -logoTexture.getHeight() / 2d));
 		g2d.drawImage(logoTexture, newTransform, null);
-		for (Star s : stars)
-			g2d.drawImage(TextureCache.getTexture("star"), s.getStarBounds().x, s.getStarBounds().y, s.getStarBounds().width, s.getStarBounds().height, null);
 		for (MenuButton btn : buttons)
 			btn.draw(g2d);
 	}

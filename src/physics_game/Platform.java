@@ -76,11 +76,6 @@ public class Platform extends CollidableDrawable {
 
 	@Override
 	public void collision(CollisionInformation collisionInfo, List<CollidableDrawable> others) {
-		CollidableDrawable other = collisionInfo.getCollidedWith();
-		if (other instanceof Beam) {
-			collisionInfo.setCollidedWith(this);
-			collisionInfo.negateMinimumTranslationVector();
-			other.collision(collisionInfo, others);
-		}
+		
 	}
 }

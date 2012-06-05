@@ -13,18 +13,15 @@ public class GameMap {
 	private static final int RIGHT_WALL_VISIBLE_PIXELS = 0;
 
 	private LevelLayout layout;
-	private final Player player;
+	private final Canon canon;
 	private final SortedMap<Byte, Entity> entities;
 	private final List<Particle> particles;
 	private final SortedMap<Byte, Layer> layers;
 
-	private ExitDoor door;
-	private Beam beam;
-	private CollidableDrawable draggedEnt;
 	private double remainingTime;
 
 	public GameMap() {
-		player = new Player();
+		canon = new Canon();
 		entities = new TreeMap<Byte, Entity>();
 		particles = new ArrayList<Particle>();
 		layers = new TreeMap<Byte, Layer>();
@@ -35,12 +32,8 @@ public class GameMap {
 		layers.put(Layer.FOREGROUND, new Layer(2));
 	}
 
-	public ExitDoor getExitDoor() {
-		return door;
-	}
-
-	public Player getPlayer() {
-		return player;
+	public Canon getCanon() {
+		return canon;
 	}
 
 	public SortedMap<Byte, Layer> getLayers() {
@@ -62,41 +55,10 @@ public class GameMap {
 		return list;
 	}
 
-	public Beam getSelectionBeam() {
-		return beam;
-	}
-
-	public void setSelectionBeam(Beam value) {
-		beam = value;
-		if (Double.isInfinite(remainingTime)) {
-			if (beam != null)
-				addEntity((byte) 5, beam);
-			else
-				removeEntity((byte) 5);
-		}
-	}
-
-	public CollidableDrawable getSelectedEntity() {
-		return draggedEnt;
-	}
-
-	public void setSelectedEntity(CollidableDrawable value) {
-		if (draggedEnt != null)
-			if (draggedEnt instanceof StationaryEntity)
-				((StationaryEntity) draggedEnt).setHeld(false);
-		if (value != null)
-			if (!(value instanceof Switch) && value instanceof StationaryEntity)
-				((StationaryEntity) value).setHeld(true);
-		draggedEnt = value;
-	}
-
 	public void setLevel(LevelLayout layout) {
 		this.layout = layout;
-		door = new ExitDoor(layout.getEndPosition(), layout.getNextMap());
 
 		entities.clear();
-		beam = null;
-		draggedEnt = null;
 
 		layers.get(Layer.MIDGROUND).getDrawables().clear();
 		layers.get(Layer.MIDGROUND).getDrawables().addAll(layout.getPlatforms());
@@ -109,27 +71,16 @@ public class GameMap {
 		layers.get(Layer.FOREGROUND).getDrawables().clear();
 
 		if (Double.isInfinite(layout.getExpiration())) {
-			player.setPosition(layout.getStartPosition());
-			addEntity((byte) 0, door);
-			addEntity((byte) 1, player.getLeg());
-			addEntity((byte) 2, player.getBody());
-			addEntity((byte) 3, player.getArm());
-			addEntity((byte) 4, player.getJetPackFire());
+			canon.setPosition(layout.getStartPosition());
+			addEntity((byte) 0, canon.getLeg());
+			addEntity((byte) 1, canon.getBody());
+			addEntity((byte) 2, canon.getSmoke());
 		}
-		// reserve entity id 5 for beam
-		byte i = 6;
+		byte i = 3;
 		for (BoxSpawnInfo info : layout.getBoxes())
 			addEntity(i++, new Box(info.getPosition(), info.getStartScale(), info.getMinimumScale(), info.getMaximumScale()));
-		for (RectangleSpawnInfo info : layout.getRectangles())
-			addEntity(i++, new RectangleBox(info.getPosition(), info.getStartScale(), info.getMinimumScale(), info.getMaximumScale()));
-		for (NBoxSpawnInfo info : layout.getNBoxes())
-			addEntity(i++, new NBox(info.getPosition()));
-		for (SwitchSpawnInfo info : layout.getSwitches())
-			addEntity(i++, new Switch(info.getColor(), info.getPosition(), info.getSwitchables()));
 		for (OverlayInfo info : layout.getTips())
 			layers.get(Layer.FOREGROUND).getDrawables().add(new DrawableTexture(info.getWidth(), info.getHeight(), info.getImageName(), info.getPosition()));
-		for (RetractablePlatform retractablePlat : layout.getDoors())
-			retractablePlat.reset();
 
 		remainingTime = layout.getExpiration();
 	}

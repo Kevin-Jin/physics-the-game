@@ -147,10 +147,6 @@ public abstract class StationaryEntity extends Entity {
 					break;
 				}
 				flag = true;
-				if (moveObj instanceof Switch) {
-					moveInfo.setCollidedWith(this);
-					moveObj.collision(moveInfo, others);
-				}
 
 				if (!assigned) {
 					minTranslation = endOnlyInfo.getMinimumTranslationVector();
@@ -189,11 +185,7 @@ public abstract class StationaryEntity extends Entity {
 	@Override
 	public void collision(CollisionInformation collisionInfo, List<CollidableDrawable> others) {
         CollidableDrawable other = collisionInfo.getCollidedWith();
-		if (other instanceof Beam) {
-			collisionInfo.setCollidedWith(this);
-			collisionInfo.negateMinimumTranslationVector();
-			other.collision(collisionInfo, others);
-		} else if (other instanceof Platform) {
+		if (other instanceof Platform) {
 			Point2D negationVector = collisionInfo.getMinimumTranslationVector();
 			pos.setX(pos.getX() + negationVector.getX());
 			pos.setY(pos.getY() + negationVector.getY());
@@ -204,13 +196,6 @@ public abstract class StationaryEntity extends Entity {
 				vel.setY(0);
 
 			boundPoly = BoundingPolygon.transformBoundingPolygon(baseBoundPoly, this);
-		} else if (other instanceof Switch) {
-			Point2D negationVector = collisionInfo.getMinimumTranslationVector();
-			pos.setX(pos.getX() + negationVector.getX());
-			pos.setY(pos.getY() + negationVector.getY());
-			boundPoly = BoundingPolygon.transformBoundingPolygon(baseBoundPoly, this);
-			collisionInfo.setCollidedWith(this);
-			other.collision(collisionInfo, others);
 		} else if (other instanceof StationaryEntity) {
 			Point2D negationVector = collisionInfo.getMinimumTranslationVector();
 			pos.setX(pos.getX() + negationVector.getX());
@@ -220,10 +205,6 @@ public abstract class StationaryEntity extends Entity {
 				vel.setY(0);
 		
 			boundPoly = BoundingPolygon.transformBoundingPolygon(baseBoundPoly, this);
-		} else if (other instanceof MobileEntity) {
-			collisionInfo.setCollidedWith(this);
-			collisionInfo.negateMinimumTranslationVector();
-			other.collision(collisionInfo, others);
 		}
 	}
 }

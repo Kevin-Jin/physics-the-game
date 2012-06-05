@@ -12,16 +12,12 @@ public class LevelLayout {
 	private final int height;
 	private Position startPos, endPos;
 	private List<BoxSpawnInfo> boxes;
-	private List<RectangleSpawnInfo> rects;
-	private List<NBoxSpawnInfo> nBoxes;
-	private List<SwitchSpawnInfo> switches;
 	private List<OverlayInfo> tips;
-	private List<RetractablePlatform> doors;
 	private String nextMap;
 	private String outsideBg, insideBg;
 	private double expiration;
 
-	public LevelLayout(int width, int height, Map<Byte, Platform> footholds, Position startPos, Position endPos, int yDeceleration, int yVelocityMin, List<BoxSpawnInfo> boxes, List<RectangleSpawnInfo> rects, List<NBoxSpawnInfo> nBoxes, List<SwitchSpawnInfo> switches, List<OverlayInfo> tips, List<RetractablePlatform> doors, String nextMap, String outsideBg, String insideBg, double expiration) {
+	public LevelLayout(int width, int height, Map<Byte, Platform> footholds, Position startPos, Position endPos, int yDeceleration, int yVelocityMin, List<BoxSpawnInfo> boxes, List<OverlayInfo> tips, String nextMap, String outsideBg, String insideBg, double expiration) {
 		this.width = width;
 		this.height = height;
 		this.footholds = footholds;
@@ -30,12 +26,8 @@ public class LevelLayout {
 		this.yDeceleration = yDeceleration;
 		this.yVelocityMin = yVelocityMin;
 		this.boxes = boxes;
-		this.rects = rects;
-		this.nBoxes = nBoxes;
-		this.switches = switches;
 		this.nextMap = nextMap;
 		this.tips = tips;
-		this.doors = doors;
 		this.outsideBg = outsideBg;
 		this.insideBg = insideBg;
 		this.expiration = expiration;
@@ -73,24 +65,8 @@ public class LevelLayout {
 		return boxes;
 	}
 
-	public List<RectangleSpawnInfo> getRectangles() {
-		return rects;
-	}
-
-	public List<NBoxSpawnInfo> getNBoxes() {
-		return nBoxes;
-	}
-
-	public List<SwitchSpawnInfo> getSwitches() {
-		return switches;
-	}
-
 	public List<OverlayInfo> getTips() {
 		return tips;
-	}
-
-	public List<RetractablePlatform> getDoors() {
-		return doors;
 	}
 
 	public String getNextMap() {
