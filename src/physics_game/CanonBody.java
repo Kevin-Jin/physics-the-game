@@ -80,8 +80,7 @@ public class CanonBody extends StationaryEntity {
 
 	@Override
 	public Point2D getOrigin() {
-		//TODO: figure this out
-		return null;
+		return new Point2D.Double(LEG_COORDINATES.getX(), LEG_COORDINATES.getY());
 	}
 
 	@Override

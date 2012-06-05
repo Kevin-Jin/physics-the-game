@@ -43,7 +43,7 @@ public class Canon {
 	}
 
 	public void lookAt(Position pos) {
-		blast.setRotation(body.getRotation());
+		blast.setRotation((float) body.lookAt(pos));
 	}
 
 	public void bodyUpdated() {

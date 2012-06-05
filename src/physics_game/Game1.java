@@ -181,6 +181,9 @@ public class Game1 extends Canvas {
 		map.updateParticlePositions(tDelta);
 		map.cleanParticles();
 
+		Position mousePos = c.mouseToWorld(controller.getMousePosition());
+		map.getCanon().lookAt(mousePos);
+
 		c.lookAt(map.getCanon().getPosition());
 		List<CollidableDrawable> collidablesList = map.getCollidables();
 		CollidableDrawable[] collidables = collidablesList.toArray(new CollidableDrawable[0]);
