@@ -124,6 +124,7 @@ public class Game1 extends Canvas {
 		strategy = getBufferStrategy();
 		setIgnoreRepaint(true);
 
+		TextureCache.setTexture("bg", readImage("pngBg.png"));
 		TextureCache.setTexture("body", readImage("body.png"));
 		TextureCache.setTexture("wheel", readImage("wheel.png"));
 		TextureCache.setTexture("blast", readImage("blast.png"));
