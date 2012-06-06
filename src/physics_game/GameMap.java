@@ -7,7 +7,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 public class GameMap {
-	private static final int FLOOR_VISIBLE_PIXELS = 0;
+	private static final int FLOOR_VISIBLE_PIXELS = 50;
 	private static final int CEILING_VISIBLE_PIXELS = 0;
 	private static final int LEFT_WALL_VISIBLE_PIXELS = 0;
 	private static final int RIGHT_WALL_VISIBLE_PIXELS = 0;

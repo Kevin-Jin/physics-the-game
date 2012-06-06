@@ -7,7 +7,6 @@ public abstract class StationaryEntity extends Entity {
 	protected double scale;
 	protected double xDeceleration;
 	protected double rot;
-	protected boolean held;
 	private boolean continueRotating;
 	private double startRot;
 
@@ -18,14 +17,6 @@ public abstract class StationaryEntity extends Entity {
 	@Override
 	public double getRotation() {
 		return rot;
-	}
-
-	public boolean isHeld() {
-		return held;
-	}
-
-	public void setHeld(boolean value) {
-		held = value;
 	}
 
 	@Override
@@ -107,16 +98,11 @@ public abstract class StationaryEntity extends Entity {
 			rot = Math.min(rot + getRotateAngularVelocity() * tDelta, (Math.floor(startRot / (Math.PI / 2)) + 1) * Math.PI / 2);
 		continueRotating = false;
 
-		if (!held) {
-			if (vel.getX() < 0)
-				vel.setX(Math.min(vel.getX() - tDelta * xDeceleration, 0));
-			else if (vel.getX() > 0)
-				vel.setX(Math.max(vel.getX() + tDelta * xDeceleration, 0));
-			vel.setY(Math.max(vel.getY() + yAcceleration * tDelta, yVelocityMin));
-		} else {
-			vel.setX(0);
-			vel.setY(0);
-		}
+		if (vel.getX() < 0)
+			vel.setX(Math.min(vel.getX() - tDelta * xDeceleration, 0));
+		else if (vel.getX() > 0)
+			vel.setX(Math.max(vel.getX() + tDelta * xDeceleration, 0));
+		vel.setY(Math.max(vel.getY() + yAcceleration * tDelta, yVelocityMin));
 
 		boundPoly = PolygonHelper.boundingPolygonRepresentingTranslation(boundPoly, new Point2D.Double(vel.getX() * tDelta, vel.getY() * tDelta));
 

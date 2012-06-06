@@ -65,9 +65,6 @@ public class Game1 extends Canvas {
 		c = new Camera(WIDTH, HEIGHT);
 		s = new FrameRateState();
 
-		for (int i = 0; i < 500; i++)
-			map.addParticle(new TestParticle());
-
 		gameRunning = new CountDownLatch(0);
 		state = GameState.TITLE_SCREEN;
 

@@ -5,6 +5,12 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 
 public class Blast extends StationaryEntity {
+	public static final BoundingPolygon BOUNDING_POLYGON = new BoundingPolygon(new Polygon[] { new Polygon(new Point2D[] {
+			new Point2D.Double(0, 0),
+			new Point2D.Double(0, 100),
+			new Point2D.Double(100, 100),
+			new Point2D.Double(100, 0),
+	}) });
 	private Cannon parent;
 	private boolean animate, flip;
 	private Animation fireAnim;
@@ -13,7 +19,7 @@ public class Blast extends StationaryEntity {
 		this.parent = parent;
 		fireAnim = new Animation(new String[] { "blast", "blast", "blast", "blast" }, .2);
 		animate = true;
-		baseBoundPoly = new BoundingPolygon(new Polygon[] { new Polygon(new Point2D[] { new Point2D.Double(0, 0), new Point2D.Double(8, 0), new Point2D.Double(8, 19), new Point2D.Double(0, 19) }) });
+		baseBoundPoly = BOUNDING_POLYGON;
 		boundPoly = baseBoundPoly;
 	}
 
