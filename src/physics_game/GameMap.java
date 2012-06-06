@@ -13,7 +13,7 @@ public class GameMap {
 	private static final int RIGHT_WALL_VISIBLE_PIXELS = 0;
 
 	private LevelLayout layout;
-	private final Canon canon;
+	private final Cannon cannon;
 	private final SortedMap<Byte, Entity> entities;
 	private final List<Particle> particles;
 	private final SortedMap<Byte, Layer> layers;
@@ -21,7 +21,7 @@ public class GameMap {
 	private double remainingTime;
 
 	public GameMap() {
-		canon = new Canon();
+		cannon = new Cannon();
 		entities = new TreeMap<Byte, Entity>();
 		particles = new ArrayList<Particle>();
 		layers = new TreeMap<Byte, Layer>();
@@ -32,8 +32,8 @@ public class GameMap {
 		layers.put(Layer.FOREGROUND, new Layer(2));
 	}
 
-	public Canon getCanon() {
-		return canon;
+	public Cannon getCannon() {
+		return cannon;
 	}
 
 	public SortedMap<Byte, Layer> getLayers() {
@@ -71,10 +71,10 @@ public class GameMap {
 		layers.get(Layer.FOREGROUND).getDrawables().clear();
 
 		if (Double.isInfinite(layout.getExpiration())) {
-			canon.setPosition(layout.getStartPosition());
-			addEntity((byte) 0, canon.getLeg());
-			addEntity((byte) 1, canon.getBody());
-			addEntity((byte) 2, canon.getSmoke());
+			cannon.setPosition(layout.getStartPosition());
+			addEntity((byte) 0, cannon.getLeg());
+			addEntity((byte) 1, cannon.getBody());
+			addEntity((byte) 2, cannon.getSmoke());
 		}
 		byte i = 3;
 		for (BoxSpawnInfo info : layout.getBoxes())

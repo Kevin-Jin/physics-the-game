@@ -13,7 +13,7 @@ public class MainMenuManager {
 
 	private Rectangle bounds;
 
-	private Canon p;
+	private Cannon cannon;
 	private float logoScale;
 	private boolean growLogo;
 
@@ -22,7 +22,7 @@ public class MainMenuManager {
 	public MainMenuManager(int width, int height, int numOf) {
 		bounds = new Rectangle(0, 0, width, height);
 
-		p = new Canon();
+		cannon = new Cannon();
 		logoScale = 1;
 
 		buttons = new ArrayList<MenuButton>();
@@ -42,8 +42,8 @@ public class MainMenuManager {
 		else
 			logoScale -= (float) (0.3 * tDelta);
 
-		p.setPosition(new Position(50, 600));
-		p.bodyUpdated();
+		cannon.setPosition(new Position(50, 600));
+		cannon.bodyUpdated();
 
 		for (MenuButton btn : buttons) {
 			if (btn.isPointInButton(controller.getMousePosition()))
@@ -65,7 +65,7 @@ public class MainMenuManager {
 		AffineTransform newTransform = AffineTransform.getTranslateInstance(0, bounds.height);
 		newTransform.concatenate(AffineTransform.getScaleInstance(1, -1));
 		g2d.setTransform(newTransform);
-		for (Entity ent : new Entity[] { p.getLeg(), p.getBody(), p.getSmoke() })
+		for (Entity ent : new Entity[] { cannon.getLeg(), cannon.getBody(), cannon.getSmoke() })
 			g2d.drawImage(ent.getTexture(), ent.getTransformationMatrix(), null);
 		g2d.setTransform(originalTransform);
 		BufferedImage logoTexture = TextureCache.getTexture("logo");

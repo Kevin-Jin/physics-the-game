@@ -1,24 +1,24 @@
 package physics_game;
 
-public class Canon {
-	private CanonBody body;
-	private CanonWheels leg;
+public class Cannon {
+	private CannonBody body;
+	private CannonWheels leg;
 	private Blast blast;
 	private BoundingPolygon boundPoly;
 
-	public Canon() {
-		body = new CanonBody(this);
-		leg = new CanonWheels(this);
+	public Cannon() {
+		body = new CannonBody(this);
+		leg = new CannonWheels(this);
 		blast = new Blast(this);
 
 		boundPoly = new BoundingPolygon(new BoundingPolygon[] { body.getRealBoundingPolygon(), leg.getRealBoundingPolygon(), blast.getRealBoundingPolygon() });
 	}
 
-	public CanonBody getBody() {
+	public CannonBody getBody() {
 		return body;
 	}
 
-	public CanonWheels getLeg() {
+	public CannonWheels getLeg() {
 		return leg;
 	}
 

@@ -72,47 +72,47 @@ public class Game1 extends Canvas {
 		state = GameState.TITLE_SCREEN;
 
 		titleScreenModel = new MainMenuManager(WIDTH, HEIGHT, 1000);
-        titleScreenModel.getButtons().add(new MenuButton("New Game", new Rectangle((WIDTH - 200) / 2, HEIGHT / 2, 200, 50), new MenuButton.MenuButtonHandler() {
+		titleScreenModel.getButtons().add(new MenuButton("New Game", new Rectangle((WIDTH - 200) / 2, HEIGHT / 2, 200, 50), new MenuButton.MenuButtonHandler() {
 			@Override
 			public void clicked() {
-	            map.setLevel(LevelCache.getLevel("intro1"));
-	            c.setLimits(map.getCameraBounds());
-	            c.lookAt(map.getCanon().getPosition());
-	            state = GameState.GAME;
+				map.setLevel(LevelCache.getLevel("intro1"));
+				c.setLimits(map.getCameraBounds());
+				c.lookAt(map.getCannon().getPosition());
+				state = GameState.GAME;
 			}
-        }));
+		}));
 
-        pauseScreenButtons = new ArrayList<MenuButton>();
-        pauseScreenButtons.add(new MenuButton("New Game", new Rectangle((WIDTH - 200) / 2, 50, 200, 50), new MenuButton.MenuButtonHandler() {
+		pauseScreenButtons = new ArrayList<MenuButton>();
+		pauseScreenButtons.add(new MenuButton("New Game", new Rectangle((WIDTH - 200) / 2, 50, 200, 50), new MenuButton.MenuButtonHandler() {
 			@Override
 			public void clicked() {
-	            map.setLevel(LevelCache.getLevel("tutorial"));
-	            c.setLimits(map.getCameraBounds());
-	            c.lookAt(map.getCanon().getPosition());
-	            state = GameState.GAME;
+				map.setLevel(LevelCache.getLevel("tutorial"));
+				c.setLimits(map.getCameraBounds());
+				c.lookAt(map.getCannon().getPosition());
+				state = GameState.GAME;
 			}
-        }));
-        pauseScreenButtons.add(new MenuButton("Restart Level", new Rectangle((WIDTH - 200) / 2, 110, 200, 50), new MenuButton.MenuButtonHandler() {
+		}));
+		pauseScreenButtons.add(new MenuButton("Restart Level", new Rectangle((WIDTH - 200) / 2, 110, 200, 50), new MenuButton.MenuButtonHandler() {
 			@Override
 			public void clicked() {
-            map.resetLevel();
-            c.setLimits(map.getCameraBounds());
-            c.lookAt(map.getCanon().getPosition());
-            state = GameState.GAME;
+				map.resetLevel();
+				c.setLimits(map.getCameraBounds());
+				c.lookAt(map.getCannon().getPosition());
+				state = GameState.GAME;
 			}
-        }));
-        pauseScreenButtons.add(new MenuButton("Main Menu", new Rectangle((WIDTH - 200) / 2, 170, 200, 50), new MenuButton.MenuButtonHandler() {
+		}));
+		pauseScreenButtons.add(new MenuButton("Main Menu", new Rectangle((WIDTH - 200) / 2, 170, 200, 50), new MenuButton.MenuButtonHandler() {
 			@Override
 			public void clicked() {
-            state = GameState.TITLE_SCREEN;
+				state = GameState.TITLE_SCREEN;
 			}
-        }));
-        pauseScreenButtons.add(new MenuButton("Back to Game", new Rectangle((WIDTH - 200) / 2, 230, 200, 50), new MenuButton.MenuButtonHandler() {
+		}));
+		pauseScreenButtons.add(new MenuButton("Back to Game", new Rectangle((WIDTH - 200) / 2, 230, 200, 50), new MenuButton.MenuButtonHandler() {
 			@Override
 			public void clicked() {
-            state = GameState.GAME;
+				state = GameState.GAME;
 			}
-        }));
+		}));
 	}
 
 	private BufferedImage readImage(String path) throws IOException {
@@ -165,7 +165,7 @@ public class Game1 extends Canvas {
 	private void respondToGameInput(double tDelta) {
 		for (Integer key : controller.getCodesOfPressedKeys()) {
 			switch (key.intValue()) {
-			//TODO: rotate canon
+			//TODO: rotate cannon
 			}
 		}
 	}
@@ -182,9 +182,9 @@ public class Game1 extends Canvas {
 		map.cleanParticles();
 
 		Position mousePos = c.mouseToWorld(controller.getMousePosition());
-		map.getCanon().lookAt(mousePos);
+		map.getCannon().lookAt(mousePos);
 
-		c.lookAt(map.getCanon().getPosition());
+		c.lookAt(map.getCannon().getPosition());
 		List<CollidableDrawable> collidablesList = map.getCollidables();
 		CollidableDrawable[] collidables = collidablesList.toArray(new CollidableDrawable[0]);
 		for (int i = 0; i < collidables.length - 1; i++) {

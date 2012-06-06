@@ -5,11 +5,11 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 
 public class Blast extends StationaryEntity {
-	private Canon parent;
+	private Cannon parent;
 	private boolean animate, flip;
 	private Animation fireAnim;
 
-	public Blast(Canon parent) {
+	public Blast(Cannon parent) {
 		this.parent = parent;
 		fireAnim = new Animation(new String[] { "flame1", "flame2", "flame3", "flame4" }, .2);
 		animate = true;

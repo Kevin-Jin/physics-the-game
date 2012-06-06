@@ -4,14 +4,14 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-public class CanonWheels extends BottomLeftOriginedProp {
+public class CannonWheels extends BottomLeftOriginedProp {
 	public static final BoundingPolygon BOUNDING_POLYGON = new BoundingPolygon(new Polygon[] { new Polygon(new Point2D[] { new Point2D.Double(0, 0), new Point2D.Double(42, 0), new Point2D.Double(42, 34), new Point2D.Double(0, 34) }) });
 
-	private Canon parent;
+	private Cannon parent;
 	private Animation animation;
 	private boolean animate, flip;
 
-	public CanonWheels(Canon parent) {
+	public CannonWheels(Cannon parent) {
 		super(0);
 		animate = true;
 		this.parent = parent;
