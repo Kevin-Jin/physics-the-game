@@ -77,8 +77,8 @@ public class GameMap {
 			addEntity((byte) 2, cannon.getSmoke());
 		}
 		byte i = 3;
-		for (BoxSpawnInfo info : layout.getBoxes())
-			addEntity(i++, new Box(info.getPosition(), info.getStartScale(), info.getMinimumScale(), info.getMaximumScale()));
+		for (BalloonSpawnInfo info : layout.getBalloons())
+			addEntity(i++, new Balloon(info.getPosition(), info.getStartScale(), info.getMinimumScale(), info.getMaximumScale()));
 		for (OverlayInfo info : layout.getTips())
 			layers.get(Layer.FOREGROUND).getDrawables().add(new DrawableTexture(info.getWidth(), info.getHeight(), info.getImageName(), info.getPosition()));
 

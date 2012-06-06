@@ -3,13 +3,13 @@ package physics_game;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
-public class Box extends CenterOriginedProp {
+public class Balloon extends CenterOriginedProp {
 	private static final BoundingPolygon BOUNDING_POLYGON = new BoundingPolygon(new Polygon[] { new Polygon(new Point2D[] { new Point2D.Double(0, 230), new Point2D.Double(225, 230), new Point2D.Double(225, 0), new Point2D.Double(0, 0) }) });
 
 	private double minScale;
 	private double maxScale;
 
-	public Box() {
+	public Balloon() {
 		super(250);
         minScale = super.getMinimumScale();
         maxScale = super.getMaximumScale();
@@ -17,7 +17,7 @@ public class Box extends CenterOriginedProp {
 		boundPoly = BOUNDING_POLYGON;
 	}
 
-	public Box(double startScale, double minScale, double maxScale) {
+	public Balloon(double startScale, double minScale, double maxScale) {
 		super(250);
 		scale = startScale;
 		this.minScale = minScale;
@@ -26,7 +26,7 @@ public class Box extends CenterOriginedProp {
 		boundPoly = BOUNDING_POLYGON;
 	}
 
-	public Box(Position p, double startScale, double minScale, double maxScale) {
+	public Balloon(Position p, double startScale, double minScale, double maxScale) {
 		super(250);
 		pos = p;
 		scale = startScale;
@@ -48,6 +48,6 @@ public class Box extends CenterOriginedProp {
 
 	@Override
 	public BufferedImage getTexture() {
-		return TextureCache.getTexture("box");
+		return TextureCache.getTexture("balloon");
 	}
 }

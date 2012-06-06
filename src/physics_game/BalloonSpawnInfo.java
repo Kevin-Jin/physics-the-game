@@ -1,10 +1,10 @@
 package physics_game;
 
-public class BoxSpawnInfo {
+public class BalloonSpawnInfo {
 	private Position pos;
 	private double initScale, minScale, maxScale;
 
-	public BoxSpawnInfo(Position pos, double initScale, double minScale, double maxScale) {
+	public BalloonSpawnInfo(Position pos, double initScale, double minScale, double maxScale) {
 		this.pos = pos;
 		this.initScale = initScale;
 		this.minScale = minScale;

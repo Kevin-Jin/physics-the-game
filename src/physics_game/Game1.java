@@ -124,6 +124,15 @@ public class Game1 extends Canvas {
 		strategy = getBufferStrategy();
 		setIgnoreRepaint(true);
 
+		TextureCache.setTexture("body", readImage("body.png"));
+		TextureCache.setTexture("wheel", readImage("wheel.png"));
+		TextureCache.setTexture("blast", readImage("blast.png"));
+		TextureCache.setTexture("cursor", readImage("cursor.png"));
+		TextureCache.setTexture("logo", readImage("logo.png"));
+		TextureCache.setTexture("buttonHover", readImage("buttonHovering.png"));
+		TextureCache.setTexture("buttonPressed", readImage("buttonPressed.png"));
+		TextureCache.setTexture("button", readImage("buttonRegular.png"));
+
 		LevelCache.initialize();
 
 		setCursor(getToolkit().createCustomCursor(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB), new Point(0, 0), "blank cursor"));
@@ -298,7 +307,7 @@ public class Game1 extends Canvas {
 					g2d.setColor(Color.WHITE);
 					g2d.setFont(new Font("Arial", Font.PLAIN, 16));
 					g2d.drawString("FPS: " + FPS_FMT.format(s.getLastCalculatedFps()), 5, g2d.getFontMetrics().getAscent());
-					g2d.drawImage(TextureCache.getTexture("mouse"), controller.getMousePosition().x - TextureCache.getTexture("mouse").getWidth() / 2, controller.getMousePosition().y - TextureCache.getTexture("mouse").getHeight() / 2, null);
+					g2d.drawImage(TextureCache.getTexture("cursor"), controller.getMousePosition().x - TextureCache.getTexture("cursor").getWidth() / 2, controller.getMousePosition().y - TextureCache.getTexture("cursor").getHeight() / 2, null);
 				} finally {
 					g2d.dispose();
 				}

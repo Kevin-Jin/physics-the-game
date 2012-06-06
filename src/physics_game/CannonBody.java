@@ -10,7 +10,6 @@ public class CannonBody extends StationaryEntity {
     private static final Point2D FLAME_COORDINATES = new Point2D.Double(5, 64);
 
 	private double rot;
-	private boolean flip;
 	private Cannon parent;
 
 	public CannonBody(Cannon parent) {
@@ -25,17 +24,10 @@ public class CannonBody extends StationaryEntity {
 		double y = pos.getY() - rotateAbout.getY();
 		double x = pos.getX() - rotateAbout.getX();
 		double realRot = Math.atan2(y, x);
-		if (flip)
+		if (x < 0)
 			realRot -= Math.PI;
-		if (!flip && x < 0 || flip && x > 0) {
-			flip = !flip;
-			realRot -= Math.PI;
-		}
 
-		rot = Math.min(realRot, Math.PI / 4);
-		if (flip && rot < -Math.PI / 4 && rot > -Math.PI / 2)
-			//uhh, kludgy check but it works!
-			rot = -Math.PI / 4;
+		rot = realRot;
 		return realRot;
 	}
 
@@ -47,10 +39,7 @@ public class CannonBody extends StationaryEntity {
 		double lastRot = rot;
 		rot = 0;
 		try {
-			Point2D coord = LEG_COORDINATES;
-			if (flip)
-				coord = new Point2D.Double(coord.getX() + 48, coord.getY());
-			return new Position(getTransformationMatrix().transform(coord, null));
+			return new Position(getTransformationMatrix().transform(LEG_COORDINATES, null));
 		} finally {
 			rot = lastRot;
 		}
@@ -75,7 +64,7 @@ public class CannonBody extends StationaryEntity {
 
 	@Override
 	public BufferedImage getTexture() {
-		return TextureCache.getTexture("player");
+		return TextureCache.getTexture("body");
 	}
 
 	@Override
@@ -91,10 +80,5 @@ public class CannonBody extends StationaryEntity {
 	@Override
 	public boolean transformAboutCenter() {
 		return true;
-	}
-
-	@Override
-	public boolean flipHorizontally() {
-		return flip;
 	}
 }

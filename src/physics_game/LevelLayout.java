@@ -10,22 +10,21 @@ public class LevelLayout {
 	private final double yVelocityMin;
 	private final int width;
 	private final int height;
-	private Position startPos, endPos;
-	private List<BoxSpawnInfo> boxes;
+	private Position startPos;
+	private List<BalloonSpawnInfo> balloons;
 	private List<OverlayInfo> tips;
 	private String nextMap;
 	private String outsideBg, insideBg;
 	private double expiration;
 
-	public LevelLayout(int width, int height, Map<Byte, Platform> footholds, Position startPos, Position endPos, int yDeceleration, int yVelocityMin, List<BoxSpawnInfo> boxes, List<OverlayInfo> tips, String nextMap, String outsideBg, String insideBg, double expiration) {
+	public LevelLayout(int width, int height, Map<Byte, Platform> footholds, Position startPos, int yDeceleration, int yVelocityMin, List<BalloonSpawnInfo> balloons, List<OverlayInfo> tips, String nextMap, String outsideBg, String insideBg, double expiration) {
 		this.width = width;
 		this.height = height;
 		this.footholds = footholds;
 		this.startPos = startPos;
-		this.endPos = endPos;
 		this.yDeceleration = yDeceleration;
 		this.yVelocityMin = yVelocityMin;
-		this.boxes = boxes;
+		this.balloons = balloons;
 		this.nextMap = nextMap;
 		this.tips = tips;
 		this.outsideBg = outsideBg;
@@ -57,12 +56,8 @@ public class LevelLayout {
 		return startPos;
 	}
 
-	public Position getEndPosition() {
-		return endPos;
-	}
-
-	public List<BoxSpawnInfo> getBoxes() {
-		return boxes;
+	public List<BalloonSpawnInfo> getBalloons() {
+		return balloons;
 	}
 
 	public List<OverlayInfo> getTips() {

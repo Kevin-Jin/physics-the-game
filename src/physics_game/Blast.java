@@ -11,7 +11,7 @@ public class Blast extends StationaryEntity {
 
 	public Blast(Cannon parent) {
 		this.parent = parent;
-		fireAnim = new Animation(new String[] { "flame1", "flame2", "flame3", "flame4" }, .2);
+		fireAnim = new Animation(new String[] { "blast", "blast", "blast", "blast" }, .2);
 		animate = true;
 		baseBoundPoly = new BoundingPolygon(new Polygon[] { new Polygon(new Point2D[] { new Point2D.Double(0, 0), new Point2D.Double(8, 0), new Point2D.Double(8, 19), new Point2D.Double(0, 19) }) });
 		boundPoly = baseBoundPoly;
