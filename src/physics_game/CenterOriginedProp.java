@@ -14,7 +14,7 @@ public abstract class CenterOriginedProp extends StationaryEntity {
 
 	@Override
 	public void stretch(List<CollidableDrawable> others, double tDelta) {
-        double oldWidth = getWidth();
+		double oldWidth = getWidth();
 		double oldScale = scale;
 		double oldPosX = pos.getX();
 		double oldPosY = pos.getY();

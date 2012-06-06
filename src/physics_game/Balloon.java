@@ -11,8 +11,8 @@ public class Balloon extends CenterOriginedProp {
 
 	public Balloon() {
 		super(250);
-        minScale = super.getMinimumScale();
-        maxScale = super.getMaximumScale();
+		minScale = super.getMinimumScale();
+		maxScale = super.getMaximumScale();
 		baseBoundPoly = BOUNDING_POLYGON;
 		boundPoly = BOUNDING_POLYGON;
 	}

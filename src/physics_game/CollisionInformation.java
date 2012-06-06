@@ -4,7 +4,7 @@ import java.awt.geom.Point2D;
 
 public class CollisionInformation {
 	private Point2D minTranslation, surface;
-    private CollidableDrawable otherDrawable;
+	private CollidableDrawable otherDrawable;
 
 	public CollisionInformation(Point2D toNegate, Point2D surface, CollidableDrawable collidedWith) {
 		this.minTranslation = toNegate;

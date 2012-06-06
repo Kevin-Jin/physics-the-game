@@ -20,6 +20,8 @@ public class GameMap {
 
 	private double remainingTime;
 
+	private CannonBall focus;
+
 	public GameMap() {
 		cannon = new Cannon();
 		entities = new TreeMap<Byte, Entity>();
@@ -34,6 +36,14 @@ public class GameMap {
 
 	public Cannon getCannon() {
 		return cannon;
+	}
+
+	public void follow(CannonBall ball) {
+		focus = ball;
+	}
+
+	public CannonBall getFocus() {
+		return focus;
 	}
 
 	public SortedMap<Byte, Layer> getLayers() {

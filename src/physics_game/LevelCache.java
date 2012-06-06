@@ -17,7 +17,9 @@ public class LevelCache {
 	}
 
 	private static LevelLayout constructLevel1() {
-		return null;
+		Map<Byte, Platform> platforms = new HashMap<Byte, Platform>();
+		platforms.put(Byte.valueOf((byte) 0), new Platform(-10, 1930, 0, 0));
+		return new LevelLayout(1920, 1080, platforms, new Position(0, 0), -400, -400, new ArrayList<BalloonSpawnInfo>(), new ArrayList<OverlayInfo>(), "", "logo", "logo", Double.POSITIVE_INFINITY);
 	}
 
 	public static void initialize() {

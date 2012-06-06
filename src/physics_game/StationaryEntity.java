@@ -94,11 +94,10 @@ public abstract class StationaryEntity extends Entity {
 		}
 	}
 
-    protected boolean roundsEqual(Point2D v1, Point2D v2)
-    {
-        final float TOLERANCE = .0005f;
-        return Math.abs(v1.getX() - v2.getX()) < TOLERANCE && Math.abs(v1.getY() - v2.getY()) < TOLERANCE;
-    }
+	protected boolean roundsEqual(Point2D v1, Point2D v2) {
+		final float TOLERANCE = .0005f;
+		return Math.abs(v1.getX() - v2.getX()) < TOLERANCE && Math.abs(v1.getY() - v2.getY()) < TOLERANCE;
+	}
 
 	@Override
 	public void recalculate(List<CollidableDrawable> others, double xMin, double yAcceleration, double yVelocityMin, double tDelta) {
@@ -184,7 +183,7 @@ public abstract class StationaryEntity extends Entity {
 
 	@Override
 	public void collision(CollisionInformation collisionInfo, List<CollidableDrawable> others) {
-        CollidableDrawable other = collisionInfo.getCollidedWith();
+		CollidableDrawable other = collisionInfo.getCollidedWith();
 		if (other instanceof Platform) {
 			Point2D negationVector = collisionInfo.getMinimumTranslationVector();
 			pos.setX(pos.getX() + negationVector.getX());

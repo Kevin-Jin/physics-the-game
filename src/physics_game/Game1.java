@@ -75,7 +75,7 @@ public class Game1 extends Canvas {
 		titleScreenModel.getButtons().add(new MenuButton("New Game", new Rectangle((WIDTH - 200) / 2, HEIGHT / 2, 200, 50), new MenuButton.MenuButtonHandler() {
 			@Override
 			public void clicked() {
-				map.setLevel(LevelCache.getLevel("intro1"));
+				map.setLevel(LevelCache.getLevel("level1"));
 				c.setLimits(map.getCameraBounds());
 				c.lookAt(map.getCannon().getPosition());
 				state = GameState.GAME;
@@ -127,11 +127,24 @@ public class Game1 extends Canvas {
 		TextureCache.setTexture("body", readImage("body.png"));
 		TextureCache.setTexture("wheel", readImage("wheel.png"));
 		TextureCache.setTexture("blast", readImage("blast.png"));
+		TextureCache.setTexture("ball", readImage("ball.png"));
 		TextureCache.setTexture("cursor", readImage("cursor.png"));
 		TextureCache.setTexture("logo", readImage("logo.png"));
 		TextureCache.setTexture("buttonHover", readImage("buttonHovering.png"));
 		TextureCache.setTexture("buttonPressed", readImage("buttonPressed.png"));
 		TextureCache.setTexture("button", readImage("buttonRegular.png"));
+		BufferedImage texture = new BufferedImage(3, 3, BufferedImage.TYPE_INT_RGB);
+		int whiteRgb = Color.WHITE.getRGB();
+		texture.setRGB(0, 0, whiteRgb);
+		texture.setRGB(1, 0, whiteRgb);
+		texture.setRGB(2, 0, whiteRgb);
+		texture.setRGB(0, 1, whiteRgb);
+		texture.setRGB(1, 1, whiteRgb);
+		texture.setRGB(2, 1, whiteRgb);
+		texture.setRGB(0, 2, whiteRgb);
+		texture.setRGB(1, 2, whiteRgb);
+		texture.setRGB(2, 2, whiteRgb);
+		TextureCache.setTexture("platform", texture);
 
 		LevelCache.initialize();
 
@@ -193,7 +206,8 @@ public class Game1 extends Canvas {
 		Position mousePos = c.mouseToWorld(controller.getMousePosition());
 		map.getCannon().lookAt(mousePos);
 
-		c.lookAt(map.getCannon().getPosition());
+		if (map.getFocus() != null)
+			c.lookAt(map.getFocus().getPosition());
 		List<CollidableDrawable> collidablesList = map.getCollidables();
 		CollidableDrawable[] collidables = collidablesList.toArray(new CollidableDrawable[0]);
 		for (int i = 0; i < collidables.length - 1; i++) {
