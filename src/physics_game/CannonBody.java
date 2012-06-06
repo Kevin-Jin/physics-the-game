@@ -20,6 +20,7 @@ public class CannonBody extends StationaryEntity {
 			new Point2D.Double(175, 6),
 			new Point2D.Double(170, 3)
 	}) });
+	private static final Point2D REAR_WHEEL_CENTER = new Point2D.Double(46, 86);
 	private static final Point2D FRONT_WHEEL_CENTER = new Point2D.Double(37, 86);
 	private static final Point2D SMOKE_CENTER = new Point2D.Double(178, 34);
 
@@ -55,11 +56,21 @@ public class CannonBody extends StationaryEntity {
 		this.pos = pos;
 	}
 
+	public Position getRearWheelPosition() {
+		double lastRot = rot;
+		rot = 0;
+		try {
+			return new Position(getTransformationMatrix().transform(new Point2D.Double(REAR_WHEEL_CENTER.getX() - parent.getRearWheel().getWidth() / 2, REAR_WHEEL_CENTER.getY() + parent.getRearWheel().getHeight() / 2), null));
+		} finally {
+			rot = lastRot;
+		}
+	}
+
 	public Position getFrontWheelPosition() {
 		double lastRot = rot;
 		rot = 0;
 		try {
-			return new Position(getTransformationMatrix().transform(new Point2D.Double(FRONT_WHEEL_CENTER.getX() - parent.getLeg().getWidth() / 2, FRONT_WHEEL_CENTER.getY() + parent.getLeg().getHeight() / 2), null));
+			return new Position(getTransformationMatrix().transform(new Point2D.Double(FRONT_WHEEL_CENTER.getX() - parent.getFrontWheel().getWidth() / 2, FRONT_WHEEL_CENTER.getY() + parent.getFrontWheel().getHeight() / 2), null));
 		} finally {
 			rot = lastRot;
 		}

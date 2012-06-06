@@ -12,7 +12,7 @@ public class Blast extends StationaryEntity {
 			new Point2D.Double(100, 0),
 	}) });
 	private Cannon parent;
-	private boolean animate, flip;
+	private boolean animate;
 	private Animation fireAnim;
 
 	public Blast(Cannon parent) {
@@ -31,11 +31,6 @@ public class Blast extends StationaryEntity {
 	@Override
 	public double getRotation() {
 		return rot;
-	}
-
-	@Override
-	public boolean flipHorizontally() {
-		return flip;
 	}
 
 	@Override
@@ -88,9 +83,8 @@ public class Blast extends StationaryEntity {
 		}
 	}
 
-	public void sync(Position pos, boolean flip) {
+	public void sync(Position pos) {
 		this.pos = pos;
-		this.flip = flip;
 		boundPoly = BoundingPolygon.transformBoundingPolygon(baseBoundPoly, this);
 	}
 

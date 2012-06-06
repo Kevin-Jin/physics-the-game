@@ -2,24 +2,29 @@ package physics_game;
 
 public class Cannon {
 	private CannonBody body;
-	private CannonWheel wheel;
+	private CannonWheel frontWheel, rearWheel;
 	private Blast blast;
 	private BoundingPolygon boundPoly;
 
 	public Cannon() {
 		body = new CannonBody(this);
-		wheel = new CannonWheel(this);
+		frontWheel = new CannonWheel(this);
+		rearWheel = new CannonWheel(this);
 		blast = new Blast(this);
 
-		boundPoly = new BoundingPolygon(new BoundingPolygon[] { body.getRealBoundingPolygon(), wheel.getRealBoundingPolygon(), blast.getRealBoundingPolygon() });
+		boundPoly = new BoundingPolygon(new BoundingPolygon[] { rearWheel.getRealBoundingPolygon(), body.getRealBoundingPolygon(), frontWheel.getRealBoundingPolygon(), blast.getRealBoundingPolygon() });
 	}
 
 	public CannonBody getBody() {
 		return body;
 	}
 
-	public CannonWheel getLeg() {
-		return wheel;
+	public CannonWheel getFrontWheel() {
+		return frontWheel;
+	}
+
+	public CannonWheel getRearWheel() {
+		return rearWheel;
 	}
 
 	public Blast getSmoke() {
@@ -47,8 +52,9 @@ public class Cannon {
 	}
 
 	public void bodyUpdated() {
-		wheel.sync(body.getFrontWheelPosition(), body.flipHorizontally());
-		blast.sync(body.getFlamePosition(), body.flipHorizontally());
-		boundPoly.setPolygons(BoundingPolygon.makeBoundingPolygon(new BoundingPolygon[] { body.getRealBoundingPolygon(), wheel.getRealBoundingPolygon(), blast.getRealBoundingPolygon() }));
+		rearWheel.sync(body.getRearWheelPosition());
+		frontWheel.sync(body.getFrontWheelPosition());
+		blast.sync(body.getFlamePosition());
+		boundPoly.setPolygons(BoundingPolygon.makeBoundingPolygon(new BoundingPolygon[] { rearWheel.getRealBoundingPolygon(), body.getRealBoundingPolygon(), frontWheel.getRealBoundingPolygon(), blast.getRealBoundingPolygon() }));
 	}
 }

@@ -82,11 +82,12 @@ public class GameMap {
 
 		if (Double.isInfinite(layout.getExpiration())) {
 			cannon.setPosition(layout.getStartPosition());
-			addEntity((byte) 0, cannon.getLeg());
+			addEntity((byte) 0, cannon.getRearWheel());
 			addEntity((byte) 1, cannon.getBody());
-			addEntity((byte) 2, cannon.getSmoke());
+			addEntity((byte) 2, cannon.getFrontWheel());
+			addEntity((byte) 3, cannon.getSmoke());
 		}
-		byte i = 3;
+		byte i = 4;
 		for (BalloonSpawnInfo info : layout.getBalloons())
 			addEntity(i++, new Balloon(info.getPosition(), info.getStartScale(), info.getMinimumScale(), info.getMaximumScale()));
 		for (OverlayInfo info : layout.getTips())

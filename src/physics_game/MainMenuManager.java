@@ -13,7 +13,6 @@ public class MainMenuManager {
 
 	private Rectangle bounds;
 
-	private Cannon cannon;
 	private float logoScale;
 	private boolean growLogo;
 
@@ -22,7 +21,6 @@ public class MainMenuManager {
 	public MainMenuManager(int width, int height, int numOf) {
 		bounds = new Rectangle(0, 0, width, height);
 
-		cannon = new Cannon();
 		logoScale = 1;
 
 		buttons = new ArrayList<MenuButton>();
@@ -42,9 +40,6 @@ public class MainMenuManager {
 		else
 			logoScale -= (float) (0.3 * tDelta);
 
-		cannon.setPosition(new Position(50, 600));
-		cannon.bodyUpdated();
-
 		for (MenuButton btn : buttons) {
 			if (btn.isPointInButton(controller.getMousePosition()))
 				if (controller.getCodesOfPressedMouseButtons().contains(MouseEvent.BUTTON1) && btn.isMouseDown())
@@ -62,18 +57,13 @@ public class MainMenuManager {
 
 	public void draw(Graphics2D g2d) {
 		AffineTransform originalTransform = g2d.getTransform();
-		AffineTransform newTransform = AffineTransform.getTranslateInstance(0, bounds.height);
-		newTransform.concatenate(AffineTransform.getScaleInstance(1, -1));
-		g2d.setTransform(newTransform);
-		for (Entity ent : new Entity[] { cannon.getLeg(), cannon.getBody(), cannon.getSmoke() })
-			g2d.drawImage(ent.getTexture(), ent.getTransformationMatrix(), null);
-		g2d.setTransform(originalTransform);
 		BufferedImage logoTexture = TextureCache.getTexture("logo");
-		newTransform = AffineTransform.getTranslateInstance((bounds.width - logoTexture.getWidth()) / 2d + logoTexture.getWidth() / 2d, 75);
+		AffineTransform newTransform = AffineTransform.getTranslateInstance((bounds.width - logoTexture.getWidth()) / 2d + logoTexture.getWidth() / 2d, 75);
 		newTransform.concatenate(AffineTransform.getScaleInstance(logoScale, logoScale));
 		newTransform.concatenate(AffineTransform.getTranslateInstance(-logoTexture.getWidth() / 2d, -logoTexture.getHeight() / 2d));
 		g2d.drawImage(logoTexture, newTransform, null);
 		for (MenuButton btn : buttons)
 			btn.draw(g2d);
+		g2d.setTransform(originalTransform);
 	}
 }

@@ -48,7 +48,7 @@ public class CannonWheel extends BottomLeftOriginedProp {
 		
 	}
 
-	public void sync(Position pos, boolean flip) {
+	public void sync(Position pos) {
 		this.pos = pos;
 		boundPoly = BoundingPolygon.transformBoundingPolygon(baseBoundPoly, this);
 	}
