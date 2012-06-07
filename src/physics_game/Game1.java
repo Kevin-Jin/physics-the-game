@@ -132,6 +132,8 @@ public class Game1 extends Canvas {
 		TextureCache.setTexture("buttonHover", readImage("buttonHovering.png"));
 		TextureCache.setTexture("buttonPressed", readImage("buttonPressed.png"));
 		TextureCache.setTexture("button", readImage("buttonRegular.png"));
+		TextureCache.setTexture("bar", readImage("bar.png"));
+		TextureCache.setTexture("greenbar", readImage("greenbar.png"));
 		BufferedImage texture = new BufferedImage(3, 3, BufferedImage.TYPE_INT_RGB);
 		int whiteRgb = Color.WHITE.getRGB();
 		texture.setRGB(0, 0, whiteRgb);
@@ -144,6 +146,7 @@ public class Game1 extends Canvas {
 		texture.setRGB(1, 2, whiteRgb);
 		texture.setRGB(2, 2, whiteRgb);
 		TextureCache.setTexture("platform", texture);
+		
 
 		LevelCache.initialize();
 

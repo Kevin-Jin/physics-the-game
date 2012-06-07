@@ -14,7 +14,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 @SuppressWarnings("serial")
 public class Launch extends Applet {
-	private static final boolean FULL_SCREEN = true;
+	private static final boolean FULL_SCREEN = false;
 
 	private Game1 t;
 

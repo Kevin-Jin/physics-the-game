@@ -72,6 +72,7 @@ public class GameMap {
 
 	public void setLevel(LevelLayout layout) {
 		this.layout = layout;
+		ProgressBar p = new ProgressBar(new Position (500,500));
 
 		entities.clear();
 
@@ -84,6 +85,8 @@ public class GameMap {
 		layers.get(Layer.MAIN_BACKGROUND).getDrawables().add(new DrawableTexture(layout.getInsideBackground(), new Position(0, 0)));
 
 		layers.get(Layer.FOREGROUND).getDrawables().clear();
+		layers.get(Layer.FOREGROUND).getDrawables().add(p.getFill());
+		layers.get(Layer.FOREGROUND).getDrawables().add(p.getOutline());
 
 		if (Double.isInfinite(layout.getExpiration())) {
 			leftCannon.setPosition(layout.getLeftCannonPosition());
