@@ -120,6 +120,12 @@ public class GameMap {
 		layers.get(Layer.MIDGROUND).getDrawables().add(ent);
 	}
 
+	public byte addEntity(Entity ent) {
+		byte entId = (byte) (entities.lastKey().byteValue() + 1);
+		addEntity(entId, ent);
+		return entId;
+	}
+
 	public void removeEntity(byte entId) {
 		Entity removed = entities.remove(Byte.valueOf(entId));
 		layers.get(Layer.MIDGROUND).getDrawables().remove(removed);

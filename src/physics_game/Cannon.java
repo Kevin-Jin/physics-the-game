@@ -30,6 +30,10 @@ public class Cannon {
 		return bar.getOutline();
 	}
 
+	public double getPower() {
+		return bar.getAmount();
+	}
+
 	public CannonBody getBody() {
 		return body;
 	}
@@ -63,8 +67,8 @@ public class Cannon {
 		bar.setPosition(new Position(pos.getX() + 55, pos.getY() - 75));
 	}
 
-	public void update(int change, boolean action){
-		
+	public boolean update(int change, boolean action){
+		boolean fired = false;
 		double d = body.getRotation();
 		final double DELTA = Math.PI/30;
 		d += Math.signum(change) * DELTA*multiplier;
@@ -81,8 +85,7 @@ public class Cannon {
 				bar.update();
 			}
 			else{
-				//FIRE
-				System.out.println("FIRE");
+				fired = true;
 			}
 		}
 		else{
@@ -90,6 +93,7 @@ public class Cannon {
 			bar.update();
 		}
 		actionHeld = action;
+		return fired;
 		
 	}
 
