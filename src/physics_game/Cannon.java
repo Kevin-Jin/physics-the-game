@@ -7,8 +7,8 @@ public class Cannon {
 	private BoundingPolygon boundPoly;
 	private KeyBindings binding;
 
-	public Cannon() {
-		body = new CannonBody(this);
+	public Cannon(boolean facingRight) {
+		body = facingRight ? new LeftCannonBody(this) : new RightCannonBody(this);
 		frontWheel = new CannonWheel(this);
 		rearWheel = new CannonWheel(this);
 		blast = new Blast(this);
@@ -71,7 +71,7 @@ public class Cannon {
 	public void bodyUpdated() {
 		rearWheel.sync(body.getRearWheelPosition());
 		frontWheel.sync(body.getFrontWheelPosition());
-		blast.sync(body.getFlamePosition());
+		blast.sync(body.getBlastPosition());
 		boundPoly.setPolygons(BoundingPolygon.makeBoundingPolygon(new BoundingPolygon[] { rearWheel.getRealBoundingPolygon(), body.getRealBoundingPolygon(), frontWheel.getRealBoundingPolygon(), blast.getRealBoundingPolygon() }));
 	}
 }

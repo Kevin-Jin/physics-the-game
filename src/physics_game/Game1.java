@@ -74,7 +74,7 @@ public class Game1 extends Canvas {
 			public void clicked() {
 				map.setLevel(LevelCache.getLevel("level1"));
 				c.setLimits(map.getCameraBounds());
-				c.lookAt(map.getCannon().getPosition());
+				c.lookAt(map.getLeftCannon().getPosition());
 				state = GameState.GAME;
 			}
 		}));
@@ -85,7 +85,7 @@ public class Game1 extends Canvas {
 			public void clicked() {
 				map.setLevel(LevelCache.getLevel("tutorial"));
 				c.setLimits(map.getCameraBounds());
-				c.lookAt(map.getCannon().getPosition());
+				c.lookAt(map.getLeftCannon().getPosition());
 				state = GameState.GAME;
 			}
 		}));
@@ -94,7 +94,7 @@ public class Game1 extends Canvas {
 			public void clicked() {
 				map.resetLevel();
 				c.setLimits(map.getCameraBounds());
-				c.lookAt(map.getCannon().getPosition());
+				c.lookAt(map.getLeftCannon().getPosition());
 				state = GameState.GAME;
 			}
 		}));
@@ -123,6 +123,7 @@ public class Game1 extends Canvas {
 
 		TextureCache.setTexture("bg", readImage("pngBg.png"));
 		TextureCache.setTexture("body", readImage("body.png"));
+		TextureCache.setTexture("rbody", readImage("rbody.png"));
 		TextureCache.setTexture("wheel", readImage("wheel.png"));
 		TextureCache.setTexture("blast", readImage("blast.png"));
 		TextureCache.setTexture("ball", readImage("ball.png"));
@@ -183,7 +184,7 @@ public class Game1 extends Canvas {
 	}
 
 	private void respondToGameInput(double tDelta) {
-		KeyBindings bindings = map.getCannon().getKeyBindings();
+		KeyBindings bindings = map.getLeftCannon().getKeyBindings();
 		
 		int offset = 0;
 		for (Integer key : controller.getCodesOfPressedKeys()) {
@@ -192,7 +193,7 @@ public class Game1 extends Canvas {
 			if (key.intValue() == bindings.downBinding())
 				offset--;
 		}
-		map.getCannon().rotate(offset);
+		map.getLeftCannon().rotate(offset);
 	}
 
 	private void updateTitle(double tDelta) {

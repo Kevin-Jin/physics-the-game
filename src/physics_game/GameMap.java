@@ -13,7 +13,7 @@ public class GameMap {
 	private static final int RIGHT_WALL_VISIBLE_PIXELS = 0;
 
 	private LevelLayout layout;
-	private final Cannon cannon;
+	private final Cannon leftCannon, rightCannon;
 	private final SortedMap<Byte, Entity> entities;
 	private final List<Particle> particles;
 	private final SortedMap<Byte, Layer> layers;
@@ -23,7 +23,8 @@ public class GameMap {
 	private CannonBall focus;
 
 	public GameMap() {
-		cannon = new Cannon();
+		leftCannon = new Cannon(true);
+		rightCannon = new Cannon(false);
 		entities = new TreeMap<Byte, Entity>();
 		particles = new ArrayList<Particle>();
 		layers = new TreeMap<Byte, Layer>();
@@ -34,8 +35,12 @@ public class GameMap {
 		layers.put(Layer.FOREGROUND, new Layer(2));
 	}
 
-	public Cannon getCannon() {
-		return cannon;
+	public Cannon getLeftCannon() {
+		return leftCannon;
+	}
+
+	public Cannon getRightCannon() {
+		return rightCannon;
 	}
 
 	public void follow(CannonBall ball) {
@@ -81,13 +86,19 @@ public class GameMap {
 		layers.get(Layer.FOREGROUND).getDrawables().clear();
 
 		if (Double.isInfinite(layout.getExpiration())) {
-			cannon.setPosition(layout.getStartPosition());
-			addEntity((byte) 0, cannon.getRearWheel());
-			addEntity((byte) 1, cannon.getBody());
-			addEntity((byte) 2, cannon.getFrontWheel());
-			addEntity((byte) 3, cannon.getSmoke());
+			leftCannon.setPosition(layout.getLeftCannonPosition());
+			addEntity((byte) 0, leftCannon.getRearWheel());
+			addEntity((byte) 1, leftCannon.getBody());
+			addEntity((byte) 2, leftCannon.getFrontWheel());
+			addEntity((byte) 3, leftCannon.getSmoke());
+
+			rightCannon.setPosition(layout.getRightCannonPosition());
+			addEntity((byte) 4, rightCannon.getRearWheel());
+			addEntity((byte) 5, rightCannon.getBody());
+			addEntity((byte) 6, rightCannon.getFrontWheel());
+			addEntity((byte) 7, rightCannon.getSmoke());
 		}
-		byte i = 4;
+		byte i = 8;
 		for (BalloonSpawnInfo info : layout.getBalloons())
 			addEntity(i++, new Balloon(info.getPosition(), info.getStartScale(), info.getMinimumScale(), info.getMaximumScale()));
 		for (OverlayInfo info : layout.getTips())

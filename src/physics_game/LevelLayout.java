@@ -10,18 +10,19 @@ public class LevelLayout {
 	private final double yVelocityMin;
 	private final int width;
 	private final int height;
-	private Position startPos;
+	private Position leftPos, rightPos;
 	private List<BalloonSpawnInfo> balloons;
 	private List<OverlayInfo> tips;
 	private String nextMap;
 	private String outsideBg, insideBg;
 	private double expiration;
 
-	public LevelLayout(int width, int height, Map<Byte, Platform> footholds, Position startPos, int yDeceleration, int yVelocityMin, List<BalloonSpawnInfo> balloons, List<OverlayInfo> tips, String nextMap, String outsideBg, String insideBg, double expiration) {
+	public LevelLayout(int width, int height, Map<Byte, Platform> footholds, Position leftPos, Position rightPos, int yDeceleration, int yVelocityMin, List<BalloonSpawnInfo> balloons, List<OverlayInfo> tips, String nextMap, String outsideBg, String insideBg, double expiration) {
 		this.width = width;
 		this.height = height;
 		this.footholds = footholds;
-		this.startPos = startPos;
+		this.leftPos = leftPos;
+		this.rightPos = rightPos;
 		this.yDeceleration = yDeceleration;
 		this.yVelocityMin = yVelocityMin;
 		this.balloons = balloons;
@@ -52,8 +53,12 @@ public class LevelLayout {
 		return height;
 	}
 
-	public Position getStartPosition() {
-		return startPos;
+	public Position getLeftCannonPosition() {
+		return leftPos;
+	}
+
+	public Position getRightCannonPosition() {
+		return rightPos;
 	}
 
 	public List<BalloonSpawnInfo> getBalloons() {
