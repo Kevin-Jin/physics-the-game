@@ -3,22 +3,31 @@ package physics_game;
 public class Cannon {
 	private CannonBody body;
 	private CannonWheel frontWheel, rearWheel;
+	private ProgressBar bar;
 	private Blast blast;
 	private BoundingPolygon boundPoly;
 	private KeyBindings binding;
 	private double MAX_ANGLE, MIN_ANGLE;
 	private int multiplier;
+	private boolean actionHeld;
 
 	public Cannon(boolean facingRight) {
 		body = facingRight ? new LeftCannonBody(this) : new RightCannonBody(this);
 		frontWheel = new CannonWheel(this);
 		rearWheel = new CannonWheel(this);
 		blast = new Blast(this);
+		bar = new ProgressBar(new Position(0,0));
 		binding = new KeyBindings(facingRight);
 		boundPoly = new BoundingPolygon(new BoundingPolygon[] { rearWheel.getRealBoundingPolygon(), body.getRealBoundingPolygon(), frontWheel.getRealBoundingPolygon(), blast.getRealBoundingPolygon() });
 		MAX_ANGLE = (facingRight) ? 1.45 : 0; 
 		MIN_ANGLE = (facingRight) ? 0: -1.34; 
 		multiplier = (facingRight) ? 1 : -1;
+	}
+	public ProgressBarFill getBarFill(){
+		return bar.getFill();
+	}
+	public ProgressBarOutline getBarOutline(){
+		return bar.getOutline();
 	}
 
 	public CannonBody getBody() {
@@ -51,9 +60,10 @@ public class Cannon {
 
 	public void setPosition(Position pos) {
 		body.setPosition(pos);
+		bar.setPosition(new Position(pos.getX() + 55, pos.getY() - 75));
 	}
 
-	public void rotate(int change){
+	public void update(int change, boolean action){
 		
 		double d = body.getRotation();
 		final double DELTA = Math.PI/30;
@@ -66,6 +76,20 @@ public class Cannon {
 		body.setRotation(d);
 		blast.setRotation(d);
 		bodyUpdated();
+		if (actionHeld){
+			if (action){
+				bar.update();
+			}
+			else{
+				//FIRE
+				System.out.println("FIRE");
+			}
+		}
+		else{
+			bar.setIncreasing(action);
+			bar.update();
+		}
+		actionHeld = action;
 		
 	}
 

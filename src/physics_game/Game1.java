@@ -191,20 +191,25 @@ public class Game1 extends Canvas {
 		KeyBindings right = map.getRightCannon().getKeyBindings();
 		
 		int lo = 0, ro = 0;
+		boolean la = false, ra = false;
 		
 		for (Integer key : controller.getCodesOfPressedKeys()) {
 			if (key.intValue() == left.upBinding())
 				lo++;
 			if (key.intValue() == left.downBinding())
 				lo--;
+			if (key.intValue() == left.actionBinding())
+				la = true;
 			
 			if (key.intValue() == right.upBinding())
 				ro++;
 			if (key.intValue() == right.downBinding())
 				ro--;
+			if (key.intValue() == right.actionBinding())
+				ra = true;
 		}
-		map.getLeftCannon().rotate(lo);
-		map.getRightCannon().rotate(ro);
+		map.getLeftCannon().update(lo,la);
+		map.getRightCannon().update(ro,ra);
 	}
 
 	private void updateTitle(double tDelta) {

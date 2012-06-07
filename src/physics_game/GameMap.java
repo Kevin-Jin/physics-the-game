@@ -72,7 +72,6 @@ public class GameMap {
 
 	public void setLevel(LevelLayout layout) {
 		this.layout = layout;
-		ProgressBar p = new ProgressBar(new Position (500,500));
 
 		entities.clear();
 
@@ -85,8 +84,6 @@ public class GameMap {
 		layers.get(Layer.MAIN_BACKGROUND).getDrawables().add(new DrawableTexture(layout.getInsideBackground(), new Position(0, 0)));
 
 		layers.get(Layer.FOREGROUND).getDrawables().clear();
-		layers.get(Layer.FOREGROUND).getDrawables().add(p.getFill());
-		layers.get(Layer.FOREGROUND).getDrawables().add(p.getOutline());
 
 		if (Double.isInfinite(layout.getExpiration())) {
 			leftCannon.setPosition(layout.getLeftCannonPosition());
@@ -94,12 +91,16 @@ public class GameMap {
 			addEntity((byte) 1, leftCannon.getBody());
 			addEntity((byte) 2, leftCannon.getFrontWheel());
 			addEntity((byte) 3, leftCannon.getSmoke());
+			layers.get(Layer.FOREGROUND).getDrawables().add(leftCannon.getBarOutline());
+			layers.get(Layer.FOREGROUND).getDrawables().add(leftCannon.getBarFill());
 
 			rightCannon.setPosition(layout.getRightCannonPosition());
 			addEntity((byte) 4, rightCannon.getRearWheel());
 			addEntity((byte) 5, rightCannon.getBody());
 			addEntity((byte) 6, rightCannon.getFrontWheel());
 			addEntity((byte) 7, rightCannon.getSmoke());
+			layers.get(Layer.FOREGROUND).getDrawables().add(rightCannon.getBarOutline());
+			layers.get(Layer.FOREGROUND).getDrawables().add(rightCannon.getBarFill());
 		}
 		byte i = 8;
 		for (BalloonSpawnInfo info : layout.getBalloons())

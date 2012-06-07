@@ -16,7 +16,7 @@ public class ProgressBar {
 		increasing = true;
 	}
 	public void update(){
-		final double step  = 1/10.0;
+		final double step  = 1.5;
 		
 		amt += ((increasing) ? 1 : -1)*step;
 		if (amt < min){
@@ -28,8 +28,15 @@ public class ProgressBar {
 			increasing = false;
 		}
 	}
+	public void setIncreasing(boolean flag){
+		increasing = flag;
+	}
 	public double getAmount(){
 		return amt;
+	}
+	public void setPosition(Position p){
+		outline.setPosition(p);
+		fill.setPosition(new Position(p.getX() + 2, p.getY()+2));
 	}
 	
 	public ProgressBarOutline getOutline(){

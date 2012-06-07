@@ -15,13 +15,15 @@ public class ProgressBarFill extends AbstractDrawable{
 
 	@Override
 	public BufferedImage getTexture() {
-		parent.update();
 		return TextureCache.getTexture("greenbar");
 	}
 
 	@Override
 	public double getRotation() {
 		return 0;
+	}
+	public void setPosition(Position p){
+		pos=p;
 	}
 
 	@Override

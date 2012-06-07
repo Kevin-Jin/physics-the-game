@@ -23,11 +23,15 @@ public class ProgressBarOutline extends AbstractDrawable{
 	public boolean transformAboutCenter() {
 		return false;
 	}
+	public void setPosition(Position p){
+		pos=p;
+	}
 
 	@Override
 	public double getWidth() {
 		return getTexture().getWidth();
 	}
+	
 
 	@Override
 	public double getHeight() {
