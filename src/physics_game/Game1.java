@@ -214,11 +214,13 @@ public class Game1 extends Canvas {
 			CannonBall ball = new CannonBall(map.getLeftCannon().getBody().getBlastPosition(), map.getLeftCannon().getBody().getRotation(), map.getLeftCannon().getPower());
 			map.addEntity(ball);
 			map.follow(ball);
+			map.getLeftCannon().getProgessBar().reset();
 		}
 		if (map.getRightCannon().update(ro,ra)) {
 			CannonBall ball = new CannonBall(map.getRightCannon().getBody().getBlastPosition(), map.getRightCannon().getBody().getRotation() - Math.PI, map.getRightCannon().getPower());
 			map.addEntity(ball);
 			map.follow(ball);
+			map.getRightCannon().getProgessBar().reset();
 		}
 	}
 

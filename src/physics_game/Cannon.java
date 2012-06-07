@@ -29,6 +29,9 @@ public class Cannon {
 	public ProgressBarOutline getBarOutline(){
 		return bar.getOutline();
 	}
+	public ProgressBar getProgessBar(){
+		return bar;
+	}
 
 	public double getPower() {
 		return bar.getAmount();

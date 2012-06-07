@@ -34,6 +34,10 @@ public class ProgressBar {
 	public double getAmount(){
 		return amt;
 	}
+	public void reset(){
+		amt = min;
+		increasing = false;
+	}
 	public void setPosition(Position p){
 		outline.setPosition(p);
 		fill.setPosition(new Position(p.getX() + 2, p.getY()+2));
