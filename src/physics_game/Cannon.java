@@ -6,14 +6,19 @@ public class Cannon {
 	private Blast blast;
 	private BoundingPolygon boundPoly;
 	private KeyBindings binding;
+	private double MAX_ANGLE, MIN_ANGLE;
+	private int multiplier;
 
 	public Cannon(boolean facingRight) {
 		body = facingRight ? new LeftCannonBody(this) : new RightCannonBody(this);
 		frontWheel = new CannonWheel(this);
 		rearWheel = new CannonWheel(this);
 		blast = new Blast(this);
-		binding = new KeyBindings(true);
+		binding = new KeyBindings(facingRight);
 		boundPoly = new BoundingPolygon(new BoundingPolygon[] { rearWheel.getRealBoundingPolygon(), body.getRealBoundingPolygon(), frontWheel.getRealBoundingPolygon(), blast.getRealBoundingPolygon() });
+		MAX_ANGLE = (facingRight) ? 1.45 : 0; 
+		MIN_ANGLE = (facingRight) ? 0: -1.34; 
+		multiplier = (facingRight) ? 1 : -1;
 	}
 
 	public CannonBody getBody() {
@@ -52,16 +57,12 @@ public class Cannon {
 		
 		double d = body.getRotation();
 		final double DELTA = Math.PI/30;
-		final double MAX = 1.45;
-		if (change == 1)
-			d += DELTA;
-		if (change == -1)
-			d -= DELTA;
-		if (d < 0)
-			d = 0;
-		if (d > MAX)
-			d = MAX;
+		d += Math.signum(change) * DELTA*multiplier;
 		
+		if (d < MIN_ANGLE)
+			d = MIN_ANGLE;
+		if (d > MAX_ANGLE)
+			d = MAX_ANGLE;
 		body.setRotation(d);
 		blast.setRotation(d);
 		bodyUpdated();

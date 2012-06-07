@@ -187,16 +187,24 @@ public class Game1 extends Canvas {
 	}
 
 	private void respondToGameInput(double tDelta) {
-		KeyBindings bindings = map.getLeftCannon().getKeyBindings();
+		KeyBindings left = map.getLeftCannon().getKeyBindings();
+		KeyBindings right = map.getRightCannon().getKeyBindings();
 		
-		int offset = 0;
+		int lo = 0, ro = 0;
+		
 		for (Integer key : controller.getCodesOfPressedKeys()) {
-			if (key.intValue() == bindings.upBinding())
-				offset++;
-			if (key.intValue() == bindings.downBinding())
-				offset--;
+			if (key.intValue() == left.upBinding())
+				lo++;
+			if (key.intValue() == left.downBinding())
+				lo--;
+			
+			if (key.intValue() == right.upBinding())
+				ro++;
+			if (key.intValue() == right.downBinding())
+				ro--;
 		}
-		map.getLeftCannon().rotate(offset);
+		map.getLeftCannon().rotate(lo);
+		map.getRightCannon().rotate(ro);
 	}
 
 	private void updateTitle(double tDelta) {
@@ -210,8 +218,6 @@ public class Game1 extends Canvas {
 		map.updateParticlePositions(tDelta);
 		map.cleanParticles();
 
-		Position mousePos = c.mouseToWorld(controller.getMousePosition());
-		//map.getCannon().lookAt(mousePos);
 
 		if (map.getFocus() != null)
 			c.lookAt(map.getFocus().getPosition());
