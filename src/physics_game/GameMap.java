@@ -20,8 +20,6 @@ public class GameMap {
 
 	private double remainingTime;
 
-	private CannonBall focus;
-
 	public GameMap() {
 		leftCannon = new Cannon(true);
 		rightCannon = new Cannon(false);
@@ -41,14 +39,6 @@ public class GameMap {
 
 	public Cannon getRightCannon() {
 		return rightCannon;
-	}
-
-	public void follow(CannonBall ball) {
-		focus = ball;
-	}
-
-	public CannonBall getFocus() {
-		return focus;
 	}
 
 	public SortedMap<Byte, Layer> getLayers() {

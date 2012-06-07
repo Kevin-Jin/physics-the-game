@@ -51,8 +51,6 @@ public class Game1 extends Canvas {
 
 	private volatile boolean continueGame;
 	private volatile CountDownLatch gameRunning;
-	private boolean ballOnGround;
-	private double resetCameraCountDown;
 
 	public Game1() {
 		setFocusable(true);
@@ -213,13 +211,11 @@ public class Game1 extends Canvas {
 		if (map.getLeftCannon().update(lo,la)) {
 			CannonBall ball = new CannonBall(map.getLeftCannon().getBody().getBlastPosition(), map.getLeftCannon().getBody().getRotation(), map.getLeftCannon().getPower());
 			map.addEntity(ball);
-			map.follow(ball);
 			map.getLeftCannon().getProgessBar().reset();
 		}
 		if (map.getRightCannon().update(ro,ra)) {
 			CannonBall ball = new CannonBall(map.getRightCannon().getBody().getBlastPosition(), map.getRightCannon().getBody().getRotation() - Math.PI, map.getRightCannon().getPower());
 			map.addEntity(ball);
-			map.follow(ball);
 			map.getRightCannon().getProgessBar().reset();
 		}
 	}
@@ -235,18 +231,6 @@ public class Game1 extends Canvas {
 		map.updateParticlePositions(tDelta);
 		map.cleanParticles();
 
-		if (map.getFocus() != null && !map.getFocus().onGround()) {
-			c.lookAt(map.getFocus().getPosition());
-		} else if (!ballOnGround) {
-			ballOnGround = true;
-			resetCameraCountDown = 3;
-		} else if (resetCameraCountDown <= 0) {
-			c.lookAt(new Position(0, 0));
-			resetCameraCountDown = 0;
-			ballOnGround = false;
-		} else {
-			resetCameraCountDown -= tDelta;
-		}
 		List<CollidableDrawable> collidablesList = map.getCollidables();
 		CollidableDrawable[] collidables = collidablesList.toArray(new CollidableDrawable[0]);
 		for (int i = 0; i < collidables.length - 1; i++) {
