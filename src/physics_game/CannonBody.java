@@ -40,17 +40,7 @@ public class CannonBody extends StationaryEntity {
 		parent.bodyUpdated();
 	}
 
-	public double lookAt(Position pos) {
-		Point2D rotateAbout = getTransformationMatrix().transform(getOrigin(), null);
-		double y = pos.getY() - rotateAbout.getY();
-		double x = pos.getX() - rotateAbout.getX();
-		double realRot = Math.atan2(y, x);
-		if (x < 0)
-			realRot -= Math.PI;
-
-		rot = realRot;
-		return realRot;
-	}
+	
 
 	public void setPosition(Position pos) {
 		this.pos = pos;
@@ -103,6 +93,11 @@ public class CannonBody extends StationaryEntity {
 	public double getRotation() {
 		return rot;
 	}
+	public void setRotation(double d){
+		rot = d;
+		boundPoly = BoundingPolygon.transformBoundingPolygon(baseBoundPoly, this);
+	}
+	
 
 	@Override
 	public boolean transformAboutCenter() {

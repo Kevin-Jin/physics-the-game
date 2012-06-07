@@ -52,7 +52,7 @@ public class CannonWheel extends BottomLeftOriginedProp {
 		this.pos = pos;
 		boundPoly = BoundingPolygon.transformBoundingPolygon(baseBoundPoly, this);
 	}
-
+	
 	@Override
 	public void collision(CollisionInformation collisionInfo, List<CollidableDrawable> others) {
 		

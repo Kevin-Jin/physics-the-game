@@ -5,13 +5,14 @@ public class Cannon {
 	private CannonWheel frontWheel, rearWheel;
 	private Blast blast;
 	private BoundingPolygon boundPoly;
+	private KeyBindings binding;
 
 	public Cannon() {
 		body = new CannonBody(this);
 		frontWheel = new CannonWheel(this);
 		rearWheel = new CannonWheel(this);
 		blast = new Blast(this);
-
+		binding = new KeyBindings(true);
 		boundPoly = new BoundingPolygon(new BoundingPolygon[] { rearWheel.getRealBoundingPolygon(), body.getRealBoundingPolygon(), frontWheel.getRealBoundingPolygon(), blast.getRealBoundingPolygon() });
 	}
 
@@ -30,14 +31,14 @@ public class Cannon {
 	public Blast getSmoke() {
 		return blast;
 	}
+	public KeyBindings getKeyBindings(){
+		return binding;
+	}
 
 	public BoundingPolygon getBoundingPolygon() {
 		return boundPoly;
 	}
 
-	public boolean flipHorizontally() {
-		return body.flipHorizontally();
-	}
 
 	public Position getPosition() {
 		return body.getPosition();
@@ -47,8 +48,24 @@ public class Cannon {
 		body.setPosition(pos);
 	}
 
-	public void lookAt(Position pos) {
-		blast.setRotation((float) body.lookAt(pos));
+	public void rotate(int change){
+		
+		double d = body.getRotation();
+		final double DELTA = Math.PI/30;
+		final double MAX = 1.45;
+		if (change == 1)
+			d += DELTA;
+		if (change == -1)
+			d -= DELTA;
+		if (d < 0)
+			d = 0;
+		if (d > MAX)
+			d = MAX;
+		
+		body.setRotation(d);
+		blast.setRotation(d);
+		bodyUpdated();
+		
 	}
 
 	public void bodyUpdated() {

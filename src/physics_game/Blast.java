@@ -20,7 +20,7 @@ public class Blast extends StationaryEntity {
 		fireAnim = new Animation(new String[] { "blast", "blast", "blast", "blast" }, .2);
 		animate = true;
 		baseBoundPoly = BOUNDING_POLYGON;
-		boundPoly = baseBoundPoly;
+		boundPoly = getBoundingPolygon();
 	}
 
 	@Override
@@ -85,10 +85,11 @@ public class Blast extends StationaryEntity {
 
 	public void sync(Position pos) {
 		this.pos = pos;
-		boundPoly = BoundingPolygon.transformBoundingPolygon(baseBoundPoly, this);
+		
 	}
 
 	public void setRotation(double rot) {
 		this.rot = rot;
+	
 	}
 }
