@@ -30,14 +30,14 @@ public class CannonBody extends StationaryEntity {
 	public CannonBody(Cannon parent) {
 		baseBoundPoly = BOUNDING_POLYGON;
 		boundPoly = BOUNDING_POLYGON;
-		pos = new Position(100, 100);
+		pos = new Position(100, 0);
 		this.parent = parent;
+		
 	}
 
 	@Override
 	public void recalculate(List<CollidableDrawable> others, double xMin, double yAcceleration, double yVelocityMin, double tDelta) {
-		super.recalculate(others, xMin, yAcceleration, yVelocityMin, tDelta);
-		parent.bodyUpdated();
+		
 	}
 
 	

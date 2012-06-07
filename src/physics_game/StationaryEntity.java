@@ -72,17 +72,10 @@ public abstract class StationaryEntity extends Entity {
 	}
 
 	public void drag(List<CollidableDrawable> others, double deltaX, double deltaY) {
-		BoundingPolygon oldPoly = boundPoly;
 		pos.setX(pos.getX() + deltaX);
 		pos.setY(pos.getY() + deltaY);
-		boundPoly = PolygonHelper.boundingPolygonRepresentingTranslation(boundPoly, new Point2D.Double(deltaX, deltaY));
-		if (collidesWith(others)) {
-			pos.setX(pos.getX() - deltaX);
-			pos.setY(pos.getY() - deltaY);
-			boundPoly = oldPoly;
-		} else {
-			boundPoly = BoundingPolygon.transformBoundingPolygon(baseBoundPoly, this);
-		}
+		boundPoly = BoundingPolygon.transformBoundingPolygon(baseBoundPoly, this);
+		
 	}
 
 	protected boolean roundsEqual(Point2D v1, Point2D v2) {
@@ -104,66 +97,11 @@ public abstract class StationaryEntity extends Entity {
 			vel.setX(Math.max(vel.getX() + tDelta * xDeceleration, 0));
 		vel.setY(Math.max(vel.getY() + yAcceleration * tDelta, yVelocityMin));
 
-		boundPoly = PolygonHelper.boundingPolygonRepresentingTranslation(boundPoly, new Point2D.Double(vel.getX() * tDelta, vel.getY() * tDelta));
-
-		List<CollisionResult> move = getCollisions(others);
+		
 		pos.setX(pos.getX() + vel.getX() * tDelta);
 		pos.setY(pos.getY() + vel.getY() * tDelta);
-		boundPoly = BoundingPolygon.transformBoundingPolygon(baseBoundPoly, this);
-		List<CollisionResult> endMove = getCollisions(others);
-		Point2D minTranslation = new Point2D.Double(0, 0);
-		boolean assigned = false;
-		boolean flag = false;
-
-		for (CollisionResult moveI : move) {
-			CollisionInformation moveInfo = moveI.getCollisionInformation();
-			CollisionInformation endOnlyInfo = null;
-			CollidableDrawable moveObj = moveInfo.getCollidedWith();
-
-			for (CollisionResult b2 : endMove) {
-				if (b2.getCollisionInformation().getCollidedWith() == moveObj) {
-					endOnlyInfo = b2.getCollisionInformation();
-					break;
-				}
-			}
-			if (endOnlyInfo != null) {
-				if (!roundsEqual(moveInfo.getMinimumTranslationVector(), endOnlyInfo.getMinimumTranslationVector())) {
-					flag = false;
-					break;
-				}
-				flag = true;
-
-				if (!assigned) {
-					minTranslation = endOnlyInfo.getMinimumTranslationVector();
-					assigned = true;
-				} else {
-					Point2D curTrans = endOnlyInfo.getMinimumTranslationVector();
-					if (Math.signum(curTrans.getX()) == Math.signum(minTranslation.getX()) || minTranslation.getX() == 0) {
-						if (Math.abs(curTrans.getX()) > Math.abs(minTranslation.getX()))
-							minTranslation.setLocation(curTrans.getX(), minTranslation.getY());
-					} else {
-						flag = false;
-						break;
-					}
-					if (curTrans.getY() > minTranslation.getY())
-						minTranslation.setLocation(minTranslation.getX(), curTrans.getY());
-				}
-			} else
-				flag = true;
-		}
-
-		if (move.isEmpty() || flag) {
-			pos.setX(pos.getX() + minTranslation.getX());
-			pos.setY(pos.getY() + minTranslation.getY());
-			if (flag) {
-				if (minTranslation.getY() > 0)
-					vel.setY(0);
-			}
-		} else {
-			pos.setX(pos.getX() - vel.getX() * tDelta);
-			pos.setY(pos.getY() - vel.getY() * tDelta);
-		}
-
+		//boundPoly = BoundingPolygon.transformBoundingPolygon(baseBoundPoly, this);
+		
 		super.recalculate(others, xMin, yAcceleration, yVelocityMin, tDelta);
 	}
 
@@ -171,7 +109,9 @@ public abstract class StationaryEntity extends Entity {
 	public void collision(CollisionInformation collisionInfo, List<CollidableDrawable> others) {
 		CollidableDrawable other = collisionInfo.getCollidedWith();
 		if (other instanceof Platform) {
+			
 			Point2D negationVector = collisionInfo.getMinimumTranslationVector();
+			
 			pos.setX(pos.getX() + negationVector.getX());
 			pos.setY(pos.getY() + negationVector.getY());
 
@@ -181,7 +121,9 @@ public abstract class StationaryEntity extends Entity {
 				vel.setY(0);
 
 			boundPoly = BoundingPolygon.transformBoundingPolygon(baseBoundPoly, this);
-		} else if (other instanceof StationaryEntity) {
+		} 
+		/*
+		else if (other instanceof StationaryEntity) {
 			Point2D negationVector = collisionInfo.getMinimumTranslationVector();
 			pos.setX(pos.getX() + negationVector.getX());
 			pos.setY(pos.getY() + negationVector.getY());
@@ -190,6 +132,6 @@ public abstract class StationaryEntity extends Entity {
 				vel.setY(0);
 		
 			boundPoly = BoundingPolygon.transformBoundingPolygon(baseBoundPoly, this);
-		}
+		}*/
 	}
 }

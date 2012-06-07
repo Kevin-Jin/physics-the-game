@@ -78,4 +78,7 @@ public class Platform extends CollidableDrawable {
 	public void collision(CollisionInformation collisionInfo, List<CollidableDrawable> others) {
 		
 	}
+	public String toString(){
+		return "Platform at " + x1 +"," + y2;
+	}
 }

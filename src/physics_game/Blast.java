@@ -81,6 +81,7 @@ public class Blast extends StationaryEntity {
 		if (animate) {
 			fireAnim.update(tDelta);
 		}
+		
 	}
 
 	public void sync(Position pos) {
