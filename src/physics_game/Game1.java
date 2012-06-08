@@ -240,8 +240,10 @@ public class Game1 extends Canvas {
 
 		if (endGamePieces != null) {
 			if (endGamePieces.isEmpty()) {
-				endGameSnapshot.flush();
-				endGameSnapshot = null;
+				if (endGameSnapshot != null) {
+					endGameSnapshot.flush();
+					endGameSnapshot = null;
+				}
 			} else {
 				for (Iterator<ScreenFragment> iter = endGamePieces.iterator(); iter.hasNext(); ) {
 					ScreenFragment text = iter.next();
@@ -345,6 +347,19 @@ public class Game1 extends Canvas {
 
 	private void drawGame(Graphics2D g2d) {
 		if (endGamePieces != null) {
+			int left = map.getLeftCannon().getPoints(), right = map.getRightCannon().getPoints();
+			String s;
+			if (left > right)
+				s = "Left player wins!";
+			else if (right > left)
+				s = "Right player wins!";
+			else
+				s = "It is a tie!";
+
+			g2d.setFont(new Font("Arial", Font.PLAIN, 72));
+			g2d.drawString(s, (WIDTH - g2d.getFontMetrics().stringWidth(s)) / 2, HEIGHT / 2);
+			s = (right > left) ? (right + "–" + left) : (left + "–" + right);
+			g2d.drawString(s, (WIDTH - g2d.getFontMetrics().stringWidth(s)) / 2, HEIGHT / 2 + g2d.getFontMetrics().getHeight());
 			for (ScreenFragment piece : endGamePieces)
 				g2d.drawImage(piece.getTexture(), piece.getTransformationMatrix(), null);
 			return;
