@@ -1,6 +1,7 @@
 package physics_game;
 
 public class Cannon implements Player {
+	private boolean facingRight;
 	private CannonBody body;
 	private CannonWheel frontWheel, rearWheel;
 	private ProgressBar bar;
@@ -13,6 +14,7 @@ public class Cannon implements Player {
 	private int totalPoints;
 
 	public Cannon(boolean facingRight) {
+		this.facingRight = facingRight;
 		body = facingRight ? new LeftCannonBody(this) : new RightCannonBody(this);
 		frontWheel = new CannonWheel(this);
 		rearWheel = new CannonWheel(this);
@@ -104,7 +106,10 @@ public class Cannon implements Player {
 
 	@Override
 	public void triggered(GameMap map) {
-		CannonBall ball = new CannonBall(getBody().getBlastPosition(), getBody().getRotation(), getPower(), true);
+		double rot = getBody().getRotation();
+		if (!facingRight)
+			rot -= Math.PI;
+		CannonBall ball = new CannonBall(getBody().getBlastPosition(), rot, getPower(), facingRight);
 		ball.setEntityId(map.addEntity(ball));
 		getProgessBar().reset();
 	}
