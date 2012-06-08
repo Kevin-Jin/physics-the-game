@@ -7,7 +7,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 public class GameMap {
-	private static final int FLOOR_VISIBLE_PIXELS = 50;
+	private static final int FLOOR_VISIBLE_PIXELS = 80;
 	private static final int CEILING_VISIBLE_PIXELS = 0;
 	private static final int LEFT_WALL_VISIBLE_PIXELS = 0;
 	private static final int RIGHT_WALL_VISIBLE_PIXELS = 0;
@@ -79,23 +79,21 @@ public class GameMap {
 
 		layers.get(Layer.FOREGROUND).getDrawables().clear();
 
-		if (Double.isInfinite(layout.getExpiration())) {
-			leftCannon.setPosition(layout.getLeftCannonPosition());
-			addEntity(0, leftCannon.getRearWheel());
-			addEntity(1, leftCannon.getBody());
-			addEntity(2, leftCannon.getFrontWheel());
-			addEntity(3, leftCannon.getSmoke());
-			layers.get(Layer.FOREGROUND).getDrawables().add(leftCannon.getBarOutline());
-			layers.get(Layer.FOREGROUND).getDrawables().add(leftCannon.getBarFill());
+		leftCannon.setPosition(layout.getLeftCannonPosition());
+		addEntity(0, leftCannon.getRearWheel());
+		addEntity(1, leftCannon.getBody());
+		addEntity(2, leftCannon.getFrontWheel());
+		addEntity(3, leftCannon.getSmoke());
+		layers.get(Layer.FOREGROUND).getDrawables().add(leftCannon.getBarOutline());
+		layers.get(Layer.FOREGROUND).getDrawables().add(leftCannon.getBarFill());
 
-			rightCannon.setPosition(layout.getRightCannonPosition());
-			addEntity(4, rightCannon.getRearWheel());
-			addEntity(5, rightCannon.getBody());
-			addEntity(6, rightCannon.getFrontWheel());
-			addEntity(7, rightCannon.getSmoke());
-			layers.get(Layer.FOREGROUND).getDrawables().add(rightCannon.getBarOutline());
-			layers.get(Layer.FOREGROUND).getDrawables().add(rightCannon.getBarFill());
-		}
+		rightCannon.setPosition(layout.getRightCannonPosition());
+		addEntity(4, rightCannon.getRearWheel());
+		addEntity(5, rightCannon.getBody());
+		addEntity(6, rightCannon.getFrontWheel());
+		addEntity(7, rightCannon.getSmoke());
+		layers.get(Layer.FOREGROUND).getDrawables().add(rightCannon.getBarOutline());
+		layers.get(Layer.FOREGROUND).getDrawables().add(rightCannon.getBarFill());
 		for (OverlayInfo info : layout.getTips())
 			layers.get(Layer.FOREGROUND).getDrawables().add(new DrawableTexture(info.getWidth(), info.getHeight(), info.getImageName(), info.getPosition()));
 
@@ -159,5 +157,9 @@ public class GameMap {
 			return false;
 		remainingTime -= tDelta;
 		return (remainingTime <= 0);
+	}
+
+	public double getRemainingTime() {
+		return remainingTime;
 	}
 }

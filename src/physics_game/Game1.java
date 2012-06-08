@@ -262,6 +262,10 @@ public class Game1 extends Canvas {
 		}
 		for (Integer entId : toRemove)
 			map.removeEntity(entId.intValue());
+
+		if (map.isMapExpired(tDelta)) {
+			//TODO: someone won
+		}
 	}
 
 	private void updatePauseOverlay() {
@@ -331,8 +335,14 @@ public class Game1 extends Canvas {
 
 		g2d.setFont(new Font("Arial", Font.PLAIN, 36));
 		g2d.setColor(Color.BLACK);
-		String s = map.getLeftCannon().getPoints() + ":" + map.getRightCannon().getPoints();
-		g2d.drawString(s, (WIDTH - g2d.getFontMetrics().stringWidth(s))/2, HEIGHT  - 15 );
+		String s = map.getLeftCannon().getPoints() + "|" + map.getRightCannon().getPoints();
+		g2d.drawString(s, (WIDTH - g2d.getFontMetrics().stringWidth(s)) / 2, HEIGHT - g2d.getFontMetrics().getHeight());
+
+		int milliseconds = (int) (map.getRemainingTime() * 1000);
+		long minutes = milliseconds / (1000 * 60);
+		long seconds = (milliseconds - (minutes * 1000 * 60)) / 1000;
+		s = String.format("%d:%02d", minutes, seconds);
+		g2d.drawString(s, (WIDTH - g2d.getFontMetrics().stringWidth(s)) / 2, HEIGHT);
 	}
 
 	private void drawPauseOverlay(Graphics2D g2d) {
