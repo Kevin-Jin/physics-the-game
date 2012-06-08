@@ -21,18 +21,23 @@ public class CannonBall extends CenterOriginedProp implements Expirable {
 	}) });
 
 	private static final int EXPIRE_TIME = 5;
+	private static final int BASE_POP_POINTS = 100;
+	private static final int COMBO_BONUS = 5;
 
 	private boolean onGround;
 	private int entityId;
 	private boolean expired;
 	private double remainingTime = EXPIRE_TIME;
+	private boolean leftPlayer;
+	private int totalPopped, pointsSinceLastFrame;
 
-	public CannonBall(Position initPosition, double angle, double power) {
+	public CannonBall(Position initPosition, double angle, double power, boolean leftPlayer) {
 		super(-1000);
 		pos = new Position(initPosition.getX() - getWidth(), initPosition.getY() - getHeight() / 2);
 		vel = new Velocity(angle, power * 13);
 		baseBoundPoly = BOUNDING_POLYGON;
 		boundPoly = BOUNDING_POLYGON;
+		this.leftPlayer = leftPlayer;
 	}
 
 	public boolean onGround() {
@@ -84,12 +89,28 @@ public class CannonBall extends CenterOriginedProp implements Expirable {
 	public boolean isExpired() {
 		return expired;
 	}
+
+	@Override
 	public void collision(CollisionInformation collisionInfo, List<CollidableDrawable> others) {
 		CollidableDrawable other = collisionInfo.getCollidedWith();
 		if (other instanceof Balloon){
-			((Balloon)other).setExpired();
+			((Balloon) other).setExpired();
+			pointsSinceLastFrame += BASE_POP_POINTS + totalPopped * COMBO_BONUS;
+			totalPopped++;
 			return;
 		}
 		super.collision(collisionInfo, others);
+	}
+
+	public boolean isLeftPlayer() {
+		return leftPlayer;
+	}
+
+	public int getPointsSinceLastFrame() {
+		try {
+			return pointsSinceLastFrame;
+		} finally {
+			pointsSinceLastFrame = 0;
+		}
 	}
 }

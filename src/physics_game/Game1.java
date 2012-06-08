@@ -213,12 +213,12 @@ public class Game1 extends Canvas {
 				ra = true;
 		}
 		if (map.getLeftCannon().update(lo,la,tDelta)) {
-			CannonBall ball = new CannonBall(map.getLeftCannon().getBody().getBlastPosition(), map.getLeftCannon().getBody().getRotation(), map.getLeftCannon().getPower());
+			CannonBall ball = new CannonBall(map.getLeftCannon().getBody().getBlastPosition(), map.getLeftCannon().getBody().getRotation(), map.getLeftCannon().getPower(), true);
 			ball.setEntityId(map.addEntity(ball));
 			map.getLeftCannon().getProgessBar().reset();
 		}
 		if (map.getRightCannon().update(ro,ra,tDelta)) {
-			CannonBall ball = new CannonBall(map.getRightCannon().getBody().getBlastPosition(), map.getRightCannon().getBody().getRotation() - Math.PI, map.getRightCannon().getPower());
+			CannonBall ball = new CannonBall(map.getRightCannon().getBody().getBlastPosition(), map.getRightCannon().getBody().getRotation() - Math.PI, map.getRightCannon().getPower(), false);
 			ball.setEntityId(map.addEntity(ball));
 			map.getRightCannon().getProgessBar().reset();
 		}
@@ -250,6 +250,13 @@ public class Game1 extends Canvas {
 		List<Integer> toRemove = new ArrayList<Integer>();
 		for (Iterator<Entity> iter = map.getEntities().values().iterator(); iter.hasNext(); ) {
 			Entity ent = iter.next();
+			if (ent instanceof CannonBall) {
+				CannonBall ball = (CannonBall) ent;
+				if (ball.isLeftPlayer())
+					map.getLeftCannon().addPoints(ball.getPointsSinceLastFrame());
+				else
+					map.getRightCannon().addPoints(ball.getPointsSinceLastFrame());
+			}
 			if (ent instanceof Expirable && ((Expirable) ent).isExpired())
 				toRemove.add(Integer.valueOf(((Expirable) ent).getEntityId()));
 		}
@@ -321,6 +328,13 @@ public class Game1 extends Canvas {
 
 			g2d.setTransform(originalTransform);
 		}
+
+		g2d.setFont(new Font("Arial", Font.PLAIN, 36));
+		g2d.setColor(Color.WHITE);
+		String s = "Left Player: " + map.getLeftCannon().getPoints();
+		g2d.drawString(s, WIDTH - g2d.getFontMetrics().stringWidth(s), g2d.getFontMetrics().getHeight());
+		s = "Right Player: " + map.getRightCannon().getPoints();
+		g2d.drawString(s, WIDTH - g2d.getFontMetrics().stringWidth(s), g2d.getFontMetrics().getHeight() * 2);
 	}
 
 	private void drawPauseOverlay(Graphics2D g2d) {

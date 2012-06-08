@@ -10,6 +10,7 @@ public class Cannon {
 	private double MAX_ANGLE, MIN_ANGLE;
 	private int multiplier;
 	private boolean actionHeld;
+	private int totalPoints;
 
 	public Cannon(boolean facingRight) {
 		body = facingRight ? new LeftCannonBody(this) : new RightCannonBody(this);
@@ -23,13 +24,16 @@ public class Cannon {
 		MIN_ANGLE = (facingRight) ? 0: -1.34; 
 		multiplier = (facingRight) ? 3 : -3;
 	}
-	public ProgressBarFill getBarFill(){
+
+	public ProgressBarFill getBarFill() {
 		return bar.getFill();
 	}
-	public ProgressBarOutline getBarOutline(){
+
+	public ProgressBarOutline getBarOutline() {
 		return bar.getOutline();
 	}
-	public ProgressBar getProgessBar(){
+
+	public ProgressBar getProgessBar() {
 		return bar;
 	}
 
@@ -52,7 +56,8 @@ public class Cannon {
 	public Blast getSmoke() {
 		return blast;
 	}
-	public KeyBindings getKeyBindings(){
+
+	public KeyBindings getKeyBindings() {
 		return binding;
 	}
 
@@ -70,11 +75,11 @@ public class Cannon {
 		bar.setPosition(new Position(pos.getX() + 55, pos.getY() - 75));
 	}
 
-	public boolean update(int change, boolean action, double tDelta){
+	public boolean update(int change, boolean action, double tDelta) {
 		boolean fired = false;
 		double d = body.getRotation();
-		d += Math.signum(change) * tDelta*multiplier;
-		
+		d += Math.signum(change) * tDelta * multiplier;
+
 		if (d < MIN_ANGLE)
 			d = MIN_ANGLE;
 		if (d > MAX_ANGLE)
@@ -82,21 +87,18 @@ public class Cannon {
 		body.setRotation(d);
 		blast.setRotation(d);
 		bodyUpdated();
-		if (actionHeld){
-			if (action){
+		if (actionHeld) {
+			if (action)
 				bar.update(tDelta);
-			}
-			else{
+			else
 				fired = true;
-			}
-		}
-		else{
+		} else {
 			bar.setIncreasing(action);
 			bar.update(tDelta);
 		}
 		actionHeld = action;
 		return fired;
-		
+
 	}
 
 	public void bodyUpdated() {
@@ -104,5 +106,13 @@ public class Cannon {
 		frontWheel.sync(body.getFrontWheelPosition());
 		blast.sync(body.getBlastPosition());
 		boundPoly.setPolygons(BoundingPolygon.makeBoundingPolygon(new BoundingPolygon[] { rearWheel.getRealBoundingPolygon(), body.getRealBoundingPolygon(), frontWheel.getRealBoundingPolygon(), blast.getRealBoundingPolygon() }));
+	}
+
+	public void addPoints(int add) {
+		totalPoints += add;
+	}
+
+	public int getPoints() {
+		return totalPoints;
 	}
 }

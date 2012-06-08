@@ -119,7 +119,11 @@ public class Balloon extends CenterOriginedProp implements Expirable {
 	}
 	public void collision(CollisionInformation collisionInfo, List<CollidableDrawable> others) {
 		CollidableDrawable other = collisionInfo.getCollidedWith();
-		if (other instanceof CannonBall)
-			setExpired();
+		if (other instanceof CannonBall) {
+			collisionInfo.setCollidedWith(this);
+			collisionInfo.negateMinimumTranslationVector();
+			other.collision(collisionInfo, others);
+			return;
+		}
 	}
 }

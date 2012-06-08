@@ -6,22 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class CollidableDrawable extends AbstractDrawable {
-	private Point2D beamHit;
-
 	public abstract BoundingPolygon getBoundingPolygon();
 	public abstract void collision(CollisionInformation collisionInfo, List<CollidableDrawable> others);
-
-	public Position getBeamHit() {
-		return new Position(getTransformationMatrix().transform(beamHit, null));
-	}
-
-	public void setBeamHit(Position value) {
-		try {
-			beamHit = getTransformationMatrix().inverseTransform(value.asPoint(), null);
-		} catch (NoninvertibleTransformException e) {
-			beamHit = new Point2D.Double(Double.NaN, Double.NaN);
-		}
-	}
 
 	public boolean collidesWith(List<CollidableDrawable> others) {
 		for (CollidableDrawable curDrawable : others) {
