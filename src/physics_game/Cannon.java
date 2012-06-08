@@ -72,7 +72,7 @@ public class Cannon {
 
 	public void setPosition(Position pos) {
 		body.setPosition(pos);
-		bar.setPosition(new Position(pos.getX() + 55, pos.getY() - 75));
+		bar.setPosition(new Position(pos.getX() + 55, pos.getY() - 125));
 	}
 
 	public boolean update(int change, boolean action, double tDelta) {
