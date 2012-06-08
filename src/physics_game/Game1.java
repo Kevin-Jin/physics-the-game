@@ -141,6 +141,8 @@ public class Game1 extends Canvas {
 		TextureCache.setTexture("gballoon", readImage("gballoon.png"));
 		TextureCache.setTexture("bballoon", readImage("bballoon.png"));
 		TextureCache.setTexture("pballoon", readImage("pballoon.png"));
+		TextureCache.setTexture("negraygun", readImage("negraygun.png"));
+		TextureCache.setTexture("posraygun", readImage("posraygun.png"));
 		BufferedImage texture = new BufferedImage(3, 3, BufferedImage.TYPE_INT_RGB);
 		int whiteRgb = Color.WHITE.getRGB();
 		texture.setRGB(0, 0, whiteRgb);
