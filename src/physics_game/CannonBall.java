@@ -23,7 +23,7 @@ public class CannonBall extends CenterOriginedProp implements Expirable {
 	private static final int EXPIRE_TIME = 5;
 
 	private boolean onGround;
-	private byte entityId;
+	private int entityId;
 	private boolean expired;
 	private double remainingTime = EXPIRE_TIME;
 
@@ -71,12 +71,12 @@ public class CannonBall extends CenterOriginedProp implements Expirable {
 		return TextureCache.getTexture("ball");
 	}
 
-	public void setEntityId(byte entId) {
+	public void setEntityId(int entId) {
 		entityId = entId;
 	}
 
 	@Override
-	public byte getEntityId() {
+	public int getEntityId() {
 		return entityId;
 	}
 

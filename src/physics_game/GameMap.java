@@ -14,7 +14,7 @@ public class GameMap {
 
 	private LevelLayout layout;
 	private final Cannon leftCannon, rightCannon;
-	private final SortedMap<Byte, Entity> entities;
+	private final SortedMap<Integer, Entity> entities;
 	private final List<Particle> particles;
 	private final SortedMap<Byte, Layer> layers;
 	
@@ -26,7 +26,7 @@ public class GameMap {
 		leftCannon = new Cannon(true);
 		rightCannon = new Cannon(false);
 		spawner = new BalloonSpawner(.25,.6);
-		entities = new TreeMap<Byte, Entity>();
+		entities = new TreeMap<Integer, Entity>();
 		particles = new ArrayList<Particle>();
 		layers = new TreeMap<Byte, Layer>();
 
@@ -49,7 +49,7 @@ public class GameMap {
 		return layers;
 	}
 
-	public SortedMap<Byte, Entity> getEntities() {
+	public SortedMap<Integer, Entity> getEntities() {
 		return entities;
 	}
 
@@ -106,19 +106,19 @@ public class GameMap {
 		setLevel(layout);
 	}
 
-	public void addEntity(byte entId, Entity ent) {
-		entities.put(Byte.valueOf(entId), ent);
+	public void addEntity(int entId, Entity ent) {
+		entities.put(Integer.valueOf(entId), ent);
 		layers.get(Layer.MIDGROUND).getDrawables().add(ent);
 	}
 
-	public byte addEntity(Entity ent) {
-		byte entId = (byte) (entities.lastKey().byteValue() + 1);
+	public int addEntity(Entity ent) {
+		int entId = entities.lastKey().byteValue() + 1;
 		addEntity(entId, ent);
 		return entId;
 	}
 
 	public void removeEntity(byte entId) {
-		Entity removed = entities.remove(Byte.valueOf(entId));
+		Entity removed = entities.remove(Integer.valueOf(entId));
 		layers.get(Layer.MIDGROUND).getDrawables().remove(removed);
 	}
 

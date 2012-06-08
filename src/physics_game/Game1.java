@@ -247,13 +247,13 @@ public class Game1 extends Canvas {
 			}
 		}
 
-		List<Byte> toRemove = new ArrayList<Byte>();
+		List<Integer> toRemove = new ArrayList<Integer>();
 		for (Iterator<Entity> iter = map.getEntities().values().iterator(); iter.hasNext(); ) {
 			Entity ent = iter.next();
 			if (ent instanceof Expirable && ((Expirable) ent).isExpired())
-				toRemove.add(Byte.valueOf(((Expirable) ent).getEntityId()));
+				toRemove.add(Integer.valueOf(((Expirable) ent).getEntityId()));
 		}
-		for (Byte entId : toRemove)
+		for (Integer entId : toRemove)
 			map.removeEntity(entId.byteValue());
 	}
 

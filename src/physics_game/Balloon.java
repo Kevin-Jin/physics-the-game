@@ -48,7 +48,7 @@ public class Balloon extends CenterOriginedProp implements Expirable {
 	private BalloonColor color;
 	private double minScale;
 	private double maxScale;
-	private byte entityId;
+	private int entityId;
 	private boolean expired;
 
 	public Balloon(BalloonColor color) {
@@ -101,12 +101,12 @@ public class Balloon extends CenterOriginedProp implements Expirable {
 		return TextureCache.getTexture(color.getPrefix() + "balloon");
 	}
 
-	public void setEntityId(byte entityId) {
+	public void setEntityId(int entityId) {
 		this.entityId = entityId;
 	}
 
 	@Override
-	public byte getEntityId() {
+	public int getEntityId() {
 		return entityId;
 	}
 
