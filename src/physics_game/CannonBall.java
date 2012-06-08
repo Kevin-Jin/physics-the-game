@@ -84,4 +84,12 @@ public class CannonBall extends CenterOriginedProp implements Expirable {
 	public boolean isExpired() {
 		return expired;
 	}
+	public void collision(CollisionInformation collisionInfo, List<CollidableDrawable> others) {
+		CollidableDrawable other = collisionInfo.getCollidedWith();
+		if (other instanceof Balloon){
+			((Balloon)other).setExpired();
+			return;
+		}
+		super.collision(collisionInfo, others);
+	}
 }
