@@ -330,11 +330,9 @@ public class Game1 extends Canvas {
 		}
 
 		g2d.setFont(new Font("Arial", Font.PLAIN, 36));
-		g2d.setColor(Color.WHITE);
-		String s = "Left Player: " + map.getLeftCannon().getPoints();
-		g2d.drawString(s, WIDTH - g2d.getFontMetrics().stringWidth(s), g2d.getFontMetrics().getHeight());
-		s = "Right Player: " + map.getRightCannon().getPoints();
-		g2d.drawString(s, WIDTH - g2d.getFontMetrics().stringWidth(s), g2d.getFontMetrics().getHeight() * 2);
+		g2d.setColor(Color.BLACK);
+		String s = map.getLeftCannon().getPoints() + ":" + map.getRightCannon().getPoints();
+		g2d.drawString(s, (WIDTH - g2d.getFontMetrics().stringWidth(s))/2, HEIGHT  - 15 );
 	}
 
 	private void drawPauseOverlay(Graphics2D g2d) {

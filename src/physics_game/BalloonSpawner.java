@@ -22,7 +22,7 @@ public class BalloonSpawner {
 	}
 	public Balloon getRandomBalloon(){
 		int x = RANDOM.nextInt(600)+ 300;
-		int y = -RANDOM.nextInt(250);
+		int y = RANDOM.nextInt(150);
 		return new Balloon(new Position(x,y),getRandomBalloonColor(),.5f,.5f,.5f);
 	}
 	public Balloon.BalloonColor getRandomBalloonColor(){
