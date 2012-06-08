@@ -52,6 +52,9 @@ public class Game1 extends Canvas {
 	private volatile boolean continueGame;
 	private volatile CountDownLatch gameRunning;
 
+	private BufferedImage endGameSnapshot;
+	private List<ScreenFragment> endGamePieces;
+
 	public Game1() {
 		setFocusable(true);
 		requestFocusInWindow();
@@ -235,6 +238,29 @@ public class Game1 extends Canvas {
 		map.updateParticlePositions(tDelta);
 		map.cleanParticles();
 
+		if (endGamePieces != null) {
+			if (endGamePieces.isEmpty()) {
+				endGameSnapshot.flush();
+				endGameSnapshot = null;
+			} else {
+				for (Iterator<ScreenFragment> iter = endGamePieces.iterator(); iter.hasNext(); ) {
+					ScreenFragment text = iter.next();
+					if (text.update(Math.random() * Math.PI * 2, 0.3, tDelta))
+						iter.remove();
+				}
+			}
+			if (!map.isMapExpired(tDelta)) {
+				//switched maps, stop showing screen fragments/endgame screen
+				endGamePieces = null;
+				if (endGameSnapshot != null) {
+					endGameSnapshot.flush();
+					endGameSnapshot = null;
+				}
+			} else {
+				return;
+			}
+		}
+
 		List<CollidableDrawable> collidablesList = map.getCollidables();
 		CollidableDrawable[] collidables = collidablesList.toArray(new CollidableDrawable[0]);
 		for (int i = 0; i < collidables.length - 1; i++) {
@@ -264,7 +290,14 @@ public class Game1 extends Canvas {
 			map.removeEntity(entId.intValue());
 
 		if (map.isMapExpired(tDelta)) {
-			//TODO: someone won
+			endGameSnapshot = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB_PRE);
+			drawGame((Graphics2D) endGameSnapshot.getGraphics());
+			endGamePieces = new ArrayList<ScreenFragment>();
+
+			final int COLUMNS = 20, ROWS = 20;
+			for (int i = 0; i < COLUMNS; i++)
+				for (int j = 0; j < ROWS; j++)
+					endGamePieces.add(new ScreenFragment(endGameSnapshot.getSubimage(i * WIDTH / COLUMNS, j * HEIGHT / ROWS, WIDTH / COLUMNS, HEIGHT / ROWS), new Position(i * WIDTH / COLUMNS, j * HEIGHT / ROWS + HEIGHT / ROWS), Math.random() * 2 * Math.PI, 50));
 		}
 	}
 
@@ -311,6 +344,12 @@ public class Game1 extends Canvas {
 	}
 
 	private void drawGame(Graphics2D g2d) {
+		if (endGamePieces != null) {
+			for (ScreenFragment piece : endGamePieces)
+				g2d.drawImage(piece.getTexture(), piece.getTransformationMatrix(), null);
+			return;
+		}
+		g2d.setColor(Color.BLACK);
 		for (Layer layer : map.getLayers().values()) {
 			AffineTransform originalTransform = g2d.getTransform();
 			g2d.setTransform(c.getViewMatrix(layer.getParallaxFactor()));
