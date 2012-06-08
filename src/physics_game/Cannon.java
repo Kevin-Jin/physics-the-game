@@ -21,7 +21,7 @@ public class Cannon {
 		boundPoly = new BoundingPolygon(new BoundingPolygon[] { rearWheel.getRealBoundingPolygon(), body.getRealBoundingPolygon(), frontWheel.getRealBoundingPolygon(), blast.getRealBoundingPolygon() });
 		MAX_ANGLE = (facingRight) ? 1.45 : 0; 
 		MIN_ANGLE = (facingRight) ? 0: -1.34; 
-		multiplier = (facingRight) ? 1 : -1;
+		multiplier = (facingRight) ? 3 : -3;
 	}
 	public ProgressBarFill getBarFill(){
 		return bar.getFill();
@@ -70,11 +70,10 @@ public class Cannon {
 		bar.setPosition(new Position(pos.getX() + 55, pos.getY() - 75));
 	}
 
-	public boolean update(int change, boolean action){
+	public boolean update(int change, boolean action, double tDelta){
 		boolean fired = false;
 		double d = body.getRotation();
-		final double DELTA = Math.PI/30;
-		d += Math.signum(change) * DELTA*multiplier;
+		d += Math.signum(change) * tDelta*multiplier;
 		
 		if (d < MIN_ANGLE)
 			d = MIN_ANGLE;
@@ -85,7 +84,7 @@ public class Cannon {
 		bodyUpdated();
 		if (actionHeld){
 			if (action){
-				bar.update();
+				bar.update(tDelta);
 			}
 			else{
 				fired = true;
@@ -93,7 +92,7 @@ public class Cannon {
 		}
 		else{
 			bar.setIncreasing(action);
-			bar.update();
+			bar.update(tDelta);
 		}
 		actionHeld = action;
 		return fired;

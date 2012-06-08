@@ -212,12 +212,12 @@ public class Game1 extends Canvas {
 			if (key.intValue() == right.actionBinding())
 				ra = true;
 		}
-		if (map.getLeftCannon().update(lo,la)) {
+		if (map.getLeftCannon().update(lo,la,tDelta)) {
 			CannonBall ball = new CannonBall(map.getLeftCannon().getBody().getBlastPosition(), map.getLeftCannon().getBody().getRotation(), map.getLeftCannon().getPower());
 			ball.setEntityId(map.addEntity(ball));
 			map.getLeftCannon().getProgessBar().reset();
 		}
-		if (map.getRightCannon().update(ro,ra)) {
+		if (map.getRightCannon().update(ro,ra,tDelta)) {
 			CannonBall ball = new CannonBall(map.getRightCannon().getBody().getBlastPosition(), map.getRightCannon().getBody().getRotation() - Math.PI, map.getRightCannon().getPower());
 			ball.setEntityId(map.addEntity(ball));
 			map.getRightCannon().getProgessBar().reset();

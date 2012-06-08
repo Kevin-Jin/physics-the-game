@@ -15,10 +15,9 @@ public class ProgressBar {
 		max = 76;
 		increasing = true;
 	}
-	public void update(){
-		final double step  = 1.5;
-		
-		amt += ((increasing) ? 1 : -1)*step;
+	public void update(double tDelta){
+		final double MULT= 150;
+		amt += ((increasing) ? 1 : -1)*tDelta*MULT;
 		if (amt < min){
 			amt = min;
 			increasing = true;
