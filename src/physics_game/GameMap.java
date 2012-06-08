@@ -81,18 +81,18 @@ public class GameMap {
 
 		if (Double.isInfinite(layout.getExpiration())) {
 			leftCannon.setPosition(layout.getLeftCannonPosition());
-			addEntity((byte) 0, leftCannon.getRearWheel());
-			addEntity((byte) 1, leftCannon.getBody());
-			addEntity((byte) 2, leftCannon.getFrontWheel());
-			addEntity((byte) 3, leftCannon.getSmoke());
+			addEntity(0, leftCannon.getRearWheel());
+			addEntity(1, leftCannon.getBody());
+			addEntity(2, leftCannon.getFrontWheel());
+			addEntity(3, leftCannon.getSmoke());
 			layers.get(Layer.FOREGROUND).getDrawables().add(leftCannon.getBarOutline());
 			layers.get(Layer.FOREGROUND).getDrawables().add(leftCannon.getBarFill());
 
 			rightCannon.setPosition(layout.getRightCannonPosition());
-			addEntity((byte) 4, rightCannon.getRearWheel());
-			addEntity((byte) 5, rightCannon.getBody());
-			addEntity((byte) 6, rightCannon.getFrontWheel());
-			addEntity((byte) 7, rightCannon.getSmoke());
+			addEntity(4, rightCannon.getRearWheel());
+			addEntity(5, rightCannon.getBody());
+			addEntity(6, rightCannon.getFrontWheel());
+			addEntity(7, rightCannon.getSmoke());
 			layers.get(Layer.FOREGROUND).getDrawables().add(rightCannon.getBarOutline());
 			layers.get(Layer.FOREGROUND).getDrawables().add(rightCannon.getBarFill());
 		}
@@ -112,12 +112,12 @@ public class GameMap {
 	}
 
 	public int addEntity(Entity ent) {
-		int entId = entities.lastKey().byteValue() + 1;
+		int entId = entities.lastKey().intValue() + 1;
 		addEntity(entId, ent);
 		return entId;
 	}
 
-	public void removeEntity(byte entId) {
+	public void removeEntity(int entId) {
 		Entity removed = entities.remove(Integer.valueOf(entId));
 		layers.get(Layer.MIDGROUND).getDrawables().remove(removed);
 	}

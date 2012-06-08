@@ -254,7 +254,7 @@ public class Game1 extends Canvas {
 				toRemove.add(Integer.valueOf(((Expirable) ent).getEntityId()));
 		}
 		for (Integer entId : toRemove)
-			map.removeEntity(entId.byteValue());
+			map.removeEntity(entId.intValue());
 	}
 
 	private void updatePauseOverlay() {
