@@ -30,7 +30,7 @@ public class CannonBall extends CenterOriginedProp implements Expirable {
 	public CannonBall(Position initPosition, double angle, double power) {
 		super(-1000);
 		pos = new Position(initPosition.getX() - getWidth(), initPosition.getY() - getHeight() / 2);
-		vel = new Velocity(angle, power * 10);
+		vel = new Velocity(angle, power * 13);
 		baseBoundPoly = BOUNDING_POLYGON;
 		boundPoly = BOUNDING_POLYGON;
 	}

@@ -376,7 +376,7 @@ public class Game1 extends Canvas {
 		continueGame = true;
 		gameRunning = new CountDownLatch(1);
 
-		long start = System.currentTimeMillis(), lastUpdate = start;
+		long lastUpdate = System.currentTimeMillis();
 		try {
 			while (continueGame) {
 				long thisUpdate = System.currentTimeMillis();
