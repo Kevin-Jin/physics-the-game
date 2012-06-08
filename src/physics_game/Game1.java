@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
@@ -32,7 +33,6 @@ public class Game1 extends Canvas {
 	}
 
 	private static final long serialVersionUID = -273053717092253478L;
-	private static final int FPS = 60;
 	public static final int WIDTH = 1280, HEIGHT = 720;
 
 	private NumberFormat FPS_FMT = new DecimalFormat("##");
@@ -214,12 +214,12 @@ public class Game1 extends Canvas {
 		}
 		if (map.getLeftCannon().update(lo,la)) {
 			CannonBall ball = new CannonBall(map.getLeftCannon().getBody().getBlastPosition(), map.getLeftCannon().getBody().getRotation(), map.getLeftCannon().getPower());
-			map.addEntity(ball);
+			ball.setEntityId(map.addEntity(ball));
 			map.getLeftCannon().getProgessBar().reset();
 		}
 		if (map.getRightCannon().update(ro,ra)) {
 			CannonBall ball = new CannonBall(map.getRightCannon().getBody().getBlastPosition(), map.getRightCannon().getBody().getRotation() - Math.PI, map.getRightCannon().getPower());
-			map.addEntity(ball);
+			ball.setEntityId(map.addEntity(ball));
 			map.getRightCannon().getProgessBar().reset();
 		}
 	}
@@ -246,6 +246,15 @@ public class Game1 extends Canvas {
 				}
 			}
 		}
+
+		List<Byte> toRemove = new ArrayList<Byte>();
+		for (Iterator<Entity> iter = map.getEntities().values().iterator(); iter.hasNext(); ) {
+			Entity ent = iter.next();
+			if (ent instanceof Expirable && ((Expirable) ent).isExpired())
+				toRemove.add(Byte.valueOf(((Expirable) ent).getEntityId()));
+		}
+		for (Byte entId : toRemove)
+			map.removeEntity(entId.byteValue());
 	}
 
 	private void updatePauseOverlay() {
@@ -368,23 +377,13 @@ public class Game1 extends Canvas {
 		gameRunning = new CountDownLatch(1);
 
 		long start = System.currentTimeMillis(), lastUpdate = start;
-		int frameNum = 0;
 		try {
 			while (continueGame) {
 				long thisUpdate = System.currentTimeMillis();
 				updateState((thisUpdate - lastUpdate) / 1000d);
 				lastUpdate = thisUpdate;
 				paint();
-
-				frameNum++;
-				if (frameNum == Integer.MAX_VALUE) {
-					start += Math.round((1000d / FPS) * frameNum);
-					frameNum = 0;
-				}
-				Thread.sleep(Math.max(start + Math.round((1000d / FPS) * frameNum) - System.currentTimeMillis(), 0));
 			}
-		} catch (InterruptedException e) {
-			e.printStackTrace();
 		} finally {
 			gameRunning.countDown();
 		}

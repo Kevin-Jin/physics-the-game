@@ -123,8 +123,9 @@ public class GameMap {
 	}
 
 	public void updateEntityPositions(double tDelta) {
-		if (spawner.update(tDelta)){
-			addEntity(spawner.getRandomBalloon());
+		if (spawner.update(tDelta)) {
+			Balloon spawned = spawner.getRandomBalloon();
+			spawned.setEntityId(addEntity(spawned));
 		}
 		for (Entity ent : entities.values())
 			ent.recalculate(getCollidables(), 0, layout.getGravitationalFieldStrength(), layout.getTerminalVelocity(), tDelta);

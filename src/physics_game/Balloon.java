@@ -4,7 +4,7 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-public class Balloon extends CenterOriginedProp {
+public class Balloon extends CenterOriginedProp implements Expirable {
 	public enum BalloonColor {
 		RED("r"),
 		GREEN("g"),
@@ -48,6 +48,8 @@ public class Balloon extends CenterOriginedProp {
 	private BalloonColor color;
 	private double minScale;
 	private double maxScale;
+	private byte entityId;
+	private boolean expired;
 
 	public Balloon(BalloonColor color) {
 		super(250);
@@ -57,7 +59,6 @@ public class Balloon extends CenterOriginedProp {
 		boundPoly = BOUNDING_POLYGON;
 		this.color = color;
 	}
-	
 
 	public Balloon(double startScale, double minScale, double maxScale) {
 		super(250);
@@ -78,8 +79,11 @@ public class Balloon extends CenterOriginedProp {
 		baseBoundPoly = BOUNDING_POLYGON;
 		boundPoly = BOUNDING_POLYGON;
 	}
+
 	public void recalculate(List<CollidableDrawable> others, double xMin, double yAcceleration, double yVelocityMin, double tDelta) {
 		super.recalculate(others, xMin, 0, 100, tDelta);
+		if (pos.getY() >= Game1.HEIGHT)
+			expired = true;
 	}
 
 	@Override
@@ -95,5 +99,19 @@ public class Balloon extends CenterOriginedProp {
 	@Override
 	public BufferedImage getTexture() {
 		return TextureCache.getTexture(color.getPrefix() + "balloon");
+	}
+
+	public void setEntityId(byte entityId) {
+		this.entityId = entityId;
+	}
+
+	@Override
+	public byte getEntityId() {
+		return entityId;
+	}
+
+	@Override
+	public boolean isExpired() {
+		return expired;
 	}
 }

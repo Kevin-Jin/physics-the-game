@@ -4,7 +4,7 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-public class CannonBall extends CenterOriginedProp {
+public class CannonBall extends CenterOriginedProp implements Expirable {
 	public static final BoundingPolygon BOUNDING_POLYGON = new BoundingPolygon(new Polygon[] { new Polygon(new Point2D[] {
 			new Point2D.Double(19, 0),
 			new Point2D.Double(7, 6),
@@ -20,7 +20,12 @@ public class CannonBall extends CenterOriginedProp {
 			new Point2D.Double(28, 0)
 	}) });
 
+	private static final int EXPIRE_TIME = 5;
+
 	private boolean onGround;
+	private byte entityId;
+	private boolean expired;
+	private double remainingTime = EXPIRE_TIME;
 
 	public CannonBall(Position initPosition, double angle, double power) {
 		super(-1000);
@@ -54,10 +59,29 @@ public class CannonBall extends CenterOriginedProp {
 		pos.setY(pos.getY() + vel.getY() * tDelta);
 
 		boundPoly = BoundingPolygon.transformBoundingPolygon(baseBoundPoly, this);
+
+		if (onGround)
+			remainingTime -= tDelta;
+		if (pos.getX() + getWidth() < 0 || pos.getX() > Game1.WIDTH || remainingTime <= 0)
+			expired = true;
 	}
 
 	@Override
 	public BufferedImage getTexture() {
 		return TextureCache.getTexture("ball");
+	}
+
+	public void setEntityId(byte entId) {
+		entityId = entId;
+	}
+
+	@Override
+	public byte getEntityId() {
+		return entityId;
+	}
+
+	@Override
+	public boolean isExpired() {
+		return expired;
 	}
 }
