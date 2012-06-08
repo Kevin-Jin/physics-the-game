@@ -2,6 +2,7 @@ package physics_game;
 
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 public class Balloon extends CenterOriginedProp {
 	public enum BalloonColor {
@@ -56,6 +57,7 @@ public class Balloon extends CenterOriginedProp {
 		boundPoly = BOUNDING_POLYGON;
 		this.color = color;
 	}
+	
 
 	public Balloon(double startScale, double minScale, double maxScale) {
 		super(250);
@@ -66,14 +68,18 @@ public class Balloon extends CenterOriginedProp {
 		boundPoly = BOUNDING_POLYGON;
 	}
 
-	public Balloon(Position p, double startScale, double minScale, double maxScale) {
+	public Balloon(Position p, BalloonColor c, double startScale, double minScale, double maxScale) {
 		super(250);
 		pos = p;
 		scale = startScale;
 		this.minScale = minScale;
 		this.maxScale = maxScale;
+		color = c;
 		baseBoundPoly = BOUNDING_POLYGON;
 		boundPoly = BOUNDING_POLYGON;
+	}
+	public void recalculate(List<CollidableDrawable> others, double xMin, double yAcceleration, double yVelocityMin, double tDelta) {
+		super.recalculate(others, xMin, 0, 100, tDelta);
 	}
 
 	@Override

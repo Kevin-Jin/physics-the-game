@@ -17,12 +17,15 @@ public class GameMap {
 	private final SortedMap<Byte, Entity> entities;
 	private final List<Particle> particles;
 	private final SortedMap<Byte, Layer> layers;
+	
+	private BalloonSpawner spawner;
 
 	private double remainingTime;
 
 	public GameMap() {
 		leftCannon = new Cannon(true);
 		rightCannon = new Cannon(false);
+		spawner = new BalloonSpawner(.25,.6);
 		entities = new TreeMap<Byte, Entity>();
 		particles = new ArrayList<Particle>();
 		layers = new TreeMap<Byte, Layer>();
@@ -31,6 +34,7 @@ public class GameMap {
 		layers.put(Layer.MAIN_BACKGROUND, new Layer(0.5));
 		layers.put(Layer.MIDGROUND, new Layer(1));
 		layers.put(Layer.FOREGROUND, new Layer(2));
+		
 	}
 
 	public Cannon getLeftCannon() {
@@ -92,9 +96,6 @@ public class GameMap {
 			layers.get(Layer.FOREGROUND).getDrawables().add(rightCannon.getBarOutline());
 			layers.get(Layer.FOREGROUND).getDrawables().add(rightCannon.getBarFill());
 		}
-		byte i = 8;
-		for (BalloonSpawnInfo info : layout.getBalloons())
-			addEntity(i++, new Balloon(info.getPosition(), info.getStartScale(), info.getMinimumScale(), info.getMaximumScale()));
 		for (OverlayInfo info : layout.getTips())
 			layers.get(Layer.FOREGROUND).getDrawables().add(new DrawableTexture(info.getWidth(), info.getHeight(), info.getImageName(), info.getPosition()));
 
@@ -122,6 +123,9 @@ public class GameMap {
 	}
 
 	public void updateEntityPositions(double tDelta) {
+		if (spawner.update(tDelta)){
+			addEntity(spawner.getRandomBalloon());
+		}
 		for (Entity ent : entities.values())
 			ent.recalculate(getCollidables(), 0, layout.getGravitationalFieldStrength(), layout.getTerminalVelocity(), tDelta);
 	}
