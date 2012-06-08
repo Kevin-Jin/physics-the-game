@@ -1,6 +1,6 @@
 package physics_game;
 
-public class Cannon {
+public class Cannon implements Player {
 	private CannonBody body;
 	private CannonWheel frontWheel, rearWheel;
 	private ProgressBar bar;
@@ -57,6 +57,7 @@ public class Cannon {
 		return blast;
 	}
 
+	@Override
 	public KeyBindings getKeyBindings() {
 		return binding;
 	}
@@ -75,6 +76,7 @@ public class Cannon {
 		bar.setPosition(new Position(pos.getX() + 55, pos.getY() - 125));
 	}
 
+	@Override
 	public boolean update(int change, boolean action, double tDelta) {
 		boolean fired = false;
 		double d = body.getRotation();
@@ -98,7 +100,13 @@ public class Cannon {
 		}
 		actionHeld = action;
 		return fired;
+	}
 
+	@Override
+	public void triggered(GameMap map) {
+		CannonBall ball = new CannonBall(getBody().getBlastPosition(), getBody().getRotation(), getPower(), true);
+		ball.setEntityId(map.addEntity(ball));
+		getProgessBar().reset();
 	}
 
 	public void bodyUpdated() {
@@ -108,10 +116,12 @@ public class Cannon {
 		boundPoly.setPolygons(BoundingPolygon.makeBoundingPolygon(new BoundingPolygon[] { rearWheel.getRealBoundingPolygon(), body.getRealBoundingPolygon(), frontWheel.getRealBoundingPolygon(), blast.getRealBoundingPolygon() }));
 	}
 
+	@Override
 	public void addPoints(int add) {
 		totalPoints += add;
 	}
 
+	@Override
 	public int getPoints() {
 		return totalPoints;
 	}

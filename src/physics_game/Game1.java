@@ -64,7 +64,7 @@ public class Game1 extends Canvas {
 		addMouseMotionListener(controller);
 		addMouseListener(controller);
 
-		map = new GameMap();
+		map = new CannonGameMap();
 		c = new Camera(WIDTH, HEIGHT);
 		s = new FrameRateState();
 
@@ -77,7 +77,7 @@ public class Game1 extends Canvas {
 			public void clicked() {
 				map.setLevel(LevelCache.getLevel("level1"));
 				c.setLimits(map.getCameraBounds());
-				c.lookAt(map.getLeftCannon().getPosition());
+				c.lookAt(map.getLeftPlayer().getPosition());
 				state = GameState.GAME;
 			}
 		}));
@@ -88,7 +88,7 @@ public class Game1 extends Canvas {
 			public void clicked() {
 				map.setLevel(LevelCache.getLevel("tutorial"));
 				c.setLimits(map.getCameraBounds());
-				c.lookAt(map.getLeftCannon().getPosition());
+				c.lookAt(map.getLeftPlayer().getPosition());
 				state = GameState.GAME;
 			}
 		}));
@@ -97,7 +97,7 @@ public class Game1 extends Canvas {
 			public void clicked() {
 				map.resetLevel();
 				c.setLimits(map.getCameraBounds());
-				c.lookAt(map.getLeftCannon().getPosition());
+				c.lookAt(map.getLeftPlayer().getPosition());
 				state = GameState.GAME;
 			}
 		}));
@@ -196,12 +196,12 @@ public class Game1 extends Canvas {
 	}
 
 	private void respondToGameInput(double tDelta) {
-		KeyBindings left = map.getLeftCannon().getKeyBindings();
-		KeyBindings right = map.getRightCannon().getKeyBindings();
-		
+		KeyBindings left = map.getLeftPlayer().getKeyBindings();
+		KeyBindings right = map.getRightPlayer().getKeyBindings();
+
 		int lo = 0, ro = 0;
 		boolean la = false, ra = false;
-		
+
 		for (Integer key : controller.getCodesOfPressedKeys()) {
 			if (key.intValue() == left.upBinding())
 				lo++;
@@ -209,7 +209,7 @@ public class Game1 extends Canvas {
 				lo--;
 			if (key.intValue() == left.actionBinding())
 				la = true;
-			
+
 			if (key.intValue() == right.upBinding())
 				ro++;
 			if (key.intValue() == right.downBinding())
@@ -217,16 +217,11 @@ public class Game1 extends Canvas {
 			if (key.intValue() == right.actionBinding())
 				ra = true;
 		}
-		if (map.getLeftCannon().update(lo,la,tDelta)) {
-			CannonBall ball = new CannonBall(map.getLeftCannon().getBody().getBlastPosition(), map.getLeftCannon().getBody().getRotation(), map.getLeftCannon().getPower(), true);
-			ball.setEntityId(map.addEntity(ball));
-			map.getLeftCannon().getProgessBar().reset();
-		}
-		if (map.getRightCannon().update(ro,ra,tDelta)) {
-			CannonBall ball = new CannonBall(map.getRightCannon().getBody().getBlastPosition(), map.getRightCannon().getBody().getRotation() - Math.PI, map.getRightCannon().getPower(), false);
-			ball.setEntityId(map.addEntity(ball));
-			map.getRightCannon().getProgessBar().reset();
-		}
+
+		if (map.getLeftPlayer().update(lo, la, tDelta))
+			map.getLeftPlayer().triggered(map);
+		if (map.getRightPlayer().update(ro, ra, tDelta))
+			map.getRightPlayer().triggered(map);
 	}
 
 	private void updateTitle(double tDelta) {
@@ -283,9 +278,9 @@ public class Game1 extends Canvas {
 			if (ent instanceof CannonBall) {
 				CannonBall ball = (CannonBall) ent;
 				if (ball.isLeftPlayer())
-					map.getLeftCannon().addPoints(ball.getPointsSinceLastFrame());
+					map.getLeftPlayer().addPoints(ball.getPointsSinceLastFrame());
 				else
-					map.getRightCannon().addPoints(ball.getPointsSinceLastFrame());
+					map.getRightPlayer().addPoints(ball.getPointsSinceLastFrame());
 			}
 			if (ent instanceof Expirable && ((Expirable) ent).isExpired())
 				toRemove.add(Integer.valueOf(((Expirable) ent).getEntityId()));
@@ -349,7 +344,7 @@ public class Game1 extends Canvas {
 
 	private void drawGame(Graphics2D g2d) {
 		if (endGamePieces != null) {
-			int left = map.getLeftCannon().getPoints(), right = map.getRightCannon().getPoints();
+			int left = map.getLeftPlayer().getPoints(), right = map.getRightPlayer().getPoints();
 			String s;
 			if (left > right)
 				s = "Left player wins!";
@@ -391,7 +386,7 @@ public class Game1 extends Canvas {
 
 		g2d.setFont(new Font("Arial", Font.PLAIN, 36));
 		g2d.setColor(Color.BLACK);
-		String s = map.getLeftCannon().getPoints() + "|" + map.getRightCannon().getPoints();
+		String s = map.getLeftPlayer().getPoints() + "|" + map.getRightPlayer().getPoints();
 		g2d.drawString(s, (WIDTH - g2d.getFontMetrics().stringWidth(s)) / 2, HEIGHT - g2d.getFontMetrics().getHeight());
 
 		int milliseconds = (int) (map.getRemainingTime() * 1000);

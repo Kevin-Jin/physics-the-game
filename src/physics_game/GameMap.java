@@ -6,25 +6,22 @@ import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-public class GameMap {
+public abstract class GameMap {
 	private static final int FLOOR_VISIBLE_PIXELS = 80;
 	private static final int CEILING_VISIBLE_PIXELS = 0;
 	private static final int LEFT_WALL_VISIBLE_PIXELS = 0;
 	private static final int RIGHT_WALL_VISIBLE_PIXELS = 0;
 
 	private LevelLayout layout;
-	private final Cannon leftCannon, rightCannon;
 	private final SortedMap<Integer, Entity> entities;
 	private final List<Particle> particles;
-	private final SortedMap<Byte, Layer> layers;
-	
+	protected final SortedMap<Byte, Layer> layers;
+
 	private BalloonSpawner spawner;
 
 	private double remainingTime;
 
 	public GameMap() {
-		leftCannon = new Cannon(true);
-		rightCannon = new Cannon(false);
 		spawner = new BalloonSpawner(.25,.6);
 		entities = new TreeMap<Integer, Entity>();
 		particles = new ArrayList<Particle>();
@@ -34,16 +31,10 @@ public class GameMap {
 		layers.put(Layer.MAIN_BACKGROUND, new Layer(0.5));
 		layers.put(Layer.MIDGROUND, new Layer(1));
 		layers.put(Layer.FOREGROUND, new Layer(2));
-		
 	}
 
-	public Cannon getLeftCannon() {
-		return leftCannon;
-	}
-
-	public Cannon getRightCannon() {
-		return rightCannon;
-	}
+	public abstract Player getLeftPlayer();
+	public abstract Player getRightPlayer();
 
 	public SortedMap<Byte, Layer> getLayers() {
 		return layers;
@@ -79,21 +70,6 @@ public class GameMap {
 
 		layers.get(Layer.FOREGROUND).getDrawables().clear();
 
-		leftCannon.setPosition(layout.getLeftCannonPosition());
-		addEntity(0, leftCannon.getRearWheel());
-		addEntity(1, leftCannon.getBody());
-		addEntity(2, leftCannon.getFrontWheel());
-		addEntity(3, leftCannon.getSmoke());
-		layers.get(Layer.FOREGROUND).getDrawables().add(leftCannon.getBarOutline());
-		layers.get(Layer.FOREGROUND).getDrawables().add(leftCannon.getBarFill());
-
-		rightCannon.setPosition(layout.getRightCannonPosition());
-		addEntity(4, rightCannon.getRearWheel());
-		addEntity(5, rightCannon.getBody());
-		addEntity(6, rightCannon.getFrontWheel());
-		addEntity(7, rightCannon.getSmoke());
-		layers.get(Layer.FOREGROUND).getDrawables().add(rightCannon.getBarOutline());
-		layers.get(Layer.FOREGROUND).getDrawables().add(rightCannon.getBarFill());
 		for (OverlayInfo info : layout.getTips())
 			layers.get(Layer.FOREGROUND).getDrawables().add(new DrawableTexture(info.getWidth(), info.getHeight(), info.getImageName(), info.getPosition()));
 
