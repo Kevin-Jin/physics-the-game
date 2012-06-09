@@ -112,6 +112,11 @@ public class ChargeGun extends StationaryEntity implements Player {
 	}
 
 	@Override
+	public Point2D getOrigin() {
+		return new Point2D.Double((flipHorizontally() ? super.getWidth() / 2 - 154 : 154), 74);
+	}
+
+	@Override
 	public BufferedImage getTexture() {
 		return TextureCache.getTexture((positive ? "pos" : "neg") + "gun");
 	}
