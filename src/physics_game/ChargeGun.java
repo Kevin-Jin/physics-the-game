@@ -43,6 +43,7 @@ public class ChargeGun extends StationaryEntity implements Player {
 		mult = (p1) ? 3 : -3;
 		baseBoundPoly = BOUNDING_POLYGON;
 		boundPoly = BOUNDING_POLYGON;
+		
 	}
 
 	@Override

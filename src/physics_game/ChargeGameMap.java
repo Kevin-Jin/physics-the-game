@@ -14,7 +14,7 @@ public class ChargeGameMap extends GameMap {
 	private final ChargeGun leftGun, rightGun;
 
 	public ChargeGameMap() {
-		super(constructLayout(), new BalloonSpawner(.25, .6));
+		super(constructLayout(), new StarSpawner(.25, .6));
 		leftGun = new ChargeGun(true);
 		rightGun = new ChargeGun(false);
 	}
