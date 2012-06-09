@@ -2,6 +2,7 @@ package physics_game;
 
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 public class ChargeGun extends StationaryEntity implements Player {
 	
@@ -40,7 +41,7 @@ public class ChargeGun extends StationaryEntity implements Player {
 	private final static double MAX_ANGLE = Math.PI * 2;
 	private final static double MIN_ANGLE = 0;
 
-	private double mult;
+	private double mult, rot;
 	private KeyBindings binding;
 	private boolean positive;
 	private boolean actionHeld;
@@ -61,16 +62,19 @@ public class ChargeGun extends StationaryEntity implements Player {
 
 	@Override
 	public boolean update(int change, boolean action, double tDelta) {
-		double d = 0/* body.getRotation() */;
-		d += Math.signum(change) * tDelta * mult;
-		if (d < MIN_ANGLE)
-			d = MIN_ANGLE;
-		if (d > MAX_ANGLE)
-			d = MAX_ANGLE;
+		rot += Math.signum(change) * tDelta * mult;
+		if (rot < MIN_ANGLE)
+			rot = MIN_ANGLE;
+		if (rot > MAX_ANGLE)
+			rot = MAX_ANGLE;
 		if (action && !actionHeld)
 			positive = !positive;
 		actionHeld = action;
 		return false;
+	}
+	public void recalculate(List<CollidableDrawable> others, double xMin, double yAcceleration, double yVelocityMin, double tDelta) {
+		super.recalculate(others, xMin, 0, 0, tDelta);
+		
 	}
 
 	@Override
@@ -79,7 +83,7 @@ public class ChargeGun extends StationaryEntity implements Player {
 	}
 
 	public void setPosition(Position p) {
-
+		pos = p;
 	}
 
 	@Override
@@ -90,6 +94,14 @@ public class ChargeGun extends StationaryEntity implements Player {
 	@Override
 	public int getPoints() {
 		return totalPoints;
+	}
+	@Override 
+	public double getRotation(){
+		return rot;
+	}
+	@Override
+	public Point2D getScale(){
+		return new Point2D.Double(.5,.5);
 	}
 
 	@Override

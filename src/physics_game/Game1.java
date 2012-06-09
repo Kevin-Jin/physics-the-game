@@ -153,6 +153,7 @@ public class Game1 extends Canvas {
 		texture.setRGB(1, 0, whiteRgb);
 		texture.setRGB(2, 0, whiteRgb);
 		texture.setRGB(0, 1, whiteRgb);
+		
 		texture.setRGB(1, 1, whiteRgb);
 		texture.setRGB(2, 1, whiteRgb);
 		texture.setRGB(0, 2, whiteRgb);
