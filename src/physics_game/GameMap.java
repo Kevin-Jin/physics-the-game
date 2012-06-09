@@ -17,16 +17,15 @@ public abstract class GameMap {
 	private final List<Particle> particles;
 	protected final SortedMap<Byte, Layer> layers;
 
-	private BalloonSpawner spawner;
+	protected Spawner<? extends Entity> spawner;
 
 	private double remainingTime;
 
-	public GameMap() {
-		spawner = new BalloonSpawner(.25,.6);
+	public GameMap(Spawner<? extends Entity> spawner) {
+		this.spawner = spawner;
 		entities = new TreeMap<Integer, Entity>();
 		particles = new ArrayList<Particle>();
 		layers = new TreeMap<Byte, Layer>();
-
 		layers.put(Layer.FAR_BACKGROUND, new Layer(0.25));
 		layers.put(Layer.MAIN_BACKGROUND, new Layer(0.5));
 		layers.put(Layer.MIDGROUND, new Layer(1));
@@ -98,8 +97,10 @@ public abstract class GameMap {
 
 	public void updateEntityPositions(double tDelta) {
 		if (spawner.update(tDelta)) {
-			Balloon spawned = spawner.getRandomBalloon();
-			spawned.setEntityId(addEntity(spawned));
+			Entity spawned = spawner.getRandomEntity();
+			int id = addEntity(spawned);
+			if (spawned instanceof Expirable)
+				((Expirable)spawned).setEntityId(id);
 		}
 		for (Entity ent : entities.values())
 			ent.recalculate(getCollidables(), 0, layout.getGravitationalFieldStrength(), layout.getTerminalVelocity(), tDelta);

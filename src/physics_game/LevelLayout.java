@@ -53,11 +53,11 @@ public class LevelLayout {
 		return height;
 	}
 
-	public Position getLeftCannonPosition() {
+	public Position getLeftPlayerPosition() {
 		return leftPos;
 	}
 
-	public Position getRightCannonPosition() {
+	public Position getRightPlayerPosition() {
 		return rightPos;
 	}
 

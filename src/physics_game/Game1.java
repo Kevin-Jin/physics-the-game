@@ -65,6 +65,7 @@ public class Game1 extends Canvas {
 		addMouseListener(controller);
 
 		map = new CannonGameMap();
+		//map = new ChargeGameMap();
 		c = new Camera(WIDTH, HEIGHT);
 		s = new FrameRateState();
 

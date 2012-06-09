@@ -4,6 +4,7 @@ public class CannonGameMap extends GameMap {
 	private final Cannon leftCannon, rightCannon;
 
 	public CannonGameMap() {
+		super(new BalloonSpawner(.25,.6));
 		leftCannon = new Cannon(true);
 		rightCannon = new Cannon(false);
 	}
@@ -22,7 +23,7 @@ public class CannonGameMap extends GameMap {
 	public void setLevel(LevelLayout layout) {
 		super.setLevel(layout);
 
-		leftCannon.setPosition(layout.getLeftCannonPosition());
+		leftCannon.setPosition(layout.getLeftPlayerPosition());
 		addEntity(0, leftCannon.getRearWheel());
 		addEntity(1, leftCannon.getBody());
 		addEntity(2, leftCannon.getFrontWheel());
@@ -30,7 +31,7 @@ public class CannonGameMap extends GameMap {
 		layers.get(Layer.FOREGROUND).getDrawables().add(leftCannon.getBarOutline());
 		layers.get(Layer.FOREGROUND).getDrawables().add(leftCannon.getBarFill());
 
-		rightCannon.setPosition(layout.getRightCannonPosition());
+		rightCannon.setPosition(layout.getRightPlayerPosition());
 		addEntity(4, rightCannon.getRearWheel());
 		addEntity(5, rightCannon.getBody());
 		addEntity(6, rightCannon.getFrontWheel());

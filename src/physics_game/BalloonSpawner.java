@@ -1,25 +1,17 @@
 package physics_game;
 
-import java.util.Random;
-
 import physics_game.Balloon.BalloonColor;
 
-public class BalloonSpawner {
-	public static final Random RANDOM = new Random();
+public class BalloonSpawner extends Spawner<Balloon>{
 
-	double minTime, maxTime, time;
+	
 	public BalloonSpawner(double minTime, double maxTime){
-		this.minTime = minTime;
-		this.maxTime = maxTime;
+		super(minTime,maxTime);
 	}
-	public boolean update(double tdelta){
-		time += tdelta;
-		if(time >= maxTime || time >= minTime && RANDOM.nextInt(100) < 5){
-			time = 0;
-			return true;
-		}
-		return false;
+	public Entity getRandomEntity(){
+		return getRandomBalloon();
 	}
+	
 	public Balloon getRandomBalloon(){
 		int x = RANDOM.nextInt(600)+ 300;
 		int y = RANDOM.nextInt(150);
