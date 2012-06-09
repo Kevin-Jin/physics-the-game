@@ -58,14 +58,13 @@ public class ChargeGun extends StationaryEntity implements Player {
 	public KeyBindings getKeyBindings() {
 		return binding;
 	}
-
 	@Override
 	public boolean update(int change, boolean action, double tDelta) {
 		rot += Math.signum(change) * tDelta * mult;
 		if (rot < MIN_ANGLE)
-			rot = MIN_ANGLE;
+			rot = MAX_ANGLE + rot;
 		if (rot > MAX_ANGLE)
-			rot = MAX_ANGLE;
+			rot = rot-MAX_ANGLE;
 		if (action && !actionHeld)
 			positive = !positive;
 		actionHeld = action;
