@@ -74,7 +74,7 @@ public class Game1 extends Canvas {
 		titleScreenModel.getButtons().add(new MenuButton("New Game", new Rectangle((WIDTH - 200) / 2, HEIGHT / 2, 200, 50), new MenuButton.MenuButtonHandler() {
 			@Override
 			public void clicked() {
-				map = MapCache.getMap("chargeguns");
+				map = MapCache.getMap("pong");
 				map.resetLevel();
 				c.setLimits(map.getCameraBounds());
 				c.lookAt(new Position(0, 0));
@@ -125,7 +125,8 @@ public class Game1 extends Canvas {
 		strategy = getBufferStrategy();
 		setIgnoreRepaint(true);
 
-		TextureCache.setTexture("bg", readImage("pngBg.png"));
+		//TextureCache.setTexture("bg", readImage("pngBg.png"));
+		TextureCache.setTexture("bg", readImage("cannon background.png"));
 		TextureCache.setTexture("body", readImage("body.png"));
 		TextureCache.setTexture("rbody", readImage("rbody.png"));
 		TextureCache.setTexture("wheel", readImage("wheel.png"));
@@ -146,6 +147,8 @@ public class Game1 extends Canvas {
 		TextureCache.setTexture("posgun", readImage("posgun.png"));
 		TextureCache.setTexture("star_pos", readImage("star_pos.png"));
 		TextureCache.setTexture("star_neg", readImage("star_neg.png"));
+		TextureCache.setTexture("paddle",readImage("pongPaddle.png"));
+		TextureCache.setTexture("wave",readImage("wave.png"));
 		
 		BufferedImage texture = new BufferedImage(3, 3, BufferedImage.TYPE_INT_RGB);
 		int whiteRgb = Color.WHITE.getRGB();
