@@ -113,4 +113,14 @@ public class ChargeGun extends StationaryEntity implements Player {
 	public boolean transformAboutCenter() {
 		return false;
 	}
+	@Override
+	public void collision(CollisionInformation collisionInfo, List<CollidableDrawable> others) {
+		CollidableDrawable other = collisionInfo.getCollidedWith();
+		if (other instanceof Star){
+			((Star) other).setExpired();
+			addPoints(10);
+			return;
+		}
+		super.collision(collisionInfo, others);
+	}
 }
