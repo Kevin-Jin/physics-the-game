@@ -35,7 +35,7 @@ public class Blast extends StationaryEntity {
 
 	@Override
 	public boolean transformAboutCenter() {
-		return false;
+		return false; 
 	}
 
 	@Override

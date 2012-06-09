@@ -70,7 +70,7 @@ public class Star extends CenterOriginedProp implements Expirable {
 
 	public void collision(CollisionInformation collisionInfo, List<CollidableDrawable> others) {
 		CollidableDrawable other = collisionInfo.getCollidedWith();
-		if (other instanceof ChargeGun /* charge gun */) {
+		if (other instanceof ChargeGun) {
 			collisionInfo.setCollidedWith(this);
 			collisionInfo.negateMinimumTranslationVector();
 			other.collision(collisionInfo, others);

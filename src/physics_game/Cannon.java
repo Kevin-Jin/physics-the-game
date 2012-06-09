@@ -79,10 +79,10 @@ public class Cannon implements Player {
 	}
 
 	@Override
-	public boolean update(int change, boolean action, double tDelta) {
+	public boolean update(int dx, int dy, boolean action, double tDelta) {
 		boolean fired = false;
 		double d = body.getRotation();
-		d += Math.signum(change) * tDelta * multiplier;
+		d += Math.signum(dy) * tDelta * multiplier;
 
 		if (d < MIN_ANGLE)
 			d = MIN_ANGLE;

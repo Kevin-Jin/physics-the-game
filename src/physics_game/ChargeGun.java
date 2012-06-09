@@ -28,11 +28,9 @@ public class ChargeGun extends StationaryEntity implements Player {
 			new Point2D.Double(40, 43),
 	}) });
 
-	private final static double MAX_ANGLE = Math.PI * 2;
-	private final static double MIN_ANGLE = 0;
+	
 
 	private boolean flip;
-	private double mult, rot;
 	private KeyBindings binding;
 	private boolean positive;
 	private boolean actionHeld;
@@ -40,7 +38,6 @@ public class ChargeGun extends StationaryEntity implements Player {
 
 	public ChargeGun(boolean p1) {
 		binding = new KeyBindings(p1);
-		mult = (p1) ? 3 : -3;
 		baseBoundPoly = BOUNDING_POLYGON;
 		boundPoly = BOUNDING_POLYGON;
 		flip = p1;
@@ -52,17 +49,18 @@ public class ChargeGun extends StationaryEntity implements Player {
 	}
 
 	@Override
-	public boolean update(int change, boolean action, double tDelta) {
-		rot += Math.signum(change) * tDelta * mult;
-		if (rot < MIN_ANGLE)
-			rot = MAX_ANGLE + rot;
-		if (rot > MAX_ANGLE)
-			rot = rot-MAX_ANGLE;
+	public boolean update(int dx, int dy, boolean action, double tDelta) {
+		final int MULT = 200
+				;
+		
+		pos.setX(pos.getX() + dx * tDelta * MULT);
+		pos.setY(pos.getY() + dy*tDelta * MULT);
 		if (action && !actionHeld)
 			positive = !positive;
 		actionHeld = action;
 		return false;
 	}
+	
 
 	@Override
 	public void recalculate(List<CollidableDrawable> others, double xMin, double yAcceleration, double yVelocityMin, double tDelta) {
@@ -89,11 +87,7 @@ public class ChargeGun extends StationaryEntity implements Player {
 		return totalPoints;
 	}
 
-	@Override
-	public double getRotation() {
-		return rot;
-	}
-
+	
 	@Override
 	public double getWidth() {
 		return super.getWidth() * 0.5;

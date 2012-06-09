@@ -203,28 +203,37 @@ public class Game1 extends Canvas {
 		KeyBindings left = map.getLeftPlayer().getKeyBindings();
 		KeyBindings right = map.getRightPlayer().getKeyBindings();
 
-		int lo = 0, ro = 0;
+		int lx = 0, rx = 0, ly = 0, ry = 0;
 		boolean la = false, ra = false;
 
 		for (Integer key : controller.getCodesOfPressedKeys()) {
+			if (key.intValue() == left.rightBinding())
+				lx++;
+			if (key.intValue() == left.leftBinding())
+				lx--;
 			if (key.intValue() == left.upBinding())
-				lo++;
+				ly++;
 			if (key.intValue() == left.downBinding())
-				lo--;
+				ly--;
 			if (key.intValue() == left.actionBinding())
 				la = true;
+			
 
+			if (key.intValue() == right.rightBinding())
+				rx++;
+			if (key.intValue() == right.leftBinding())
+				rx--;
 			if (key.intValue() == right.upBinding())
-				ro++;
+				ry++;
 			if (key.intValue() == right.downBinding())
-				ro--;
+				ry--;
 			if (key.intValue() == right.actionBinding())
 				ra = true;
 		}
 
-		if (map.getLeftPlayer().update(lo, la, tDelta))
+		if (map.getLeftPlayer().update(lx,ly, la, tDelta))
 			map.getLeftPlayer().triggered(map);
-		if (map.getRightPlayer().update(ro, ra, tDelta))
+		if (map.getRightPlayer().update(rx,ry, ra, tDelta))
 			map.getRightPlayer().triggered(map);
 	}
 
