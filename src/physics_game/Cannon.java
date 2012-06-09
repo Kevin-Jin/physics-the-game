@@ -73,9 +73,9 @@ public class Cannon implements Player {
 		return body.getPosition();
 	}
 
+	@Override
 	public void setPosition(Position pos) {
 		body.setPosition(pos);
-		bar.setPosition(new Position(pos.getX() + 55, pos.getY() - 125));
 	}
 
 	@Override
@@ -118,6 +118,7 @@ public class Cannon implements Player {
 		rearWheel.sync(body.getRearWheelPosition());
 		frontWheel.sync(body.getFrontWheelPosition());
 		blast.sync(body.getBlastPosition());
+		bar.setPosition(new Position(body.getPosition().getX() + 55, body.getPosition().getY() - 150));
 		boundPoly.setPolygons(BoundingPolygon.makeBoundingPolygon(new BoundingPolygon[] { rearWheel.getRealBoundingPolygon(), body.getRealBoundingPolygon(), frontWheel.getRealBoundingPolygon(), blast.getRealBoundingPolygon() }));
 	}
 

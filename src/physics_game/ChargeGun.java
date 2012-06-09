@@ -5,7 +5,6 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 
 public class ChargeGun extends StationaryEntity implements Player {
-	
 	private static final BoundingPolygon BOUNDING_POLYGON = new BoundingPolygon(new Polygon[] { new Polygon(new Point2D[] { new Point2D.Double(0, 15),
 			new Point2D.Double(11, 4),
 			new Point2D.Double(25, 4),
@@ -36,11 +35,11 @@ public class ChargeGun extends StationaryEntity implements Player {
 			new Point2D.Double(190, 94),
 			new Point2D.Double(149, 46)
 	}) });
-	
-	
+
 	private final static double MAX_ANGLE = Math.PI * 2;
 	private final static double MIN_ANGLE = 0;
 
+	private boolean flip;
 	private double mult, rot;
 	private KeyBindings binding;
 	private boolean positive;
@@ -52,7 +51,7 @@ public class ChargeGun extends StationaryEntity implements Player {
 		mult = (p1) ? 3 : -3;
 		baseBoundPoly = BOUNDING_POLYGON;
 		boundPoly = BOUNDING_POLYGON;
-		
+		flip = p1;
 	}
 
 	@Override
@@ -72,16 +71,18 @@ public class ChargeGun extends StationaryEntity implements Player {
 		actionHeld = action;
 		return false;
 	}
+
+	@Override
 	public void recalculate(List<CollidableDrawable> others, double xMin, double yAcceleration, double yVelocityMin, double tDelta) {
 		super.recalculate(others, xMin, 0, 0, tDelta);
-		
 	}
 
 	@Override
 	public void triggered(GameMap map) {
-		
+
 	}
 
+	@Override
 	public void setPosition(Position p) {
 		pos = p;
 	}
@@ -95,13 +96,15 @@ public class ChargeGun extends StationaryEntity implements Player {
 	public int getPoints() {
 		return totalPoints;
 	}
-	@Override 
-	public double getRotation(){
+
+	@Override
+	public double getRotation() {
 		return rot;
 	}
+
 	@Override
-	public Point2D getScale(){
-		return new Point2D.Double(.5,.5);
+	public Point2D getScale() {
+		return new Point2D.Double(.5, .5);
 	}
 
 	@Override
@@ -113,6 +116,12 @@ public class ChargeGun extends StationaryEntity implements Player {
 	public boolean transformAboutCenter() {
 		return false;
 	}
+
+	@Override
+	public boolean flipHorizontally() {
+		return flip;
+	}
+
 	@Override
 	public void collision(CollisionInformation collisionInfo, List<CollidableDrawable> others) {
 		CollidableDrawable other = collisionInfo.getCollidedWith();

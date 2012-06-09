@@ -7,4 +7,5 @@ public interface Player {
 	Position getPosition();
 	void addPoints(int add);
 	int getPoints();
+	void setPosition(Position pos);
 }
