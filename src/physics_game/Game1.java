@@ -77,7 +77,7 @@ public class Game1 extends Canvas {
 				map = MapCache.getMap("chargeguns");
 				map.resetLevel();
 				c.setLimits(map.getCameraBounds());
-				c.lookAt(map.getLeftPlayer().getPosition());
+				c.lookAt(new Position(0, 0));
 				state = GameState.GAME;
 			}
 		}));
@@ -89,7 +89,7 @@ public class Game1 extends Canvas {
 				map = MapCache.getMap("cannons");
 				map.resetLevel();
 				c.setLimits(map.getCameraBounds());
-				c.lookAt(map.getLeftPlayer().getPosition());
+				c.lookAt(new Position(0, 0));
 				state = GameState.GAME;
 			}
 		}));
@@ -98,7 +98,7 @@ public class Game1 extends Canvas {
 			public void clicked() {
 				map.resetLevel();
 				c.setLimits(map.getCameraBounds());
-				c.lookAt(map.getLeftPlayer().getPosition());
+				c.lookAt(new Position(0, 0));
 				state = GameState.GAME;
 			}
 		}));
