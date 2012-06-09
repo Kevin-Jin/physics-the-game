@@ -103,8 +103,13 @@ public class ChargeGun extends StationaryEntity implements Player {
 	}
 
 	@Override
-	public Point2D getScale() {
-		return new Point2D.Double(.5, .5);
+	public double getWidth() {
+		return super.getWidth() * 0.5;
+	}
+
+	@Override
+	public double getHeight() {
+		return super.getHeight() * 0.5;
 	}
 
 	@Override
