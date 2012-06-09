@@ -26,14 +26,6 @@ public class ChargeGun extends StationaryEntity implements Player {
 			new Point2D.Double(57, 61),
 			new Point2D.Double(48, 44),
 			new Point2D.Double(40, 43),
-	}), new Polygon(new Point2D[] {
-			new Point2D.Double(120, 46),
-			new Point2D.Double(131, 80),
-			new Point2D.Double(140, 91),
-			new Point2D.Double(167, 106),
-			new Point2D.Double(172, 106),
-			new Point2D.Double(190, 94),
-			new Point2D.Double(149, 46)
 	}) });
 
 	private final static double MAX_ANGLE = Math.PI * 2;
@@ -58,6 +50,7 @@ public class ChargeGun extends StationaryEntity implements Player {
 	public KeyBindings getKeyBindings() {
 		return binding;
 	}
+
 	@Override
 	public boolean update(int change, boolean action, double tDelta) {
 		rot += Math.signum(change) * tDelta * mult;
@@ -113,7 +106,7 @@ public class ChargeGun extends StationaryEntity implements Player {
 
 	@Override
 	public Point2D getOrigin() {
-		return new Point2D.Double((flipHorizontally() ? super.getWidth() / 2 - 154 : 154), 74);
+		return new Point2D.Double((flipHorizontally() ? super.getWidth() / 2 - 153 : 153), 33);
 	}
 
 	@Override
@@ -140,5 +133,9 @@ public class ChargeGun extends StationaryEntity implements Player {
 			return;
 		}
 		super.collision(collisionInfo, others);
+	}
+
+	public int getCharge() {
+		return positive ? 1 : -1;
 	}
 }
