@@ -28,4 +28,9 @@ public class Velocity {
 	public void setY(double value) {
 		y = value;
 	}
+
+	@Override
+	public String toString() {
+		return "V(" + x +", " + y + ")";
+	}
 }

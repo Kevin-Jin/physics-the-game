@@ -19,4 +19,9 @@ public class Acceleration {
 	public void setY(double value) {
 		y = value;
 	}
+
+	@Override
+	public String toString() {
+		return "A(" + x + ", " + y + ")";
+	}
 }

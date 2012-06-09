@@ -27,17 +27,19 @@ public class Star extends CenterOriginedProp implements Expirable {
 	}
 
 	public void recalculate(List<CollidableDrawable> others, double xMin, double yAcceleration, double yVelocityMin, double tDelta) {
-		/*for (CollidableDrawable other : others) {
+		Acceleration accel = new Acceleration();
+		for (CollidableDrawable other : others) {
 			if (other instanceof ChargeGun) {
-				double xDelta = getPosition().getX() - other.getPosition().getX();
-				double yDelta = getPosition().getY() - other.getPosition().getY();
-				double acceleration = 10 * getCharge() * ((ChargeGun) other).getCharge() / (xDelta * xDelta + yDelta * yDelta);
+				double xDelta = other.getPosition().getX() - getPosition().getX();
+				double yDelta = other.getPosition().getY() - getPosition().getY();
+				double acceleration = -10000000 * getCharge() * ((ChargeGun) other).getCharge() / (xDelta * xDelta + yDelta * yDelta);
 				double angle = Math.atan2(yDelta, xDelta);
-				Velocity vDelta = new Velocity(acceleration * tDelta, angle);
-				vel.setX(vel.getX() + vDelta.getX());
-				vel.setY(vel.getY() + vDelta.getY());
+				accel.setX(accel.getX() + Math.cos(angle) * acceleration);
+				accel.setY(accel.getY() + Math.sin(angle) * acceleration);
 			}
-		}*/
+		}
+		vel.setX(vel.getX() + accel.getX() * tDelta);
+		vel.setY(vel.getY() + accel.getY() * tDelta);
 		super.recalculate(others, xMin, 0, -200, tDelta);
 		if (pos.getY() >= Game1.HEIGHT || pos.getY() < 0 || pos.getX() < 0 || pos.getX() >= Game1.WIDTH)
 			expired = true;

@@ -39,4 +39,9 @@ public class Position {
 	public Point2D asPoint() {
 		return new Point2D.Double(x, y);
 	}
+
+	@Override
+	public String toString() {
+		return "P(" + x +", " + y + ")";
+	}
 }

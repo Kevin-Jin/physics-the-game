@@ -97,10 +97,8 @@ public abstract class StationaryEntity extends Entity {
 			vel.setX(Math.max(vel.getX() + tDelta * xDeceleration, 0));
 		vel.setY(Math.max(vel.getY() + yAcceleration * tDelta, yVelocityMin));
 
-		
 		pos.setX(pos.getX() + vel.getX() * tDelta);
 		pos.setY(pos.getY() + vel.getY() * tDelta);
-		//boundPoly = BoundingPolygon.transformBoundingPolygon(baseBoundPoly, this);
 		
 		super.recalculate(others, xMin, yAcceleration, yVelocityMin, tDelta);
 	}
