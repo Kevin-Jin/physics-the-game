@@ -18,7 +18,7 @@ public class Star extends CenterOriginedProp implements Expirable {
 	})});
 
 	public Star(Position pos, Velocity v, boolean positive) {
-		super(250);
+		super(0);
 		this.pos = pos;
 		this.vel = v;
 		this.positive = positive;
