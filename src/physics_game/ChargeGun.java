@@ -5,27 +5,35 @@ import java.awt.image.BufferedImage;
 
 public class ChargeGun extends StationaryEntity implements Player {
 	
-	private static final BoundingPolygon BOUNDING_POLYGON = new BoundingPolygon(new Polygon[] { new Polygon(new Point2D[] {
-			new Point2D.Double(44, 0),
-			new Point2D.Double(28, 7),
-			new Point2D.Double(17, 17),
-			new Point2D.Double(7, 33),
-			new Point2D.Double(0, 58),
-			new Point2D.Double(0, 84),
-			new Point2D.Double(5, 103),
-			new Point2D.Double(14, 121),
-			new Point2D.Double(28, 135),
-			new Point2D.Double(44, 142),
-			new Point2D.Double(60, 142),
-			new Point2D.Double(73, 137),
-			new Point2D.Double(87, 125),
-			new Point2D.Double(97, 109),
-			new Point2D.Double(104, 84),
-			new Point2D.Double(104, 58),
-			new Point2D.Double(99, 38),
-			new Point2D.Double(88, 19),
-			new Point2D.Double(71, 4),
-			new Point2D.Double(60, 0)
+	private static final BoundingPolygon BOUNDING_POLYGON = new BoundingPolygon(new Polygon[] { new Polygon(new Point2D[] { new Point2D.Double(0, 15),
+			new Point2D.Double(11, 4),
+			new Point2D.Double(25, 4),
+			new Point2D.Double(40, 19),
+			new Point2D.Double(40, 46),
+			new Point2D.Double(24, 62),
+			new Point2D.Double(12, 62),
+			new Point2D.Double(0, 50),
+	}), new Polygon(new Point2D[] {
+			new Point2D.Double(40, 23),
+			new Point2D.Double(57, 8),
+			new Point2D.Double(106, 8),
+			new Point2D.Double(149, 28),
+			new Point2D.Double(155, 37),
+			new Point2D.Double(155, 40),
+			new Point2D.Double(149, 46),
+			new Point2D.Double(113, 46),
+			new Point2D.Double(105, 61),
+			new Point2D.Double(57, 61),
+			new Point2D.Double(48, 44),
+			new Point2D.Double(40, 43),
+	}), new Polygon(new Point2D[] {
+			new Point2D.Double(120, 46),
+			new Point2D.Double(131, 80),
+			new Point2D.Double(140, 91),
+			new Point2D.Double(167, 106),
+			new Point2D.Double(172, 106),
+			new Point2D.Double(190, 94),
+			new Point2D.Double(149, 46)
 	}) });
 	
 	
