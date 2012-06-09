@@ -4,21 +4,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ChargeGameMap extends GameMap{
+public class ChargeGameMap extends GameMap {
 	private static LevelLayout constructLayout() {
 		Map<Byte, Platform> platforms = new HashMap<Byte, Platform>();
 		platforms.put(Byte.valueOf((byte) 0), new Platform(-10, 1930, -100, 0));
-		return new LevelLayout(1920, 1080, platforms, new Position(100,0), new Position(1000, 0), -400, -400, new ArrayList<OverlayInfo>(), "", "bg", "bg", 120);
+		return new LevelLayout(1920, 1080, platforms, new Position(100, 0), new Position(1000, 0), -400, -400, new ArrayList<OverlayInfo>(), "", "bg", "bg", 120);
 	}
 
 	private final ChargeGun leftGun, rightGun;
-	
-	public ChargeGameMap(){
-		super(constructLayout(), new BalloonSpawner(.25,.6));
+
+	public ChargeGameMap() {
+		super(constructLayout(), new BalloonSpawner(.25, .6));
 		leftGun = new ChargeGun(true);
 		rightGun = new ChargeGun(false);
 	}
-	
+
 	@Override
 	public Player getLeftPlayer() {
 		return leftGun;
@@ -32,11 +32,11 @@ public class ChargeGameMap extends GameMap{
 	@Override
 	protected void resetLevel() {
 		super.resetLevel();
-		
+
 		leftGun.setPosition(layout.getLeftPlayerPosition());
-		addEntity(0,leftGun);
-		
+		addEntity(0, leftGun);
+
 		rightGun.setPosition(layout.getRightPlayerPosition());
-		addEntity(1,rightGun);
+		addEntity(1, rightGun);
 	}
 }

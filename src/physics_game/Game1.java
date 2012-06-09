@@ -74,7 +74,7 @@ public class Game1 extends Canvas {
 		titleScreenModel.getButtons().add(new MenuButton("New Game", new Rectangle((WIDTH - 200) / 2, HEIGHT / 2, 200, 50), new MenuButton.MenuButtonHandler() {
 			@Override
 			public void clicked() {
-				map = MapCache.getMap("cannons");
+				map = MapCache.getMap("chargeguns");
 				map.resetLevel();
 				c.setLimits(map.getCameraBounds());
 				c.lookAt(map.getLeftPlayer().getPosition());

@@ -7,6 +7,7 @@ public class BalloonSpawner extends Spawner<Balloon> {
 		super(minTime, maxTime);
 	}
 
+	@Override
 	public Balloon getRandomEntity() {
 		int x = RANDOM.nextInt(600) + 300;
 		int y = RANDOM.nextInt(150);
@@ -14,8 +15,7 @@ public class BalloonSpawner extends Spawner<Balloon> {
 	}
 
 	public Balloon.BalloonColor getRandomBalloonColor() {
-		int i = RANDOM.nextInt(4);
-		switch (i) {
+		switch (RANDOM.nextInt(4)) {
 			case 0:
 				return BalloonColor.BLUE;
 			case 1:
