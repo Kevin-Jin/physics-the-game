@@ -64,8 +64,6 @@ public class Game1 extends Canvas {
 		addMouseMotionListener(controller);
 		addMouseListener(controller);
 
-		map = new CannonGameMap();
-		//map = new ChargeGameMap();
 		c = new Camera(WIDTH, HEIGHT);
 		s = new FrameRateState();
 
@@ -76,7 +74,8 @@ public class Game1 extends Canvas {
 		titleScreenModel.getButtons().add(new MenuButton("New Game", new Rectangle((WIDTH - 200) / 2, HEIGHT / 2, 200, 50), new MenuButton.MenuButtonHandler() {
 			@Override
 			public void clicked() {
-				map.setLevel(LevelCache.getLevel("level1"));
+				map = MapCache.getMap("cannons");
+				map.resetLevel();
 				c.setLimits(map.getCameraBounds());
 				c.lookAt(map.getLeftPlayer().getPosition());
 				state = GameState.GAME;
@@ -87,7 +86,8 @@ public class Game1 extends Canvas {
 		pauseScreenButtons.add(new MenuButton("New Game", new Rectangle((WIDTH - 200) / 2, 50, 200, 50), new MenuButton.MenuButtonHandler() {
 			@Override
 			public void clicked() {
-				map.setLevel(LevelCache.getLevel("tutorial"));
+				map = MapCache.getMap("cannons");
+				map.resetLevel();
 				c.setLimits(map.getCameraBounds());
 				c.lookAt(map.getLeftPlayer().getPosition());
 				state = GameState.GAME;
@@ -156,9 +156,8 @@ public class Game1 extends Canvas {
 		texture.setRGB(1, 2, whiteRgb);
 		texture.setRGB(2, 2, whiteRgb);
 		TextureCache.setTexture("platform", texture);
-		
 
-		LevelCache.initialize();
+		MapCache.initialize();
 
 		setCursor(getToolkit().createCustomCursor(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB), new Point(0, 0), "blank cursor"));
 	}

@@ -12,16 +12,17 @@ public abstract class GameMap {
 	private static final int LEFT_WALL_VISIBLE_PIXELS = 0;
 	private static final int RIGHT_WALL_VISIBLE_PIXELS = 0;
 
-	private LevelLayout layout;
+	protected final LevelLayout layout;
 	private final SortedMap<Integer, Entity> entities;
 	private final List<Particle> particles;
 	protected final SortedMap<Byte, Layer> layers;
 
-	protected Spawner<? extends Entity> spawner;
+	protected Spawner<?> spawner;
 
 	private double remainingTime;
 
-	public GameMap(Spawner<? extends Entity> spawner) {
+	public GameMap(LevelLayout layout, Spawner<?> spawner) {
+		this.layout = layout;
 		this.spawner = spawner;
 		entities = new TreeMap<Integer, Entity>();
 		particles = new ArrayList<Particle>();
@@ -54,9 +55,7 @@ public abstract class GameMap {
 		return list;
 	}
 
-	public void setLevel(LevelLayout layout) {
-		this.layout = layout;
-
+	protected void resetLevel() {
 		entities.clear();
 
 		layers.get(Layer.MIDGROUND).getDrawables().clear();
@@ -73,10 +72,6 @@ public abstract class GameMap {
 			layers.get(Layer.FOREGROUND).getDrawables().add(new DrawableTexture(info.getWidth(), info.getHeight(), info.getImageName(), info.getPosition()));
 
 		remainingTime = layout.getExpiration();
-	}
-
-	public void resetLevel() {
-		setLevel(layout);
 	}
 
 	public void addEntity(int entId, Entity ent) {
