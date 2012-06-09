@@ -50,9 +50,8 @@ public class ChargeGun extends StationaryEntity implements Player {
 
 	@Override
 	public boolean update(int dx, int dy, boolean action, double tDelta) {
-		final int MULT = 200
-				;
-		
+		final int MULT = 200;
+			
 		pos.setX(pos.getX() + dx * tDelta * MULT);
 		pos.setY(pos.getY() + dy*tDelta * MULT);
 		if (action && !actionHeld)
@@ -122,9 +121,12 @@ public class ChargeGun extends StationaryEntity implements Player {
 	public void collision(CollisionInformation collisionInfo, List<CollidableDrawable> others) {
 		CollidableDrawable other = collisionInfo.getCollidedWith();
 		if (other instanceof Star){
-			((Star) other).setExpired();
-			addPoints(10);
-			return;
+			Star s = (Star)other;
+			if (s.getCharge() == ((positive) ? -1 : 1)){
+				s.setExpired();
+				addPoints(10);
+				return;
+			}
 		}
 		super.collision(collisionInfo, others);
 	}
