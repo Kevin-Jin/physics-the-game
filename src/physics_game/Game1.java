@@ -113,6 +113,8 @@ public class Game1 extends Canvas {
 		setIgnoreRepaint(true);
 
 		TextureCache.setTexture("bg", readImage("pngBg.png"));
+		TextureCache.setTexture("cannonBG", readImage("cannonBackground.png"));
+		TextureCache.setTexture("starBG", readImage("stars.png"));
 		//TextureCache.setTexture("bg", readImage("cannon background.png"));
 		TextureCache.setTexture("body", readImage("body.png"));
 		TextureCache.setTexture("rbody", readImage("rbody.png"));
@@ -174,7 +176,7 @@ public class Game1 extends Canvas {
 				endGamePieces = null;
 			}
 		}));
-		titleScreenModel.getButtons().add(2, makeGamePreviewButton("pong"));
+		titleScreenModel.getButtons().add(2, makeGamePreviewButton("chargeguns"));
 
 		pauseScreenButtons.add(new MenuButton("Exit to Overview", new Rectangle((WIDTH - 200) / 2, 50, 200, 50), new Button.MenuButtonHandler() {
 			@Override
