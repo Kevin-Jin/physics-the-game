@@ -22,21 +22,33 @@ public class Wave extends CenterOriginedProp{
 		baseBoundPoly = BOUNDING_POLYGON;
 		boundPoly = BOUNDING_POLYGON;
 		rot = 0;
-		vel.setX(450);
-		vel.setY(-450);
 	}
 	public void recalculate(List<CollidableDrawable> others, double xMin, double yAcceleration, double yVelocityMin, double tDelta) {
 		super.recalculate(others, xMin, 0, -1000, tDelta);
 		rot =  Math.atan2(vel.getY(),vel.getX());
+	}
+	public void reset(Position pos){
+		this.pos = pos;
+		vel.setX(450);
+		vel.setY(-450);
+	}
+	public boolean isBetween(double xmin, double xmax){
+		double minX = 2000, maxX = -1;
+		for (Point2D d : boundPoly.getPolygons()[0].vertices){
+			double x = d.getX();
+			if (x < minX)
+				minX =x;
+			if (x > maxX)
+				maxX = x;
+		}
+		return minX >= xmin && maxX <= xmax;
+		
 	}
 
 
 	@Override
 	public BufferedImage getTexture() {
 		return TextureCache.getTexture("wave");
-	}
-	public void setPosition(Position pos){
-		this.pos = pos;
 	}
 	public Position getPosition(){
 		return pos;

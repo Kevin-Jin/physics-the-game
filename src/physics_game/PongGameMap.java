@@ -34,6 +34,18 @@ public class PongGameMap extends GameMap {
 	public Player getRightPlayer() {
 		return p2;
 	}
+	public void updateEntityPositions(double tDelta) {
+		super.updateEntityPositions(tDelta);
+		
+		if (wave.isBetween(-10000, 70)){
+			p2.addPoints(100);
+			wave.reset(new Position(637,320));
+		}
+		if (wave.isBetween(1180, 10000)){
+			p1.addPoints(100);
+			wave.reset(new Position(637,320));
+		}
+	}
 	
 	@Override
 	protected void resetLevel() {
@@ -47,7 +59,7 @@ public class PongGameMap extends GameMap {
 		p2.setPosition(layout.getRightPlayerPosition());
 		addEntity(1, p2);
 
-		wave.setPosition(new Position(637,320));
+		wave.reset(new Position(637,320));
 		addEntity(2,wave);
 	}
 
