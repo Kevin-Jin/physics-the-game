@@ -60,7 +60,8 @@ public class Game1 extends Canvas {
 	private int leftTeamWins, rightTeamWins, ties;
 	private int leftTeamPoints, rightTeamPoints;
 
-	private CustomImageButton makeGamePreviewButton(int x, int y, final String mapName) {
+	private CustomImageButton makeGamePreviewButton(final String mapName) {
+		int x = WIDTH - (WIDTH * 3 / 20), y = HEIGHT - (HEIGHT * 3 / 20);
 		GameMap originalMap = map;
 		map = MapCache.getMap(mapName);
 		map.resetLevel();
@@ -156,7 +157,23 @@ public class Game1 extends Canvas {
 
 		setCursor(getToolkit().createCustomCursor(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB), new Point(0, 0), "blank cursor"));
 
-		titleScreenModel.getButtons().add(0, makeGamePreviewButton((WIDTH - WIDTH * 3 / 20) / 2, 150, "pong"));
+		titleScreenModel.getButtons().add(0, new MenuButton("Exit Game", new Rectangle(0, HEIGHT - (HEIGHT * 3 / 20), 150, HEIGHT * 3 / 20), new Button.MenuButtonHandler() {
+			@Override
+			public void clicked() {
+				
+			}
+		}));
+		titleScreenModel.getButtons().add(1, new MenuButton("Reset Results", new Rectangle(150, HEIGHT - (HEIGHT * 3 / 20), 150, HEIGHT * 3 / 20), new Button.MenuButtonHandler() {
+			@Override
+			public void clicked() {
+				leftTeamWins = ties = rightTeamWins = 0;
+				leftTeamPoints = rightTeamPoints = 0;
+				titleScreenModel.getButtons().subList(3, titleScreenModel.getButtons().size()).clear();
+				titleScreenModel.getButtons().set(2, makeGamePreviewButton("pong"));
+				endGamePieces = null;
+			}
+		}));
+		titleScreenModel.getButtons().add(2, makeGamePreviewButton("pong"));
 
 		pauseScreenButtons.add(new MenuButton("New Game", new Rectangle((WIDTH - 200) / 2, 50, 200, 50), new Button.MenuButtonHandler() {
 			@Override
@@ -325,15 +342,15 @@ public class Game1 extends Canvas {
 			if (leftTeamPoints > rightTeamPoints) {
 				leftTeamWins++;
 				x = (WIDTH / 3 - (WIDTH * 3 / 20)) / 2;
-				y = HEIGHT - leftTeamWins * (HEIGHT * 3 / 20);
+				y = HEIGHT - HEIGHT * 3 / 20 - leftTeamWins * (HEIGHT * 3 / 20);
 			} else if (rightTeamPoints > leftTeamPoints) {
 				rightTeamWins++;
 				x = (WIDTH * 5 / 3 - (WIDTH * 3 / 20)) / 2;
-				y = HEIGHT - rightTeamWins * (HEIGHT * 3 / 20);
+				y = HEIGHT - HEIGHT * 3 / 20 - rightTeamWins * (HEIGHT * 3 / 20);
 			} else {
 				ties++;
 				x = (WIDTH - WIDTH * 3 / 20) / 2;
-				y = HEIGHT - ties * (HEIGHT * 3 / 20);
+				y = HEIGHT - HEIGHT * 3 / 20 - ties * (HEIGHT * 3 / 20);
 			}
 			titleScreenModel.getButtons().add(new CustomImageButton(endGameSnapshot, "Replay " + name, new Rectangle(x, y, WIDTH * 3 / 20, HEIGHT * 3 / 20), new MenuButton.MenuButtonHandler() {
 				@Override
@@ -345,7 +362,7 @@ public class Game1 extends Canvas {
 					state = GameState.GAME;
 				}
 			}));
-			titleScreenModel.getButtons().set(0, makeGamePreviewButton((WIDTH - WIDTH * 3 / 20) / 2, 150, "cannons"));
+			titleScreenModel.getButtons().set(2, makeGamePreviewButton("cannons"));
 
 			final int COLUMNS = 20, ROWS = 20;
 			for (int i = 0; i < COLUMNS; i++)
@@ -404,20 +421,18 @@ public class Game1 extends Canvas {
 				s = "It is a tie!";
 
 			g2d.setFont(new Font("Arial", Font.PLAIN, 72));
-			g2d.drawString(s, (WIDTH - g2d.getFontMetrics().stringWidth(s)) / 2, HEIGHT / 2);
-			s = (rightTeamPoints > leftTeamPoints) ? (rightTeamPoints + "–" + leftTeamPoints) : (leftTeamPoints + "–" + rightTeamPoints);
-			g2d.drawString(s, (WIDTH - g2d.getFontMetrics().stringWidth(s)) / 2, HEIGHT / 2 + g2d.getFontMetrics().getHeight());
+			g2d.drawString(s, (WIDTH - g2d.getFontMetrics().stringWidth(s)) / 2, HEIGHT - g2d.getFontMetrics().getDescent());
 			for (ScreenFragment piece : endGamePieces)
 				g2d.drawImage(piece.getTexture(), piece.getTransformationMatrix(), null);
 		}
 		g2d.setColor(Color.BLACK);
 		g2d.setFont(new Font("Arial", Font.PLAIN, 12));
 		String s = "Games won by left team";
-		g2d.drawString(s, (WIDTH / 3 - g2d.getFontMetrics().stringWidth(s)) / 2, HEIGHT - g2d.getFontMetrics().getDescent());
+		g2d.drawString(s, (WIDTH / 3 - g2d.getFontMetrics().stringWidth(s)) / 2, HEIGHT - HEIGHT * 3 / 20 - g2d.getFontMetrics().getDescent());
 		s = "Tied games";
-		g2d.drawString(s, (WIDTH - g2d.getFontMetrics().stringWidth(s)) / 2, HEIGHT - g2d.getFontMetrics().getDescent());
+		g2d.drawString(s, (WIDTH - g2d.getFontMetrics().stringWidth(s)) / 2, HEIGHT - HEIGHT * 3 / 20 - g2d.getFontMetrics().getDescent());
 		s = "Games won by right team";
-		g2d.drawString(s, (WIDTH * 5 / 3 - g2d.getFontMetrics().stringWidth(s)) / 2, HEIGHT - g2d.getFontMetrics().getDescent());
+		g2d.drawString(s, (WIDTH * 5 / 3 - g2d.getFontMetrics().stringWidth(s)) / 2, HEIGHT - HEIGHT * 3 / 20 - g2d.getFontMetrics().getDescent());
 	}
 
 	private void drawGame(Graphics2D g2d) {

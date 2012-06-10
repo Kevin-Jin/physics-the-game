@@ -40,7 +40,8 @@ public class MainMenuManager {
 		else
 			logoScale -= (float) (0.3 * tDelta);
 
-		for (Button btn : buttons) {
+		for (int i = 0; i < buttons.size(); i++) {
+			Button btn = buttons.get(i);
 			if (btn.isPointInButton(controller.getMousePosition()))
 				if (controller.getCodesOfPressedMouseButtons().contains(MouseEvent.BUTTON1) && btn.isMouseDown())
 					btn.act();
