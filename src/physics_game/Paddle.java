@@ -33,12 +33,12 @@ public class Paddle extends StationaryEntity implements Player {
 
 	@Override
 	public boolean update(int dx, int dy, boolean action, double tDelta) {
-		final int MULT = 250;
+		final int MULT = 900;
 		double y = pos.getY() + dy*tDelta * MULT;
 		if (y < 0)
 			y = 0;
-		if (y > 560)
-			y = 560;
+		if (y > 540)
+			y = 540;
 		pos.setY(y);
 		return false;
 	}
@@ -75,6 +75,15 @@ public class Paddle extends StationaryEntity implements Player {
 	@Override
 	public BufferedImage getTexture() {
 		return TextureCache.getTexture("paddle");
+	}
+	public void collision(CollisionInformation collisionInfo, List<CollidableDrawable> others) {
+		CollidableDrawable other = collisionInfo.getCollidedWith();
+		if (other instanceof Wave){
+			collisionInfo.setCollidedWith(this);
+			collisionInfo.negateMinimumTranslationVector();
+			other.collision(collisionInfo, others);
+			return;
+		}
 	}
 
 	@Override

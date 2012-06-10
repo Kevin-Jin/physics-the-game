@@ -22,14 +22,12 @@ public class Wave extends CenterOriginedProp{
 		baseBoundPoly = BOUNDING_POLYGON;
 		boundPoly = BOUNDING_POLYGON;
 		rot = 0;
-		vel.setX(125);
-		vel.setY(-125);
+		vel.setX(450);
+		vel.setY(-450);
 	}
 	public void recalculate(List<CollidableDrawable> others, double xMin, double yAcceleration, double yVelocityMin, double tDelta) {
-		super.recalculate(others, xMin, 0, -300, tDelta);
-		
-		rot = -Math.atan2(vel.getX(), -vel.getY());
-		
+		super.recalculate(others, xMin, 0, -1000, tDelta);
+		rot =  Math.atan2(vel.getY(),vel.getX());
 	}
 
 
@@ -60,13 +58,24 @@ public class Wave extends CenterOriginedProp{
 	}
 
 	public void collision(CollisionInformation collisionInfo, List<CollidableDrawable> others) {
-		CollidableDrawable other = collisionInfo.getCollidedWith();
-		if (other instanceof Paddle) {
-			collisionInfo.setCollidedWith(this);
-			collisionInfo.negateMinimumTranslationVector();
-			other.collision(collisionInfo, others);
-			return;
+		Point2D d = collisionInfo.getMinimumTranslationVector();
+		pos.setX(pos.getX() + d.getX());
+		pos.setY(pos.getY() + d.getY());
+		Point2D surface = collisionInfo.getCollidingSurface();
+		boolean found = false;
+		if (surface.getX() == 0){
+			vel.setX(vel.getX()*-1);
+			found = true;
 		}
+		if (surface.getY() == 0){
+			vel.setY(vel.getY()*-1);
+			found = true;
+		}
+		if (!found){
+			vel.setX(vel.getX()*-1);
+			vel.setY(vel.getY()*-1);
+		}
+		boundPoly = BoundingPolygon.transformBoundingPolygon(baseBoundPoly, this);
 	}
 	
 

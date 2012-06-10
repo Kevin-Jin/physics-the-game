@@ -8,6 +8,9 @@ public class PongGameMap extends GameMap {
 	private static LevelLayout constructLayout() {
 		Map<Byte, Platform> platforms = new HashMap<Byte, Platform>();
 		platforms.put(Byte.valueOf((byte) 0), new Platform(-10, 1930, -100, 0));
+		platforms.put(Byte.valueOf((byte) 1), new Platform(-10, 1930, 620, 720));
+		platforms.put(Byte.valueOf((byte) 2), new Platform(-10, 20, 620, 0));
+		platforms.put(Byte.valueOf((byte) 3), new Platform(1260, 1290, 620, 0));
 		return new LevelLayout(1920, 1080, platforms, new Position(100,290), new Position(1168, 290), -400, -400, new ArrayList<OverlayInfo>(), "", "bg", "bg", 90);
 	}
 	
