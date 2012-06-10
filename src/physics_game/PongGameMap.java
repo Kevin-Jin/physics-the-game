@@ -10,8 +10,6 @@ public class PongGameMap extends GameMap {
 		Map<Byte, Platform> platforms = new HashMap<Byte, Platform>();
 		platforms.put(Byte.valueOf((byte) 0), new Platform(-10, 1930, -100, 0));
 		platforms.put(Byte.valueOf((byte) 1), new Platform(-10, 1930, 620, 720));
-		platforms.put(Byte.valueOf((byte) 2), new Platform(-10, 20, 620, 0));
-		platforms.put(Byte.valueOf((byte) 3), new Platform(1260, 1290, 620, 0));
 		return new LevelLayout(1920, 1080, platforms, new Position(100,290), new Position(1168, 290), (int) (-9.8 / Game1.METERS_PER_PIXEL), Integer.MIN_VALUE, new ArrayList<OverlayInfo>(), "", "bg", "bg", 90);
 	}
 	
@@ -37,11 +35,11 @@ public class PongGameMap extends GameMap {
 	public void updateEntityPositions(double tDelta) {
 		super.updateEntityPositions(tDelta);
 		
-		if (wave.isBetween(-10000, 70)){
+		if (wave.isBetween(-10000, 0)){
 			p2.addPoints(100);
 			wave.reset(new Position(637,320));
 		}
-		if (wave.isBetween(1180, 10000)){
+		if (wave.isBetween(1280, 10000)){
 			p1.addPoints(100);
 			wave.reset(new Position(637,320));
 		}
