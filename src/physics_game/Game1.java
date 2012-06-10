@@ -175,32 +175,13 @@ public class Game1 extends Canvas {
 		}));
 		titleScreenModel.getButtons().add(2, makeGamePreviewButton("pong"));
 
-		pauseScreenButtons.add(new MenuButton("New Game", new Rectangle((WIDTH - 200) / 2, 50, 200, 50), new Button.MenuButtonHandler() {
-			@Override
-			public void clicked() {
-				map = MapCache.getMap("cannons");
-				map.resetLevel();
-				c.setLimits(map.getCameraBounds());
-				c.lookAt(new Position(0, 0));
-				state = GameState.GAME;
-			}
-		}));
-		pauseScreenButtons.add(new MenuButton("Restart Level", new Rectangle((WIDTH - 200) / 2, 110, 200, 50), new Button.MenuButtonHandler() {
-			@Override
-			public void clicked() {
-				map.resetLevel();
-				c.setLimits(map.getCameraBounds());
-				c.lookAt(new Position(0, 0));
-				state = GameState.GAME;
-			}
-		}));
-		pauseScreenButtons.add(new MenuButton("Back to Overview", new Rectangle((WIDTH - 200) / 2, 170, 200, 50), new Button.MenuButtonHandler() {
+		pauseScreenButtons.add(new MenuButton("Exit to Overview", new Rectangle((WIDTH - 200) / 2, 50, 200, 50), new Button.MenuButtonHandler() {
 			@Override
 			public void clicked() {
 				state = GameState.OVERVIEW;
 			}
 		}));
-		pauseScreenButtons.add(new MenuButton("Back to Game", new Rectangle((WIDTH - 200) / 2, 230, 200, 50), new Button.MenuButtonHandler() {
+		pauseScreenButtons.add(new MenuButton("Back to Game", new Rectangle((WIDTH - 200) / 2, 110, 200, 50), new Button.MenuButtonHandler() {
 			@Override
 			public void clicked() {
 				state = GameState.GAME;
