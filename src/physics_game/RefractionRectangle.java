@@ -5,7 +5,8 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 
 public class RefractionRectangle extends StationaryEntity{
-	
+	public static final double REFRACTION_INDEX = 1.5;
+
 	private static final BoundingPolygon BOUNDING_POLYGON = new BoundingPolygon(new Polygon[] { new Polygon(new Point2D.Double[] {
 			new Point2D.Double(0, 0),
 			 new Point2D.Double(11, 0),

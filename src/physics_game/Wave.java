@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 
 public class Wave extends CenterOriginedProp {
+	private static final double AIR_REFRACTION_INDEX = 1;
 	private static final double HOLD_TIME = 1;
 
 	private static final BoundingPolygon BOUNDING_POLYGON = new BoundingPolygon(new Polygon[] { new Polygon(new Point2D[] {
@@ -97,14 +98,34 @@ public class Wave extends CenterOriginedProp {
 	public boolean flipHorizontally() {
 		return true;
 	}
-	
+
+	private double angleMod(double x, double y) {
+		if (y == 0)
+			return x;
+		return x - y * Math.floor(x / y);
+	}
 
 	public void collision(CollisionInformation collisionInfo, List<CollidableDrawable> others) {
 		CollidableDrawable collidedWith = collisionInfo.getCollidedWith();
 		if (collidedWith instanceof RefractionRectangle){
-			if (!ignoreRefraction){
-				System.out.println("refract");
-				//ADD refraction
+			if (!ignoreRefraction) {
+				double theta = angleMod(rot, 2 * Math.PI);
+				boolean reflectOverXEqualsY = false;
+				if (theta > Math.PI) {
+					theta -= Math.PI;
+					reflectOverXEqualsY = true;
+				}
+				boolean reflectOverYAxis = false;
+				if (theta > Math.PI / 2) {
+					theta = Math.PI - theta;
+					reflectOverYAxis = true;
+				}
+				rot = Math.asin(AIR_REFRACTION_INDEX * Math.sin(theta) / RefractionRectangle.REFRACTION_INDEX);
+				if (reflectOverYAxis)
+					rot = Math.PI - rot;
+				if (reflectOverXEqualsY)
+					rot += Math.PI;
+				vel = new Velocity(rot, 500);
 			}
 			ignoreRefraction =true;
 			return;
