@@ -141,6 +141,7 @@ public class Game1 extends Canvas {
 		TextureCache.setTexture("rasteroid", readImage("rasteroid.png"));
 		TextureCache.setTexture("basteroid", readImage("basteroid.png"));
 		TextureCache.setTexture("refraction", readImage("refraction.png"));
+		TextureCache.setTexture("chest", readImage("redchest.png"));
 		
 		BufferedImage texture = new BufferedImage(3, 3, BufferedImage.TYPE_INT_RGB);
 		int whiteRgb = Color.WHITE.getRGB();
@@ -413,10 +414,15 @@ public class Game1 extends Canvas {
 		g2d.setFont(new Font("Arial", Font.PLAIN, 12));
 		String s = "Games won by left team";
 		g2d.drawString(s, (WIDTH / 3 - g2d.getFontMetrics().stringWidth(s)) / 2, HEIGHT - BUTTON_HEIGHT - g2d.getFontMetrics().getDescent());
+		s = "Goal";
+		g2d.drawString(s, (WIDTH / 3 - g2d.getFontMetrics().stringWidth(s)) / 2, BUTTON_HEIGHT);
 		s = "Tied games";
 		g2d.drawString(s, (WIDTH - g2d.getFontMetrics().stringWidth(s)) / 2, HEIGHT - BUTTON_HEIGHT - g2d.getFontMetrics().getDescent());
 		s = "Games won by right team";
 		g2d.drawString(s, (WIDTH * 5 / 3 - g2d.getFontMetrics().stringWidth(s)) / 2, HEIGHT - BUTTON_HEIGHT - g2d.getFontMetrics().getDescent());
+		s = "Goal";
+		g2d.drawString(s, (WIDTH * 5 / 3 - g2d.getFontMetrics().stringWidth(s)) / 2, BUTTON_HEIGHT);
+		g2d.drawImage(TextureCache.getTexture("chest"), (WIDTH - TextureCache.getTexture("chest").getWidth()) / 2, BUTTON_HEIGHT - TextureCache.getTexture("chest").getHeight(), null);
 	}
 
 	private void drawGame(Graphics2D g2d) {
