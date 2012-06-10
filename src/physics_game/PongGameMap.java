@@ -45,9 +45,13 @@ public class PongGameMap extends GameMap {
 			p2.addPoints(100);
 			wave.reset(false);
 		}
-		if (wave.isBetween(1280, 10000)){
+		else if (wave.isBetween(1280, 10000)){
 			p1.addPoints(100);
 			wave.reset(true);
+		}
+		else if (wave.shouldCreateFadingWave()) {
+			FadingWave w = wave.getFadingWave();
+			w.setEntityId(addEntity(w));
 		}
 	}
 

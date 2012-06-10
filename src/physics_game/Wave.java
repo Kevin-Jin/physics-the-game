@@ -15,14 +15,20 @@ public class Wave extends CenterOriginedProp {
 	}) });
 
 	private double incidence;
-	private double rot;
 	private double remainingHoldTime;
+	protected double rot;
 
 	public Wave() {
 		super(0);
 		baseBoundPoly = BOUNDING_POLYGON;
 		boundPoly = BOUNDING_POLYGON;
 		rot = 0;
+	}
+	public boolean shouldCreateFadingWave(){
+		return remainingHoldTime <= 0;
+	}
+	public FadingWave getFadingWave(){
+		return  new FadingWave(rot, new Position(pos.getX(),pos.getY()));
 	}
 
 	public void recalculate(List<CollidableDrawable> others, double xMin, double yAcceleration, double yVelocityMin, double tDelta) {
@@ -48,6 +54,7 @@ public class Wave extends CenterOriginedProp {
 		rot = angle;
 		remainingHoldTime = HOLD_TIME;
 	}
+
 
 	public boolean isBetween(double xmin, double xmax) {
 		double minX = 2000, maxX = -1;
@@ -90,6 +97,8 @@ public class Wave extends CenterOriginedProp {
 	}
 
 	public void collision(CollisionInformation collisionInfo, List<CollidableDrawable> others) {
+		if (collisionInfo.getCollidedWith() instanceof FadingWave)
+			return;
 		Point2D d = collisionInfo.getMinimumTranslationVector();
 		pos.setX(pos.getX() + d.getX());
 		pos.setY(pos.getY() + d.getY());
