@@ -50,7 +50,7 @@ public class Wave extends CenterOriginedProp {
 		incidence = Math.abs(angle);
 		if (p1Won) //give wave to winner
 			angle += Math.PI; //rotate 180 degrees
-		vel = new Velocity(angle, 636);
+		vel = new Velocity(angle, 500);
 		rot = angle;
 		remainingHoldTime = HOLD_TIME;
 	}
