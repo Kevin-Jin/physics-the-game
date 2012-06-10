@@ -24,14 +24,15 @@ public class PongGameMap extends GameMap {
 	}
 
 	@Override
-	public Player getLeftPlayer() {
+	public Paddle getLeftPlayer() {
 		return p1;
 	}
 
 	@Override
-	public Player getRightPlayer() {
+	public Paddle getRightPlayer() {
 		return p2;
 	}
+
 	public void updateEntityPositions(double tDelta) {
 		super.updateEntityPositions(tDelta);
 		

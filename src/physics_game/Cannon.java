@@ -137,5 +137,6 @@ public class Cannon implements Player {
 		bar.reset();
 		totalPoints = 0;
 		body.reset();
+		actionHeld = false;
 	}
 }
