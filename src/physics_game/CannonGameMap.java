@@ -19,8 +19,8 @@ public class CannonGameMap extends GameMap {
 
 	private final Cannon leftCannon, rightCannon;
 
-	public CannonGameMap() {
-		super(constructLayout(), new BalloonSpawner(.25,.6));
+	public CannonGameMap(String name) {
+		super(name, constructLayout(), new BalloonSpawner(.25,.6));
 		leftCannon = new Cannon(true);
 		rightCannon = new Cannon(false);
 	}

@@ -11,8 +11,8 @@ public class MapCache {
 	}
 
 	public static void initialize() {
-		loaded.put("cannons", new CannonGameMap());
-		loaded.put("chargeguns", new ChargeGameMap());
-		loaded.put("pong",new PongGameMap());
+		loaded.put("cannons", new CannonGameMap("cannons"));
+		loaded.put("chargeguns", new ChargeGameMap("chargeguns"));
+		loaded.put("pong", new PongGameMap("pong"));
 	}
 }

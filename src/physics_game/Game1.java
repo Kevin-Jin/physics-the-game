@@ -31,7 +31,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class Game1 extends Canvas {
 	private enum GameState {
-		TITLE_SCREEN, GAME, PAUSE, CREDITS
+		OVERVIEW, GAME, PAUSE, CREDITS
 	}
 
 	private static final long serialVersionUID = -273053717092253478L;
@@ -46,8 +46,8 @@ public class Game1 extends Canvas {
 	private final FrameRateState s;
 	private GameState state;
 
-	private MainMenuManager titleScreenModel;
-	private List<MenuButton> pauseScreenButtons;
+	private final MainMenuManager titleScreenModel;
+	private final List<Button> pauseScreenButtons;
 
 	private final Camera c;
 	private GameMap map;
@@ -57,6 +57,29 @@ public class Game1 extends Canvas {
 
 	private BufferedImage endGameSnapshot;
 	private List<ScreenFragment> endGamePieces;
+
+	private CustomImageButton makeGamePreviewButton(int x, int y, final String mapName) {
+		GameMap originalMap = map;
+		map = MapCache.getMap(mapName);
+		map.resetLevel();
+		c.setLimits(map.getCameraBounds());
+		c.lookAt(new Position(0, 0));
+		map.updateEntityPositions(0);
+		try {
+			return new CustomImageButton(gameScreenShot(), mapName, new Rectangle(x, y, WIDTH * 3 / 20, HEIGHT * 3 / 20), new MenuButton.MenuButtonHandler() {
+				@Override
+				public void clicked() {
+					map = MapCache.getMap(mapName);
+					map.resetLevel();
+					c.setLimits(map.getCameraBounds());
+					c.lookAt(new Position(0, 0));
+					state = GameState.GAME;
+				}
+			});
+		} finally {
+			map = originalMap;
+		}
+	}
 
 	public Game1() {
 		setFocusable(true);
@@ -71,52 +94,10 @@ public class Game1 extends Canvas {
 		s = new FrameRateState();
 
 		gameRunning = new CountDownLatch(0);
-		state = GameState.TITLE_SCREEN;
+		state = GameState.OVERVIEW;
 
 		titleScreenModel = new MainMenuManager(WIDTH, HEIGHT, 1000);
-		titleScreenModel.getButtons().add(new MenuButton("New Game", new Rectangle((WIDTH - 200) / 2, HEIGHT / 2, 200, 50), new MenuButton.MenuButtonHandler() {
-			@Override
-			public void clicked() {
-				map = MapCache.getMap("pong");
-				map.resetLevel();
-				c.setLimits(map.getCameraBounds());
-				c.lookAt(new Position(0, 0));
-				state = GameState.GAME;
-			}
-		}));
-
-		pauseScreenButtons = new ArrayList<MenuButton>();
-		pauseScreenButtons.add(new MenuButton("New Game", new Rectangle((WIDTH - 200) / 2, 50, 200, 50), new MenuButton.MenuButtonHandler() {
-			@Override
-			public void clicked() {
-				map = MapCache.getMap("cannons");
-				map.resetLevel();
-				c.setLimits(map.getCameraBounds());
-				c.lookAt(new Position(0, 0));
-				state = GameState.GAME;
-			}
-		}));
-		pauseScreenButtons.add(new MenuButton("Restart Level", new Rectangle((WIDTH - 200) / 2, 110, 200, 50), new MenuButton.MenuButtonHandler() {
-			@Override
-			public void clicked() {
-				map.resetLevel();
-				c.setLimits(map.getCameraBounds());
-				c.lookAt(new Position(0, 0));
-				state = GameState.GAME;
-			}
-		}));
-		pauseScreenButtons.add(new MenuButton("Main Menu", new Rectangle((WIDTH - 200) / 2, 170, 200, 50), new MenuButton.MenuButtonHandler() {
-			@Override
-			public void clicked() {
-				state = GameState.TITLE_SCREEN;
-			}
-		}));
-		pauseScreenButtons.add(new MenuButton("Back to Game", new Rectangle((WIDTH - 200) / 2, 230, 200, 50), new MenuButton.MenuButtonHandler() {
-			@Override
-			public void clicked() {
-				state = GameState.GAME;
-			}
-		}));
+		pauseScreenButtons = new ArrayList<Button>();
 	}
 
 	private BufferedImage readImage(String path) throws IOException {
@@ -172,6 +153,40 @@ public class Game1 extends Canvas {
 		MapCache.initialize();
 
 		setCursor(getToolkit().createCustomCursor(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB), new Point(0, 0), "blank cursor"));
+
+		titleScreenModel.getButtons().add(makeGamePreviewButton((WIDTH - WIDTH * 3 / 20) / 2, 150, "pong"));
+
+		pauseScreenButtons.add(new MenuButton("New Game", new Rectangle((WIDTH - 200) / 2, 50, 200, 50), new Button.MenuButtonHandler() {
+			@Override
+			public void clicked() {
+				map = MapCache.getMap("cannons");
+				map.resetLevel();
+				c.setLimits(map.getCameraBounds());
+				c.lookAt(new Position(0, 0));
+				state = GameState.GAME;
+			}
+		}));
+		pauseScreenButtons.add(new MenuButton("Restart Level", new Rectangle((WIDTH - 200) / 2, 110, 200, 50), new Button.MenuButtonHandler() {
+			@Override
+			public void clicked() {
+				map.resetLevel();
+				c.setLimits(map.getCameraBounds());
+				c.lookAt(new Position(0, 0));
+				state = GameState.GAME;
+			}
+		}));
+		pauseScreenButtons.add(new MenuButton("Back to Overview", new Rectangle((WIDTH - 200) / 2, 170, 200, 50), new Button.MenuButtonHandler() {
+			@Override
+			public void clicked() {
+				state = GameState.OVERVIEW;
+			}
+		}));
+		pauseScreenButtons.add(new MenuButton("Back to Game", new Rectangle((WIDTH - 200) / 2, 230, 200, 50), new Button.MenuButtonHandler() {
+			@Override
+			public void clicked() {
+				state = GameState.GAME;
+			}
+		}));
 	}
 
 	public void unloadContent() {
@@ -249,6 +264,12 @@ public class Game1 extends Canvas {
 		titleScreenModel.update(controller, tDelta);
 	}
 
+	private BufferedImage gameScreenShot() {
+		BufferedImage img = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB_PRE);
+		drawGame((Graphics2D) img.getGraphics());
+		return img;
+	}
+
 	private void updateGame(double tDelta) {
 		respondToGameInput(tDelta);
 
@@ -310,9 +331,20 @@ public class Game1 extends Canvas {
 			map.removeEntity(entId.intValue());
 
 		if (map.isMapExpired(tDelta)) {
-			endGameSnapshot = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB_PRE);
-			drawGame((Graphics2D) endGameSnapshot.getGraphics());
+			endGameSnapshot = gameScreenShot();
 			endGamePieces = new ArrayList<ScreenFragment>();
+
+			final String name = map.getName();
+			titleScreenModel.getButtons().add(new CustomImageButton(endGameSnapshot, name, new Rectangle(50, 50, WIDTH * 3 / 20, HEIGHT * 3 / 20), new MenuButton.MenuButtonHandler() {
+				@Override
+				public void clicked() {
+					map = MapCache.getMap(name);
+					map.resetLevel();
+					c.setLimits(map.getCameraBounds());
+					c.lookAt(new Position(0, 0));
+					state = GameState.GAME;
+				}
+			}));
 
 			final int COLUMNS = 20, ROWS = 20;
 			for (int i = 0; i < COLUMNS; i++)
@@ -322,7 +354,7 @@ public class Game1 extends Canvas {
 	}
 
 	private void updatePauseOverlay() {
-		for (MenuButton btn : pauseScreenButtons) {
+		for (Button btn : pauseScreenButtons) {
 			if (btn.isPointInButton(controller.getMousePosition()))
 				if (controller.getCodesOfPressedMouseButtons().contains(MouseEvent.BUTTON1) && btn.isMouseDown())
 					btn.act();
@@ -345,7 +377,7 @@ public class Game1 extends Canvas {
 		respondToInput();
 
 		switch (state) {
-			case TITLE_SCREEN:
+			case OVERVIEW:
 				updateTitle(tDelta);
 				break;
 			case GAME:
@@ -358,8 +390,6 @@ public class Game1 extends Canvas {
 	}
 
 	private void drawMainMenu(Graphics2D g2d) {
-		g2d.setColor(Color.BLACK);
-		g2d.fillRect(0, 0, WIDTH, HEIGHT);
 		titleScreenModel.draw(g2d);
 	}
 
@@ -436,7 +466,7 @@ public class Game1 extends Canvas {
 	private void drawPauseOverlay(Graphics2D g2d) {
 		g2d.setColor(new Color(0, 0, 0, 200));
 		g2d.fillRect(0, 0, WIDTH, HEIGHT);
-		for (MenuButton btn : pauseScreenButtons)
+		for (Button btn : pauseScreenButtons)
 			btn.draw(g2d);
 	}
 
@@ -453,7 +483,7 @@ public class Game1 extends Canvas {
 					g2d.fillRect(0, 0, WIDTH, HEIGHT);
 
 					switch (state) {
-						case TITLE_SCREEN:
+						case OVERVIEW:
 							g2d.setColor(Color.WHITE);
 							drawMainMenu(g2d);
 							break;

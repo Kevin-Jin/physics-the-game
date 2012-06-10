@@ -16,17 +16,17 @@ public class MainMenuManager {
 	private float logoScale;
 	private boolean growLogo;
 
-	private List<MenuButton> buttons;
+	private List<Button> buttons;
 
 	public MainMenuManager(int width, int height, int numOf) {
 		bounds = new Rectangle(0, 0, width, height);
 
 		logoScale = 1;
 
-		buttons = new ArrayList<MenuButton>();
+		buttons = new ArrayList<Button>();
 	}
 
-	public List<MenuButton> getButtons() {
+	public List<Button> getButtons() {
 		return buttons;
 	}
 
@@ -40,7 +40,7 @@ public class MainMenuManager {
 		else
 			logoScale -= (float) (0.3 * tDelta);
 
-		for (MenuButton btn : buttons) {
+		for (Button btn : buttons) {
 			if (btn.isPointInButton(controller.getMousePosition()))
 				if (controller.getCodesOfPressedMouseButtons().contains(MouseEvent.BUTTON1) && btn.isMouseDown())
 					btn.act();
@@ -62,7 +62,7 @@ public class MainMenuManager {
 		newTransform.concatenate(AffineTransform.getScaleInstance(logoScale, logoScale));
 		newTransform.concatenate(AffineTransform.getTranslateInstance(-logoTexture.getWidth() / 2d, -logoTexture.getHeight() / 2d));
 		g2d.drawImage(logoTexture, newTransform, null);
-		for (MenuButton btn : buttons)
+		for (Button btn : buttons)
 			btn.draw(g2d);
 		g2d.setTransform(originalTransform);
 	}

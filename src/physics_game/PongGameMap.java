@@ -21,8 +21,8 @@ public class PongGameMap extends GameMap {
 	private Paddle p1, p2;
 	private Wave wave;
 	
-	public PongGameMap() {
-		super(constructLayout(), null);
+	public PongGameMap(String name) {
+		super(name, constructLayout(), null);
 		p1 = new Paddle(true);
 		p2 = new Paddle(false);
 		wave = new Wave();

@@ -13,6 +13,7 @@ public abstract class GameMap {
 	private static final int LEFT_WALL_VISIBLE_PIXELS = 0;
 	private static final int RIGHT_WALL_VISIBLE_PIXELS = 0;
 
+	private final String name;
 	protected final LevelLayout layout;
 	private final SortedMap<Integer, Entity> entities;
 	private final List<Particle> particles;
@@ -22,7 +23,8 @@ public abstract class GameMap {
 
 	private double remainingTime;
 
-	public GameMap(LevelLayout layout, Spawner<?> spawner) {
+	public GameMap(String name, LevelLayout layout, Spawner<?> spawner) {
+		this.name = name;
 		this.layout = layout;
 		this.spawner = spawner;
 		entities = new TreeMap<Integer, Entity>();
@@ -136,6 +138,10 @@ public abstract class GameMap {
 
 	public double getRemainingTime() {
 		return remainingTime;
+	}
+
+	public String getName() {
+		return name;
 	}
 
 	public abstract void drawSpecificDetails(Graphics2D g2d);
