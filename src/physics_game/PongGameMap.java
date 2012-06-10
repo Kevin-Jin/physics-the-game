@@ -6,6 +6,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class PongGameMap extends GameMap {
@@ -43,6 +44,8 @@ public class PongGameMap extends GameMap {
 	public void updateEntityPositions(double tDelta) {
 		super.updateEntityPositions(tDelta);
 
+		List<AbstractDrawable> mainDrawables = 	layers.get(Layer.MIDGROUND).getDrawables();
+		
 		if (wave.isBetween(-10000, 0)){
 			p2.addPoints(100);
 			wave.reset(false);
@@ -53,7 +56,16 @@ public class PongGameMap extends GameMap {
 		}
 		else if (wave.shouldCreateFadingWave()) {
 			FadingWave w = wave.getFadingWave();
-			w.setEntityId(addEntity(w));
+			mainDrawables.add(w);
+		}
+		for (int i =0; i < mainDrawables.size(); ++i){
+			AbstractDrawable drawable = mainDrawables.get(i);
+			if (drawable instanceof FadingWave){
+				FadingWave fwave = (FadingWave)drawable;
+				fwave.update(tDelta);
+				if (fwave.isExpired())
+					mainDrawables.remove(i--);
+			}
 		}
 	}
 

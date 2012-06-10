@@ -101,8 +101,6 @@ public class Wave extends CenterOriginedProp {
 
 	public void collision(CollisionInformation collisionInfo, List<CollidableDrawable> others) {
 		CollidableDrawable collidedWith = collisionInfo.getCollidedWith();
-		if (collidedWith instanceof FadingWave)
-			return;
 		if (collidedWith instanceof RefractionRectangle){
 			if (!ignoreRefraction){
 				System.out.println("refract");

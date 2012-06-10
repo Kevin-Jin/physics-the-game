@@ -1,17 +1,18 @@
 package physics_game;
 
-import java.util.List;
+import java.awt.image.BufferedImage;
 
-public class FadingWave  extends Wave implements Expirable{
+public class FadingWave  extends AbstractDrawable implements Expirable{
 	private final double MAX_TIME = .2f;
 	
 	private int id;
 	private double timeAlive;
+	private Position pos;
+	private double rot;
 	
 	public FadingWave(double rot, Position pos){
 		this.pos = pos;
 		this.rot =rot;
-		//boundPoly = BoundingPolygon.transformBoundingPolygon(baseBoundPoly, this);
 	}
 	
 	@Override
@@ -28,7 +29,7 @@ public class FadingWave  extends Wave implements Expirable{
 	public boolean isExpired() {
 		return timeAlive > MAX_TIME;
 	}
-	public void recalculate(List<CollidableDrawable> others, double xMin, double yAcceleration, double yVelocityMin, double tDelta) {
+	public void update(double tDelta) {
 		timeAlive += tDelta;
 	}
 	@Override
@@ -44,8 +45,33 @@ public class FadingWave  extends Wave implements Expirable{
 		return pos;
 		
 	}
-	public void collision(CollisionInformation collisionInfo, List<CollidableDrawable> others) {
-		
+	public boolean flipHorizontally() {
+		return true;
+	}
+
+	@Override
+	public BufferedImage getTexture() {
+		return TextureCache.getTexture("wave");
+	}
+
+	@Override
+	public double getRotation() {
+		return rot;
+	}
+
+	@Override
+	public boolean transformAboutCenter() {
+		return true;
+	}
+
+	@Override
+	public double getWidth() {
+		return getTexture().getWidth()*2;
+	}
+
+	@Override
+	public double getHeight() {
+		return getTexture().getHeight()*2;
 	}
 
 	

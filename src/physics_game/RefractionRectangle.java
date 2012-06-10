@@ -50,7 +50,7 @@ public class RefractionRectangle extends StationaryEntity{
 	}
 	public void collision(CollisionInformation collisionInfo, List<CollidableDrawable> others) {
 		CollidableDrawable obj = collisionInfo.getCollidedWith();
-		if (obj instanceof Wave && !(obj instanceof FadingWave)){
+		if (obj instanceof Wave){
 			collisionInfo.setCollidedWith(this);
 			collisionInfo.negateMinimumTranslationVector();
 			obj.collision(collisionInfo,others);
