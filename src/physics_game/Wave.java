@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 
 public class Wave extends CenterOriginedProp {
-	private static final double AIR_REFRACTION_INDEX = 1;
+	public static final double AIR_REFRACTION_INDEX = 1;
 	private static final double HOLD_TIME = 1;
 
 	private static final BoundingPolygon BOUNDING_POLYGON = new BoundingPolygon(new Polygon[] { new Polygon(new Point2D[] {
@@ -49,7 +49,7 @@ public class Wave extends CenterOriginedProp {
 		// [0, pi / 2) limits angle distribution to a range of 90 degrees.
 		// Subtract pi / 4 to get -45 to 45 degrees.
 		double angle = Math.random() * Math.PI / 2 - Math.PI / 4;
-		incidence = Math.abs(angle);
+		incidence = Math.abs(angle); //the normal
 		if (p1Won) //give wave to winner
 			angle += Math.PI; //rotate 180 degrees
 		vel = new Velocity(angle, 500);
@@ -109,18 +109,25 @@ public class Wave extends CenterOriginedProp {
 		CollidableDrawable collidedWith = collisionInfo.getCollidedWith();
 		if (collidedWith instanceof RefractionRectangle){
 			if (!ignoreRefraction) {
-				double theta = angleMod(rot, 2 * Math.PI);
+				//clamp rotation from [0, 2*pi)
+				rot = angleMod(rot, 2 * Math.PI);
+
+				//this ugly thing will get the normal from the rotation
 				boolean reflectOverXEqualsY = false;
-				if (theta > Math.PI) {
-					theta -= Math.PI;
+				if (rot > Math.PI) {
+					rot -= Math.PI;
 					reflectOverXEqualsY = true;
 				}
 				boolean reflectOverYAxis = false;
-				if (theta > Math.PI / 2) {
-					theta = Math.PI - theta;
+				if (rot > Math.PI / 2) {
+					rot = Math.PI - rot;
 					reflectOverYAxis = true;
 				}
-				rot = Math.asin(AIR_REFRACTION_INDEX * Math.sin(theta) / RefractionRectangle.REFRACTION_INDEX);
+
+				rot = Math.asin(AIR_REFRACTION_INDEX * Math.sin(rot) / RefractionRectangle.REFRACTION_INDEX);
+				incidence = rot;
+
+				//convert normal back to rotation
 				if (reflectOverYAxis)
 					rot = Math.PI - rot;
 				if (reflectOverXEqualsY)

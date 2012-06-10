@@ -93,8 +93,16 @@ public class PongGameMap extends GameMap {
 		g2d.setFont(new Font("Arial", Font.PLAIN, 16));
 		String s = "θ[i]=" + TWO_DP.format(wave.getAngleOfIncidence() * 180 / Math.PI) + "°";
 		g2d.drawString(s, Game1.WIDTH / 4 - g2d.getFontMetrics().stringWidth(s) / 2, Game1.HEIGHT - g2d.getFontMetrics().getDescent() - 0 * g2d.getFontMetrics().getHeight());
+		s = "n[1]=" + Wave.AIR_REFRACTION_INDEX;
+		g2d.drawString(s, Game1.WIDTH / 4 - g2d.getFontMetrics().stringWidth(s) / 2, Game1.HEIGHT - g2d.getFontMetrics().getDescent() - 1 * g2d.getFontMetrics().getHeight());
+		s = "n[2]=" + RefractionRectangle.REFRACTION_INDEX;
+		g2d.drawString(s, Game1.WIDTH / 4 - g2d.getFontMetrics().stringWidth(s) / 2, Game1.HEIGHT - g2d.getFontMetrics().getDescent() - 2 * g2d.getFontMetrics().getHeight());
 
 		s = "θ[i]=" + TWO_DP.format(wave.getAngleOfIncidence() * 180 / Math.PI) + "°";
 		g2d.drawString(s, Game1.WIDTH * 3 / 4 - g2d.getFontMetrics().stringWidth(s) / 2, Game1.HEIGHT - g2d.getFontMetrics().getDescent() - 0 * g2d.getFontMetrics().getHeight());
+		s = "n[1]=" + Wave.AIR_REFRACTION_INDEX;
+		g2d.drawString(s, Game1.WIDTH * 3 / 4 - g2d.getFontMetrics().stringWidth(s) / 2, Game1.HEIGHT - g2d.getFontMetrics().getDescent() - 1 * g2d.getFontMetrics().getHeight());
+		s = "n[2]=" + RefractionRectangle.REFRACTION_INDEX;
+		g2d.drawString(s, Game1.WIDTH * 3 / 4 - g2d.getFontMetrics().stringWidth(s) / 2, Game1.HEIGHT - g2d.getFontMetrics().getDescent() - 2 * g2d.getFontMetrics().getHeight());
 	}
 }
