@@ -128,6 +128,7 @@ public class Wave extends CenterOriginedProp {
 		}
 		rot = Math.atan2(vel.getY(), vel.getX());
 		boundPoly = BoundingPolygon.transformBoundingPolygon(baseBoundPoly, this);
-		ignoreRefraction = collidedWith instanceof Paddle;
+		if (collidedWith instanceof Paddle)
+			ignoreRefraction = false;
 	}
 }
