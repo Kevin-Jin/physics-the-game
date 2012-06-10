@@ -99,7 +99,7 @@ public abstract class StationaryEntity extends Entity {
 
 		pos.setX(pos.getX() + vel.getX() * tDelta);
 		pos.setY(pos.getY() + vel.getY() * tDelta);
-		
+
 		super.recalculate(others, xMin, yAcceleration, yVelocityMin, tDelta);
 	}
 

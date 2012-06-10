@@ -22,13 +22,12 @@ public class ChargeGameMap extends GameMap {
 	}
 
 	@Override
-	
-	public Player getLeftPlayer() {
+	public ChargeGun getLeftPlayer() {
 		return leftGun;
 	}
 
 	@Override
-	public Player getRightPlayer() {
+	public ChargeGun getRightPlayer() {
 		return rightGun;
 	}
 

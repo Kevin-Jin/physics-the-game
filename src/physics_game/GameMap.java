@@ -92,7 +92,8 @@ public abstract class GameMap {
 	}
 
 	public void updateEntityPositions(double tDelta) {
-		
+		if (remainingTime <= 0)
+			return;
 		if (spawner != null && spawner.update(tDelta)) {
 			Entity spawned = spawner.getRandomEntity();
 			int id = addEntity(spawned);
