@@ -1,7 +1,9 @@
 package physics_game;
 
+import java.awt.AlphaComposite;
 import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Composite;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -385,7 +387,14 @@ public class Game1 extends Canvas {
 			AffineTransform originalTransform = g2d.getTransform();
 			g2d.setTransform(c.getViewMatrix(layer.getParallaxFactor()));
 			for (AbstractDrawable ent : layer.getDrawables()) {
-				g2d.drawImage(ent.getTexture(), ent.getTransformationMatrix(), null);
+				if (ent.getAlpha() != 1) {
+					Composite originalComposite = g2d.getComposite();
+					g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, ent.getAlpha()));
+					g2d.drawImage(ent.getTexture(), ent.getTransformationMatrix(), null);
+					g2d.setComposite(originalComposite);
+				} else {
+					g2d.drawImage(ent.getTexture(), ent.getTransformationMatrix(), null);
+				}
 				if (ent instanceof CollidableDrawable) {
 					for (Polygon p : ((CollidableDrawable) ent).getBoundingPolygon().getPolygons()) {
 						Point2D[] vertices = p.getVertices();

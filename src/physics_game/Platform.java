@@ -40,11 +40,6 @@ public class Platform extends CollidableDrawable {
 	}
 
 	@Override
-	public Color getTint() {
-		return Color.GRAY;
-	}
-
-	@Override
 	public boolean transformAboutCenter() {
 		return false;
 	}

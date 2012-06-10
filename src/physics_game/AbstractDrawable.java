@@ -1,6 +1,5 @@
 package physics_game;
 
-import java.awt.Color;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 
@@ -17,8 +16,8 @@ public abstract class AbstractDrawable implements Drawable {
 		return false;
 	}
 
-	public Color getTint() {
-		return Color.WHITE;
+	public float getAlpha() {
+		return 1;
 	}
 
 	public Point2D getOrigin() {
