@@ -57,6 +57,8 @@ public class Game1 extends Canvas {
 
 	private BufferedImage endGameSnapshot;
 	private List<ScreenFragment> endGamePieces;
+	private int leftTeamWins, rightTeamWins, ties;
+	private int leftTeamPoints, rightTeamPoints;
 
 	private CustomImageButton makeGamePreviewButton(int x, int y, final String mapName) {
 		GameMap originalMap = map;
@@ -66,7 +68,7 @@ public class Game1 extends Canvas {
 		c.lookAt(new Position(0, 0));
 		map.updateEntityPositions(0);
 		try {
-			return new CustomImageButton(gameScreenShot(), mapName, new Rectangle(x, y, WIDTH * 3 / 20, HEIGHT * 3 / 20), new MenuButton.MenuButtonHandler() {
+			return new CustomImageButton(gameScreenShot(), "Next game: " + mapName, new Rectangle(x, y, WIDTH * 3 / 20, HEIGHT * 3 / 20), new MenuButton.MenuButtonHandler() {
 				@Override
 				public void clicked() {
 					map = MapCache.getMap(mapName);
@@ -154,7 +156,7 @@ public class Game1 extends Canvas {
 
 		setCursor(getToolkit().createCustomCursor(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB), new Point(0, 0), "blank cursor"));
 
-		titleScreenModel.getButtons().add(makeGamePreviewButton((WIDTH - WIDTH * 3 / 20) / 2, 150, "pong"));
+		titleScreenModel.getButtons().add(0, makeGamePreviewButton((WIDTH - WIDTH * 3 / 20) / 2, 150, "pong"));
 
 		pauseScreenButtons.add(new MenuButton("New Game", new Rectangle((WIDTH - 200) / 2, 50, 200, 50), new Button.MenuButtonHandler() {
 			@Override
@@ -262,6 +264,13 @@ public class Game1 extends Canvas {
 
 	private void updateTitle(double tDelta) {
 		titleScreenModel.update(controller, tDelta);
+		if (endGamePieces != null) {
+			for (Iterator<ScreenFragment> iter = endGamePieces.iterator(); iter.hasNext(); ) {
+				ScreenFragment text = iter.next();
+				if (text.update(Math.random() * Math.PI * 2, 0.3, tDelta))
+					iter.remove();
+			}
+		}
 	}
 
 	private BufferedImage gameScreenShot() {
@@ -276,31 +285,6 @@ public class Game1 extends Canvas {
 		map.updateEntityPositions(tDelta);
 		map.updateParticlePositions(tDelta);
 		map.cleanParticles();
-
-		if (endGamePieces != null) {
-			if (endGamePieces.isEmpty()) {
-				if (endGameSnapshot != null) {
-					endGameSnapshot.flush();
-					endGameSnapshot = null;
-				}
-			} else {
-				for (Iterator<ScreenFragment> iter = endGamePieces.iterator(); iter.hasNext(); ) {
-					ScreenFragment text = iter.next();
-					if (text.update(Math.random() * Math.PI * 2, 0.3, tDelta))
-						iter.remove();
-				}
-			}
-			if (!map.isMapExpired(tDelta)) {
-				//switched maps, stop showing screen fragments/endgame screen
-				endGamePieces = null;
-				if (endGameSnapshot != null) {
-					endGameSnapshot.flush();
-					endGameSnapshot = null;
-				}
-			} else {
-				return;
-			}
-		}
 
 		List<CollidableDrawable> collidablesList = map.getCollidables();
 		CollidableDrawable[] collidables = collidablesList.toArray(new CollidableDrawable[0]);
@@ -335,7 +319,23 @@ public class Game1 extends Canvas {
 			endGamePieces = new ArrayList<ScreenFragment>();
 
 			final String name = map.getName();
-			titleScreenModel.getButtons().add(new CustomImageButton(endGameSnapshot, name, new Rectangle(50, 50, WIDTH * 3 / 20, HEIGHT * 3 / 20), new MenuButton.MenuButtonHandler() {
+			leftTeamPoints = map.getLeftPlayer().getPoints();
+			rightTeamPoints = map.getRightPlayer().getPoints();
+			int x, y;
+			if (leftTeamPoints > rightTeamPoints) {
+				leftTeamWins++;
+				x = (WIDTH / 3 - (WIDTH * 3 / 20)) / 2;
+				y = HEIGHT - leftTeamWins * (HEIGHT * 3 / 20);
+			} else if (rightTeamPoints > leftTeamPoints) {
+				rightTeamWins++;
+				x = (WIDTH * 5 / 3 - (WIDTH * 3 / 20)) / 2;
+				y = HEIGHT - rightTeamWins * (HEIGHT * 3 / 20);
+			} else {
+				ties++;
+				x = (WIDTH - WIDTH * 3 / 20) / 2;
+				y = HEIGHT - ties * (HEIGHT * 3 / 20);
+			}
+			titleScreenModel.getButtons().add(new CustomImageButton(endGameSnapshot, "Replay " + name, new Rectangle(x, y, WIDTH * 3 / 20, HEIGHT * 3 / 20), new MenuButton.MenuButtonHandler() {
 				@Override
 				public void clicked() {
 					map = MapCache.getMap(name);
@@ -345,11 +345,14 @@ public class Game1 extends Canvas {
 					state = GameState.GAME;
 				}
 			}));
+			titleScreenModel.getButtons().set(0, makeGamePreviewButton((WIDTH - WIDTH * 3 / 20) / 2, 150, "cannons"));
 
 			final int COLUMNS = 20, ROWS = 20;
 			for (int i = 0; i < COLUMNS; i++)
 				for (int j = 0; j < ROWS; j++)
 					endGamePieces.add(new ScreenFragment(endGameSnapshot.getSubimage(i * WIDTH / COLUMNS, j * HEIGHT / ROWS, WIDTH / COLUMNS, HEIGHT / ROWS), new Position(i * WIDTH / COLUMNS, j * HEIGHT / ROWS + HEIGHT / ROWS), Math.random() * 2 * Math.PI, 50));
+
+			state = GameState.OVERVIEW;
 		}
 	}
 
@@ -391,27 +394,33 @@ public class Game1 extends Canvas {
 
 	private void drawMainMenu(Graphics2D g2d) {
 		titleScreenModel.draw(g2d);
-	}
-
-	private void drawGame(Graphics2D g2d) {
 		if (endGamePieces != null) {
-			int left = map.getLeftPlayer().getPoints(), right = map.getRightPlayer().getPoints();
 			String s;
-			if (left > right)
+			if (leftTeamPoints > rightTeamPoints)
 				s = "Left player wins!";
-			else if (right > left)
+			else if (rightTeamPoints > leftTeamPoints)
 				s = "Right player wins!";
 			else
 				s = "It is a tie!";
 
 			g2d.setFont(new Font("Arial", Font.PLAIN, 72));
 			g2d.drawString(s, (WIDTH - g2d.getFontMetrics().stringWidth(s)) / 2, HEIGHT / 2);
-			s = (right > left) ? (right + "–" + left) : (left + "–" + right);
+			s = (rightTeamPoints > leftTeamPoints) ? (rightTeamPoints + "–" + leftTeamPoints) : (leftTeamPoints + "–" + rightTeamPoints);
 			g2d.drawString(s, (WIDTH - g2d.getFontMetrics().stringWidth(s)) / 2, HEIGHT / 2 + g2d.getFontMetrics().getHeight());
 			for (ScreenFragment piece : endGamePieces)
 				g2d.drawImage(piece.getTexture(), piece.getTransformationMatrix(), null);
-			return;
 		}
+		g2d.setColor(Color.BLACK);
+		g2d.setFont(new Font("Arial", Font.PLAIN, 12));
+		String s = "Games won by left team";
+		g2d.drawString(s, (WIDTH / 3 - g2d.getFontMetrics().stringWidth(s)) / 2, HEIGHT - g2d.getFontMetrics().getDescent());
+		s = "Tied games";
+		g2d.drawString(s, (WIDTH - g2d.getFontMetrics().stringWidth(s)) / 2, HEIGHT - g2d.getFontMetrics().getDescent());
+		s = "Games won by right team";
+		g2d.drawString(s, (WIDTH * 5 / 3 - g2d.getFontMetrics().stringWidth(s)) / 2, HEIGHT - g2d.getFontMetrics().getDescent());
+	}
+
+	private void drawGame(Graphics2D g2d) {
 		g2d.setColor(Color.BLACK);
 		for (Layer layer : map.getLayers().values()) {
 			AffineTransform originalTransform = g2d.getTransform();
