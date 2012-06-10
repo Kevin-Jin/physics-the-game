@@ -31,10 +31,10 @@ public class CannonBall extends CenterOriginedProp implements Expirable {
 	private boolean leftPlayer;
 	private int totalPopped, pointsSinceLastFrame;
 
-	public CannonBall(Position initPosition, double angle, double power, boolean leftPlayer) {
-		super(-1000);
+	public CannonBall(Position initPosition, double angle, double velocity, boolean leftPlayer) {
+		super(-1000); //no air resistance, so this is friction
 		pos = new Position(initPosition.getX() - getWidth(), initPosition.getY() - getHeight() / 2);
-		vel = new Velocity(angle, power * 13);
+		vel = new Velocity(angle, velocity);
 		baseBoundPoly = BOUNDING_POLYGON;
 		boundPoly = BOUNDING_POLYGON;
 		this.leftPlayer = leftPlayer;

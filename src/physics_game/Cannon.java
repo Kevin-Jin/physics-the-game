@@ -39,10 +39,6 @@ public class Cannon implements Player {
 		return bar;
 	}
 
-	public double getPower() {
-		return bar.getAmount();
-	}
-
 	public CannonBody getBody() {
 		return body;
 	}
@@ -109,7 +105,7 @@ public class Cannon implements Player {
 		double rot = getBody().getRotation();
 		if (!facingRight)
 			rot -= Math.PI;
-		CannonBall ball = new CannonBall(getBody().getBlastPosition(), rot, getPower(), facingRight);
+		CannonBall ball = new CannonBall(getBody().getBlastPosition(), rot, getInitialVelocity(), facingRight);
 		ball.setEntityId(map.addEntity(ball));
 		getProgessBar().reset();
 	}
@@ -130,5 +126,9 @@ public class Cannon implements Player {
 	@Override
 	public int getPoints() {
 		return totalPoints;
+	}
+
+	public double getInitialVelocity() {
+		return bar.getAmount() * 15;
 	}
 }

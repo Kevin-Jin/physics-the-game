@@ -5,6 +5,8 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 
 public class ChargeGun extends StationaryEntity implements Player {
+	private static final double CHARGE = 1;
+
 	private static final BoundingPolygon BOUNDING_POLYGON = new BoundingPolygon(new Polygon[] { new Polygon(new Point2D[] { new Point2D.Double(0, 15),
 			new Point2D.Double(11, 4),
 			new Point2D.Double(25, 4),
@@ -27,8 +29,6 @@ public class ChargeGun extends StationaryEntity implements Player {
 			new Point2D.Double(48, 44),
 			new Point2D.Double(40, 43),
 	}) });
-
-	
 
 	private boolean flip;
 	private KeyBindings binding;
@@ -63,6 +63,7 @@ public class ChargeGun extends StationaryEntity implements Player {
 
 	@Override
 	public void recalculate(List<CollidableDrawable> others, double xMin, double yAcceleration, double yVelocityMin, double tDelta) {
+		//guns have no mass, therefore they are not affected by gravity
 		super.recalculate(others, xMin, 0, 0, tDelta);
 	}
 
@@ -122,7 +123,7 @@ public class ChargeGun extends StationaryEntity implements Player {
 		CollidableDrawable other = collisionInfo.getCollidedWith();
 		if (other instanceof Star){
 			Star s = (Star)other;
-			if (s.getCharge() == ((positive) ? -1 : 1)){
+			if (Math.signum(s.getCharge()) != Math.signum(getCharge())) {
 				s.setExpired();
 				addPoints(10);
 				return;
@@ -131,7 +132,7 @@ public class ChargeGun extends StationaryEntity implements Player {
 		super.collision(collisionInfo, others);
 	}
 
-	public int getCharge() {
-		return positive ? 1 : -1;
+	public double getCharge() {
+		return positive ? CHARGE : -CHARGE;
 	}
 }

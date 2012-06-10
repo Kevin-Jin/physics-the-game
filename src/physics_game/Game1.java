@@ -34,6 +34,7 @@ public class Game1 extends Canvas {
 
 	private static final long serialVersionUID = -273053717092253478L;
 	public static final int WIDTH = 1280, HEIGHT = 720;
+	public static final double METERS_PER_PIXEL = 1d / 100;
 
 	private NumberFormat FPS_FMT = new DecimalFormat("##");
 
@@ -410,6 +411,8 @@ public class Game1 extends Canvas {
 		long seconds = (milliseconds - (minutes * 1000 * 60)) / 1000;
 		s = String.format("%d:%02d", minutes, seconds);
 		g2d.drawString(s, (WIDTH - g2d.getFontMetrics().stringWidth(s)) / 2, HEIGHT);
+
+		map.drawSpecificDetails(g2d);
 	}
 
 	private void drawPauseOverlay(Graphics2D g2d) {

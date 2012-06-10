@@ -81,6 +81,7 @@ public class Balloon extends CenterOriginedProp implements Expirable {
 	}
 
 	public void recalculate(List<CollidableDrawable> others, double xMin, double yAcceleration, double yVelocityMin, double tDelta) {
+		//balloons have no mass, therefore they are not affected by gravity
 		super.recalculate(others, xMin, 0, 100, tDelta);
 		if (pos.getY() >= Game1.HEIGHT)
 			expired = true;

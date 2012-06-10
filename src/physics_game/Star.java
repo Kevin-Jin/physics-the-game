@@ -5,10 +5,13 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 
 public class Star extends CenterOriginedProp implements Expirable {
+	public static final double CHARGE = 0.2;
+	public static final double COULOMBS_CONSTANT = 8.99e9;
+
 	private boolean positive;
 	private boolean expired;
 	private int entityId;
-	
+
 	private static final BoundingPolygon BOUNDING_POLYGON = new BoundingPolygon(new Polygon[] { new Polygon(new Point2D[] {
 			new Point2D.Double(22,0),
 			new Point2D.Double(45,19),
@@ -32,7 +35,7 @@ public class Star extends CenterOriginedProp implements Expirable {
 			if (other instanceof ChargeGun) {
 				double xDelta = other.getPosition().getX() - getPosition().getX();
 				double yDelta = other.getPosition().getY() - getPosition().getY();
-				double acceleration = -10000000 * getCharge() * ((ChargeGun) other).getCharge() / (xDelta * xDelta + yDelta * yDelta);
+				double acceleration = -COULOMBS_CONSTANT * Game1.METERS_PER_PIXEL * getCharge() * ((ChargeGun) other).getCharge() / (xDelta * xDelta + yDelta * yDelta);
 				double angle = Math.atan2(yDelta, xDelta);
 				accel.setX(accel.getX() + Math.cos(angle) * acceleration);
 				accel.setY(accel.getY() + Math.sin(angle) * acceleration);
@@ -40,7 +43,8 @@ public class Star extends CenterOriginedProp implements Expirable {
 		}
 		vel.setX(vel.getX() + accel.getX() * tDelta);
 		vel.setY(vel.getY() + accel.getY() * tDelta);
-		super.recalculate(others, xMin, 0, -200, tDelta);
+		//stars have no mass, therefore they are not affected by gravity
+		super.recalculate(others, xMin, 0, yVelocityMin, tDelta);
 		if (pos.getY() >= Game1.HEIGHT || pos.getY() < 0 || pos.getX() < 0 || pos.getX() >= Game1.WIDTH)
 			expired = true;
 	}
@@ -78,7 +82,7 @@ public class Star extends CenterOriginedProp implements Expirable {
 		}
 	}
 
-	public int getCharge() {
-		return positive ? 1 : -1;
+	public double getCharge() {
+		return positive ? CHARGE : -CHARGE;
 	}
 }

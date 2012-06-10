@@ -1,5 +1,6 @@
 package physics_game;
 
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
@@ -135,4 +136,6 @@ public abstract class GameMap {
 	public double getRemainingTime() {
 		return remainingTime;
 	}
+
+	public abstract void drawSpecificDetails(Graphics2D g2d);
 }
