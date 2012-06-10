@@ -8,4 +8,5 @@ public interface Player {
 	void addPoints(int add);
 	int getPoints();
 	void setPosition(Position pos);
+	void reset();
 }

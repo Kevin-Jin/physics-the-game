@@ -20,6 +20,10 @@ public class Position {
 		this(0, 0);
 	}
 
+	public Position(Position pos) {
+		this(pos.x, pos.y);
+	}
+
 	public double getX() {
 		return x;
 	}

@@ -52,11 +52,11 @@ public class LevelLayout {
 	}
 
 	public Position getLeftPlayerPosition() {
-		return leftPos;
+		return new Position(leftPos);
 	}
 
 	public Position getRightPlayerPosition() {
-		return rightPos;
+		return new Position(rightPos);
 	}
 
 	public List<OverlayInfo> getTips() {

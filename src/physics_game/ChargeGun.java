@@ -135,4 +135,11 @@ public class ChargeGun extends StationaryEntity implements Player {
 	public double getCharge() {
 		return positive ? CHARGE : -CHARGE;
 	}
+
+	@Override
+	public void reset() {
+		totalPoints = 0;
+		actionHeld = false;
+		positive = false;
+	}
 }

@@ -77,4 +77,8 @@ public abstract class CannonBody extends StationaryEntity {
 	public boolean transformAboutCenter() {
 		return true;
 	}
+
+	public void reset() {
+		rot = 0;
+	}
 }

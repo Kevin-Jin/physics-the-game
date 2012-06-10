@@ -39,10 +39,14 @@ public class PongGameMap extends GameMap {
 	protected void resetLevel() {
 		super.resetLevel();
 
+		p1.reset();
 		p1.setPosition(layout.getLeftPlayerPosition());
 		addEntity(0, p1);
+
+		p2.reset();
 		p2.setPosition(layout.getRightPlayerPosition());
 		addEntity(1, p2);
+
 		wave.setPosition(new Position(637,320));
 		addEntity(2,wave);
 	}

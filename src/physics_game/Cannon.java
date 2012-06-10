@@ -131,4 +131,11 @@ public class Cannon implements Player {
 	public double getInitialVelocity() {
 		return bar.getAmount() * 15;
 	}
+
+	@Override
+	public void reset() {
+		bar.reset();
+		totalPoints = 0;
+		body.reset();
+	}
 }

@@ -39,6 +39,7 @@ public class CannonGameMap extends GameMap {
 	protected void resetLevel() {
 		super.resetLevel();
 
+		leftCannon.reset();
 		leftCannon.setPosition(layout.getLeftPlayerPosition());
 		addEntity(0, leftCannon.getRearWheel());
 		addEntity(1, leftCannon.getBody());
@@ -47,6 +48,7 @@ public class CannonGameMap extends GameMap {
 		layers.get(Layer.FOREGROUND).getDrawables().add(leftCannon.getBarOutline());
 		layers.get(Layer.FOREGROUND).getDrawables().add(leftCannon.getBarFill());
 
+		rightCannon.reset();
 		rightCannon.setPosition(layout.getRightPlayerPosition());
 		addEntity(4, rightCannon.getRearWheel());
 		addEntity(5, rightCannon.getBody());

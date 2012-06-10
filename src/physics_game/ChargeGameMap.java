@@ -36,9 +36,11 @@ public class ChargeGameMap extends GameMap {
 	protected void resetLevel() {
 		super.resetLevel();
 
+		leftGun.reset();
 		leftGun.setPosition(layout.getLeftPlayerPosition());
 		addEntity(0, leftGun);
 
+		rightGun.reset();
 		rightGun.setPosition(layout.getRightPlayerPosition());
 		addEntity(1, rightGun);
 	}
