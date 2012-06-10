@@ -412,6 +412,13 @@ public class Game1 extends Canvas {
 		s = String.format("%d:%02d", minutes, seconds);
 		g2d.drawString(s, (WIDTH - g2d.getFontMetrics().stringWidth(s)) / 2, HEIGHT);
 
+		final int SCALE_THICKNESS = 5, SCALE_EDGE_HEIGHT = 15, PADDING = 10;
+		g2d.fillRect(PADDING, HEIGHT - SCALE_EDGE_HEIGHT - PADDING, SCALE_THICKNESS, SCALE_EDGE_HEIGHT);
+		g2d.fillRect(PADDING, HEIGHT - PADDING - SCALE_THICKNESS, (int) (1 / METERS_PER_PIXEL), SCALE_THICKNESS);
+		g2d.fillRect((int) (1 / METERS_PER_PIXEL) + PADDING - SCALE_THICKNESS, HEIGHT - SCALE_EDGE_HEIGHT - PADDING, SCALE_THICKNESS, SCALE_EDGE_HEIGHT);
+		s = "1m";
+		g2d.drawString(s, (int) (1 / METERS_PER_PIXEL) / 2 - g2d.getFontMetrics().stringWidth(s) / 2 + PADDING, HEIGHT - PADDING - SCALE_THICKNESS - g2d.getFontMetrics().getDescent());
+
 		map.drawSpecificDetails(g2d);
 	}
 
