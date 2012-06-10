@@ -37,6 +37,7 @@ public class Game1 extends Canvas {
 	private static final long serialVersionUID = -273053717092253478L;
 	public static final int WIDTH = 1280, HEIGHT = 720;
 	public static final double METERS_PER_PIXEL = 1d / 100;
+	private static final int BUTTON_WIDTH = WIDTH / 10, BUTTON_HEIGHT = HEIGHT / 10;
 
 	private NumberFormat FPS_FMT = new DecimalFormat("##");
 
@@ -61,7 +62,7 @@ public class Game1 extends Canvas {
 	private int leftTeamPoints, rightTeamPoints;
 
 	private CustomImageButton makeGamePreviewButton(final String mapName) {
-		int x = WIDTH - (WIDTH * 3 / 20), y = HEIGHT - (HEIGHT * 3 / 20);
+		int x = WIDTH - BUTTON_WIDTH, y = HEIGHT - BUTTON_HEIGHT;
 		GameMap originalMap = map;
 		map = MapCache.getMap(mapName);
 		map.resetLevel();
@@ -69,7 +70,7 @@ public class Game1 extends Canvas {
 		c.lookAt(new Position(0, 0));
 		map.updateEntityPositions(0);
 		try {
-			return new CustomImageButton(gameScreenShot(), "Next game: " + mapName, new Rectangle(x, y, WIDTH * 3 / 20, HEIGHT * 3 / 20), new MenuButton.MenuButtonHandler() {
+			return new CustomImageButton(gameScreenShot(), mapName, new Rectangle(x, y, BUTTON_WIDTH, BUTTON_HEIGHT), new MenuButton.MenuButtonHandler() {
 				@Override
 				public void clicked() {
 					map = MapCache.getMap(mapName);
@@ -112,10 +113,9 @@ public class Game1 extends Canvas {
 		strategy = getBufferStrategy();
 		setIgnoreRepaint(true);
 
-		TextureCache.setTexture("bg", readImage("pngBg.png"));
+		TextureCache.setTexture("pongBG", readImage("pngBg.png"));
 		TextureCache.setTexture("cannonBG", readImage("cannonBackground.png"));
 		TextureCache.setTexture("starBG", readImage("stars.png"));
-		//TextureCache.setTexture("bg", readImage("cannon background.png"));
 		TextureCache.setTexture("body", readImage("body.png"));
 		TextureCache.setTexture("rbody", readImage("rbody.png"));
 		TextureCache.setTexture("wheel", readImage("wheel.png"));
@@ -160,13 +160,13 @@ public class Game1 extends Canvas {
 
 		setCursor(getToolkit().createCustomCursor(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB), new Point(0, 0), "blank cursor"));
 
-		titleScreenModel.getButtons().add(0, new MenuButton("Exit Game", new Rectangle(0, HEIGHT - (HEIGHT * 3 / 20), 150, HEIGHT * 3 / 20), new Button.MenuButtonHandler() {
+		titleScreenModel.getButtons().add(0, new MenuButton("Exit Game", new Rectangle(0, HEIGHT - BUTTON_HEIGHT, 150, BUTTON_HEIGHT), new Button.MenuButtonHandler() {
 			@Override
 			public void clicked() {
 				
 			}
 		}));
-		titleScreenModel.getButtons().add(1, new MenuButton("Reset Results", new Rectangle(150, HEIGHT - (HEIGHT * 3 / 20), 150, HEIGHT * 3 / 20), new Button.MenuButtonHandler() {
+		titleScreenModel.getButtons().add(1, new MenuButton("Reset Results", new Rectangle(150, HEIGHT - BUTTON_HEIGHT, 150, BUTTON_HEIGHT), new Button.MenuButtonHandler() {
 			@Override
 			public void clicked() {
 				leftTeamWins = ties = rightTeamWins = 0;
@@ -325,18 +325,18 @@ public class Game1 extends Canvas {
 			int x, y;
 			if (leftTeamPoints > rightTeamPoints) {
 				leftTeamWins++;
-				x = (WIDTH / 3 - (WIDTH * 3 / 20)) / 2;
-				y = HEIGHT - HEIGHT * 3 / 20 - leftTeamWins * (HEIGHT * 3 / 20);
+				x = (WIDTH / 3 - BUTTON_WIDTH) / 2;
+				y = HEIGHT - BUTTON_HEIGHT - leftTeamWins * BUTTON_HEIGHT;
 			} else if (rightTeamPoints > leftTeamPoints) {
 				rightTeamWins++;
-				x = (WIDTH * 5 / 3 - (WIDTH * 3 / 20)) / 2;
-				y = HEIGHT - HEIGHT * 3 / 20 - rightTeamWins * (HEIGHT * 3 / 20);
+				x = (WIDTH * 5 / 3 - BUTTON_WIDTH) / 2;
+				y = HEIGHT - BUTTON_HEIGHT - rightTeamWins * BUTTON_HEIGHT;
 			} else {
 				ties++;
-				x = (WIDTH - WIDTH * 3 / 20) / 2;
-				y = HEIGHT - HEIGHT * 3 / 20 - ties * (HEIGHT * 3 / 20);
+				x = (WIDTH - BUTTON_WIDTH) / 2;
+				y = HEIGHT - BUTTON_HEIGHT - ties * BUTTON_HEIGHT;
 			}
-			titleScreenModel.getButtons().add(new CustomImageButton(endGameSnapshot, "Replay " + name, new Rectangle(x, y, WIDTH * 3 / 20, HEIGHT * 3 / 20), new MenuButton.MenuButtonHandler() {
+			titleScreenModel.getButtons().add(new CustomImageButton(endGameSnapshot, name, new Rectangle(x, y, BUTTON_WIDTH, BUTTON_HEIGHT), new MenuButton.MenuButtonHandler() {
 				@Override
 				public void clicked() {
 					map = MapCache.getMap(name);
@@ -412,11 +412,11 @@ public class Game1 extends Canvas {
 		g2d.setColor(Color.BLACK);
 		g2d.setFont(new Font("Arial", Font.PLAIN, 12));
 		String s = "Games won by left team";
-		g2d.drawString(s, (WIDTH / 3 - g2d.getFontMetrics().stringWidth(s)) / 2, HEIGHT - HEIGHT * 3 / 20 - g2d.getFontMetrics().getDescent());
+		g2d.drawString(s, (WIDTH / 3 - g2d.getFontMetrics().stringWidth(s)) / 2, HEIGHT - BUTTON_HEIGHT - g2d.getFontMetrics().getDescent());
 		s = "Tied games";
-		g2d.drawString(s, (WIDTH - g2d.getFontMetrics().stringWidth(s)) / 2, HEIGHT - HEIGHT * 3 / 20 - g2d.getFontMetrics().getDescent());
+		g2d.drawString(s, (WIDTH - g2d.getFontMetrics().stringWidth(s)) / 2, HEIGHT - BUTTON_HEIGHT - g2d.getFontMetrics().getDescent());
 		s = "Games won by right team";
-		g2d.drawString(s, (WIDTH * 5 / 3 - g2d.getFontMetrics().stringWidth(s)) / 2, HEIGHT - HEIGHT * 3 / 20 - g2d.getFontMetrics().getDescent());
+		g2d.drawString(s, (WIDTH * 5 / 3 - g2d.getFontMetrics().stringWidth(s)) / 2, HEIGHT - BUTTON_HEIGHT - g2d.getFontMetrics().getDescent());
 	}
 
 	private void drawGame(Graphics2D g2d) {
