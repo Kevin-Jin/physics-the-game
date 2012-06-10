@@ -38,6 +38,7 @@ public class Game1 extends Canvas {
 	public static final int WIDTH = 1280, HEIGHT = 720;
 	public static final double METERS_PER_PIXEL = 1d / 100;
 	private static final int BUTTON_WIDTH = WIDTH / 10, BUTTON_HEIGHT = HEIGHT / 10;
+	public static final String LEFT_TEAM_NAME = "Black", RIGHT_TEAM_NAME = "White";
 
 	private NumberFormat FPS_FMT = new DecimalFormat("##");
 
@@ -142,6 +143,7 @@ public class Game1 extends Canvas {
 		TextureCache.setTexture("basteroid", readImage("basteroid.png"));
 		TextureCache.setTexture("refraction", readImage("refraction.png"));
 		TextureCache.setTexture("chest", readImage("redchest.png"));
+		TextureCache.setTexture("pillar", readImage("pillar.png"));
 		
 		BufferedImage texture = new BufferedImage(3, 3, BufferedImage.TYPE_INT_RGB);
 		int whiteRgb = Color.WHITE.getRGB();
@@ -323,7 +325,7 @@ public class Game1 extends Canvas {
 			final String name = map.getName();
 			leftTeamPoints = map.getLeftPlayer().getPoints();
 			rightTeamPoints = map.getRightPlayer().getPoints();
-			int x, y;
+			int x = 0, y = 0;
 			if (leftTeamPoints > rightTeamPoints) {
 				leftTeamWins++;
 				x = (WIDTH / 3 - BUTTON_WIDTH) / 2;
@@ -332,21 +334,19 @@ public class Game1 extends Canvas {
 				rightTeamWins++;
 				x = (WIDTH * 5 / 3 - BUTTON_WIDTH) / 2;
 				y = HEIGHT - BUTTON_HEIGHT - rightTeamWins * BUTTON_HEIGHT;
-			} else {
-				ties++;
-				x = (WIDTH - BUTTON_WIDTH) / 2;
-				y = HEIGHT - BUTTON_HEIGHT - ties * BUTTON_HEIGHT;
 			}
-			titleScreenModel.getButtons().add(new CustomImageButton(endGameSnapshot, name, new Rectangle(x, y, BUTTON_WIDTH, BUTTON_HEIGHT), new MenuButton.MenuButtonHandler() {
-				@Override
-				public void clicked() {
-					map = MapCache.getMap(name);
-					map.resetLevel();
-					c.setLimits(map.getCameraBounds());
-					c.lookAt(new Position(0, 0));
-					state = GameState.GAME;
-				}
-			}));
+			if (leftTeamPoints != rightTeamPoints) {
+				titleScreenModel.getButtons().add(new CustomImageButton(endGameSnapshot, name, new Rectangle(x, y, BUTTON_WIDTH, BUTTON_HEIGHT), new MenuButton.MenuButtonHandler() {
+					@Override
+					public void clicked() {
+						map = MapCache.getMap(name);
+						map.resetLevel();
+						c.setLimits(map.getCameraBounds());
+						c.lookAt(new Position(0, 0));
+						state = GameState.GAME;
+					}
+				}));
+			}
 			titleScreenModel.getButtons().set(2, makeGamePreviewButton("cannons"));
 
 			final int COLUMNS = 20, ROWS = 20;
@@ -399,9 +399,9 @@ public class Game1 extends Canvas {
 		if (endGamePieces != null) {
 			String s;
 			if (leftTeamPoints > rightTeamPoints)
-				s = "Left player wins!";
+				s = LEFT_TEAM_NAME + " team wins!";
 			else if (rightTeamPoints > leftTeamPoints)
-				s = "Right player wins!";
+				s = RIGHT_TEAM_NAME + " team wins!";
 			else
 				s = "It is a tie!";
 
@@ -412,17 +412,16 @@ public class Game1 extends Canvas {
 		}
 		g2d.setColor(Color.BLACK);
 		g2d.setFont(new Font("Arial", Font.PLAIN, 12));
-		String s = "Games won by left team";
+		String s = "Games won by " + LEFT_TEAM_NAME + " team";
 		g2d.drawString(s, (WIDTH / 3 - g2d.getFontMetrics().stringWidth(s)) / 2, HEIGHT - BUTTON_HEIGHT - g2d.getFontMetrics().getDescent());
 		s = "Goal";
 		g2d.drawString(s, (WIDTH / 3 - g2d.getFontMetrics().stringWidth(s)) / 2, BUTTON_HEIGHT);
-		s = "Tied games";
-		g2d.drawString(s, (WIDTH - g2d.getFontMetrics().stringWidth(s)) / 2, HEIGHT - BUTTON_HEIGHT - g2d.getFontMetrics().getDescent());
-		s = "Games won by right team";
+		s = "Games won by " + RIGHT_TEAM_NAME + " team";
 		g2d.drawString(s, (WIDTH * 5 / 3 - g2d.getFontMetrics().stringWidth(s)) / 2, HEIGHT - BUTTON_HEIGHT - g2d.getFontMetrics().getDescent());
 		s = "Goal";
 		g2d.drawString(s, (WIDTH * 5 / 3 - g2d.getFontMetrics().stringWidth(s)) / 2, BUTTON_HEIGHT);
 		g2d.drawImage(TextureCache.getTexture("chest"), (WIDTH - TextureCache.getTexture("chest").getWidth()) / 2, BUTTON_HEIGHT - TextureCache.getTexture("chest").getHeight(), null);
+		g2d.drawImage(TextureCache.getTexture("pillar"), (WIDTH - TextureCache.getTexture("pillar").getWidth()) / 2, BUTTON_HEIGHT, null);
 	}
 
 	private void drawGame(Graphics2D g2d) {
