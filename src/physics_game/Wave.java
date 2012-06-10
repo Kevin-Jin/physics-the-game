@@ -34,7 +34,6 @@ public class Wave extends CenterOriginedProp {
 		} else {
 			super.recalculate(others, xMin, 0, -1000, tDelta);
 		}
-		rot = Math.atan2(vel.getY(), vel.getX());
 	}
 
 	public void reset(boolean p1Won) {
@@ -46,6 +45,7 @@ public class Wave extends CenterOriginedProp {
 		if (p1Won) //give wave to winner
 			angle += Math.PI; //rotate 180 degrees
 		vel = new Velocity(angle, 636);
+		rot = angle;
 		remainingHoldTime = HOLD_TIME;
 	}
 
@@ -107,6 +107,7 @@ public class Wave extends CenterOriginedProp {
 			vel.setX(vel.getX() * -1);
 			vel.setY(vel.getY() * -1);
 		}
+		rot = Math.atan2(vel.getY(), vel.getX());
 		boundPoly = BoundingPolygon.transformBoundingPolygon(baseBoundPoly, this);
 	}
 }
