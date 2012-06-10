@@ -500,7 +500,7 @@ public class Game1 extends Canvas {
 								drawPauseOverlay(g2d);
 							break;
 					}
-					g2d.setColor(Color.WHITE);
+					g2d.setColor(Color.BLACK);
 					g2d.setFont(new Font("Arial", Font.PLAIN, 16));
 					g2d.drawString("FPS: " + FPS_FMT.format(s.getLastCalculatedFps()), 5, g2d.getFontMetrics().getAscent());
 					g2d.drawImage(TextureCache.getTexture("cursor"), controller.getMousePosition().x - TextureCache.getTexture("cursor").getWidth() / 2, controller.getMousePosition().y - TextureCache.getTexture("cursor").getHeight() / 2, null);
