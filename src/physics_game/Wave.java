@@ -17,6 +17,7 @@ public class Wave extends CenterOriginedProp {
 	private double incidence;
 	private double remainingHoldTime;
 	protected double rot;
+	private boolean ignoreRefraction;
 
 	public Wave() {
 		super(0);
@@ -53,6 +54,7 @@ public class Wave extends CenterOriginedProp {
 		vel = new Velocity(angle, 500);
 		rot = angle;
 		remainingHoldTime = HOLD_TIME;
+		ignoreRefraction = true;
 	}
 
 
@@ -95,10 +97,20 @@ public class Wave extends CenterOriginedProp {
 	public boolean flipHorizontally() {
 		return true;
 	}
+	
 
 	public void collision(CollisionInformation collisionInfo, List<CollidableDrawable> others) {
-		if (collisionInfo.getCollidedWith() instanceof FadingWave)
+		CollidableDrawable collidedWith = collisionInfo.getCollidedWith();
+		if (collidedWith instanceof FadingWave)
 			return;
+		if (collidedWith instanceof RefractionRectangle){
+			if (!ignoreRefraction){
+				System.out.println("refract");
+				//ADD refraction
+			}
+			ignoreRefraction =true;
+			return;
+		}
 		Point2D d = collisionInfo.getMinimumTranslationVector();
 		pos.setX(pos.getX() + d.getX());
 		pos.setY(pos.getY() + d.getY());
@@ -118,5 +130,6 @@ public class Wave extends CenterOriginedProp {
 		}
 		rot = Math.atan2(vel.getY(), vel.getX());
 		boundPoly = BoundingPolygon.transformBoundingPolygon(baseBoundPoly, this);
+		ignoreRefraction = false;
 	}
 }

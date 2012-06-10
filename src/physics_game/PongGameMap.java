@@ -20,12 +20,14 @@ public class PongGameMap extends GameMap {
 	
 	private Paddle p1, p2;
 	private Wave wave;
+	private RefractionRectangle refraction;
 	
 	public PongGameMap(String name) {
 		super(name, constructLayout(), null);
 		p1 = new Paddle(true);
 		p2 = new Paddle(false);
 		wave = new Wave();
+		refraction = new RefractionRectangle(0,460);
 	}
 
 	@Override
@@ -69,6 +71,9 @@ public class PongGameMap extends GameMap {
 
 		wave.reset(((int) (Math.random() * 2)) == 1 ? true : false);
 		addEntity(2,wave);
+		
+		refraction.reset();
+		addEntity(3,refraction);
 	}
 
 	@Override

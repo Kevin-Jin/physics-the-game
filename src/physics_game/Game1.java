@@ -138,6 +138,7 @@ public class Game1 extends Canvas {
 		TextureCache.setTexture("wave",readImage("wave.png"));
 		TextureCache.setTexture("rasteroid", readImage("rasteroid.png"));
 		TextureCache.setTexture("basteroid", readImage("basteroid.png"));
+		TextureCache.setTexture("refraction", readImage("refraction.png"));
 		
 		BufferedImage texture = new BufferedImage(3, 3, BufferedImage.TYPE_INT_RGB);
 		int whiteRgb = Color.WHITE.getRGB();
