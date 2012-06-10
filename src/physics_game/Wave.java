@@ -14,6 +14,7 @@ public class Wave extends CenterOriginedProp {
 			new Point2D.Double(0, 19)
 	}) });
 
+	private double incidence;
 	private double rot;
 	private double remainingHoldTime;
 
@@ -41,6 +42,7 @@ public class Wave extends CenterOriginedProp {
 		// [0, pi / 2) limits angle distribution to a range of 90 degrees.
 		// Subtract pi / 4 to get -45 to 45 degrees.
 		double angle = Math.random() * Math.PI / 2 - Math.PI / 4;
+		incidence = Math.abs(angle);
 		if (p1Won) //give wave to winner
 			angle += Math.PI; //rotate 180 degrees
 		vel = new Velocity(angle, 636);
@@ -64,8 +66,8 @@ public class Wave extends CenterOriginedProp {
 		return TextureCache.getTexture("wave");
 	}
 
-	public Position getPosition() {
-		return pos;
+	public double getAngleOfIncidence() {
+		return incidence;
 	}
 
 	@Override
@@ -78,6 +80,7 @@ public class Wave extends CenterOriginedProp {
 		return super.getHeight() * 2;
 	}
 
+	@Override
 	public double getRotation() {
 		return rot;
 	}

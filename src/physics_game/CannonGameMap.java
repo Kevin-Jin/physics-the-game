@@ -62,17 +62,17 @@ public class CannonGameMap extends GameMap {
 	public void drawSpecificDetails(Graphics2D g2d) {
 		g2d.setFont(new Font("Arial", Font.PLAIN, 16));
 		String s = "θ=" + TWO_DP.format(getLeftPlayer().getBody().getRotation() * 180 / Math.PI) + "°";
-		g2d.drawString(s, Game1.WIDTH / 4 - g2d.getFontMetrics().stringWidth(s) / 2, Game1.HEIGHT - 0 * g2d.getFontMetrics().getHeight());
+		g2d.drawString(s, Game1.WIDTH / 4 - g2d.getFontMetrics().stringWidth(s) / 2, Game1.HEIGHT - g2d.getFontMetrics().getDescent() - 0 * g2d.getFontMetrics().getHeight());
 		s = "v[i]=" + TWO_DP.format(getLeftPlayer().getInitialVelocity() * Game1.METERS_PER_PIXEL) + "m/s";
-		g2d.drawString(s, Game1.WIDTH / 4 - g2d.getFontMetrics().stringWidth(s) / 2, Game1.HEIGHT - 1 * g2d.getFontMetrics().getHeight());
+		g2d.drawString(s, Game1.WIDTH / 4 - g2d.getFontMetrics().stringWidth(s) / 2, Game1.HEIGHT - g2d.getFontMetrics().getDescent() - 1 * g2d.getFontMetrics().getHeight());
 		s = "g=" + (layout.getGravitationalFieldStrength() * Game1.METERS_PER_PIXEL) + "m/s/s";
-		g2d.drawString(s, Game1.WIDTH / 4 - g2d.getFontMetrics().stringWidth(s) / 2, Game1.HEIGHT - 2 * g2d.getFontMetrics().getHeight());
+		g2d.drawString(s, Game1.WIDTH / 4 - g2d.getFontMetrics().stringWidth(s) / 2, Game1.HEIGHT - g2d.getFontMetrics().getDescent() - 2 * g2d.getFontMetrics().getHeight());
 
 		s = "θ=" + TWO_DP.format(-getRightPlayer().getBody().getRotation() * 180 / Math.PI) + "°";
-		g2d.drawString(s, Game1.WIDTH * 3 / 4 - g2d.getFontMetrics().stringWidth(s) / 2, Game1.HEIGHT - 0 * g2d.getFontMetrics().getHeight());
+		g2d.drawString(s, Game1.WIDTH * 3 / 4 - g2d.getFontMetrics().stringWidth(s) / 2, Game1.HEIGHT - g2d.getFontMetrics().getDescent() - 0 * g2d.getFontMetrics().getHeight());
 		s = "v[i]=" + TWO_DP.format(getRightPlayer().getInitialVelocity() * Game1.METERS_PER_PIXEL) + "m/s";
-		g2d.drawString(s, Game1.WIDTH * 3 / 4 - g2d.getFontMetrics().stringWidth(s) / 2, Game1.HEIGHT - 1 * g2d.getFontMetrics().getHeight());
+		g2d.drawString(s, Game1.WIDTH * 3 / 4 - g2d.getFontMetrics().stringWidth(s) / 2, Game1.HEIGHT - g2d.getFontMetrics().getDescent() - 1 * g2d.getFontMetrics().getHeight());
 		s = "g=" + (layout.getGravitationalFieldStrength() * Game1.METERS_PER_PIXEL) + "m/s/s";
-		g2d.drawString(s, Game1.WIDTH * 3 / 4 - g2d.getFontMetrics().stringWidth(s) / 2, Game1.HEIGHT - 2 * g2d.getFontMetrics().getHeight());
+		g2d.drawString(s, Game1.WIDTH * 3 / 4 - g2d.getFontMetrics().stringWidth(s) / 2, Game1.HEIGHT - g2d.getFontMetrics().getDescent() - 2 * g2d.getFontMetrics().getHeight());
 	}
 }
