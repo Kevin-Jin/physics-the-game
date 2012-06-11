@@ -369,7 +369,7 @@ public class Game1 extends Canvas {
 				for (int j = 0; j < ROWS; j++)
 					endGamePieces.add(new ScreenFragment(endGameSnapshot.getSubimage(i * WIDTH / COLUMNS, j * HEIGHT / ROWS, WIDTH / COLUMNS, HEIGHT / ROWS), new Position(i * WIDTH / COLUMNS, j * HEIGHT / ROWS + HEIGHT / ROWS), Math.random() * 2 * Math.PI, 50));
 
-			if (leftTeamPoints > 8 || rightTeamPoints > 8) {
+			if (leftTeamWins > 8 || rightTeamWins > 8) {
 				map = MapCache.getMap("congratulations");
 				map.resetLevel();
 				state = GameState.GAME_OVER;
