@@ -31,7 +31,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class Game1 extends Canvas {
 	private enum GameState {
-		OVERVIEW, GAME, PAUSE, CREDITS
+		OVERVIEW, GAME, PAUSE, GAME_OVER
 	}
 
 	private static final long serialVersionUID = -273053717092253478L;
@@ -50,6 +50,7 @@ public class Game1 extends Canvas {
 
 	private final MainMenuManager titleScreenModel;
 	private final List<Button> pauseScreenButtons;
+	private final List<Button> gameOverButtons;
 
 	private final Camera c;
 	private GameMap map;
@@ -105,6 +106,7 @@ public class Game1 extends Canvas {
 
 		titleScreenModel = new MainMenuManager(WIDTH, HEIGHT, 1000);
 		pauseScreenButtons = new ArrayList<Button>();
+		gameOverButtons = new ArrayList<Button>();
 	}
 
 	private BufferedImage readImage(String path) throws IOException {
@@ -146,6 +148,7 @@ public class Game1 extends Canvas {
 		TextureCache.setTexture("refraction", readImage("refraction.png"));
 		TextureCache.setTexture("chest", readImage("redchest.png"));
 		TextureCache.setTexture("pillar", readImage("pillar.png"));
+		TextureCache.setTexture("particletest", readImage("particletest.png"));
 		
 		BufferedImage texture = new BufferedImage(3, 3, BufferedImage.TYPE_INT_RGB);
 		int whiteRgb = Color.WHITE.getRGB();
@@ -194,6 +197,19 @@ public class Game1 extends Canvas {
 			@Override
 			public void clicked() {
 				state = GameState.GAME;
+			}
+		}));
+
+		gameOverButtons.add(new MenuButton("Play again", new Rectangle((WIDTH - 200) / 2, 500, 200, 50), new Button.MenuButtonHandler() {
+			@Override
+			public void clicked() {
+				leftTeamWins = rightTeamWins = 0;
+				leftTeamPoints = rightTeamPoints = 0;
+				titleScreenModel.getButtons().subList(3, titleScreenModel.getButtons().size()).clear();
+				currentGameIndex = 0;
+				titleScreenModel.getButtons().set(2, makeGamePreviewButton(gameOrder[currentGameIndex]));
+				endGamePieces = null;
+				state = GameState.OVERVIEW;
 			}
 		}));
 	}
@@ -353,12 +369,37 @@ public class Game1 extends Canvas {
 				for (int j = 0; j < ROWS; j++)
 					endGamePieces.add(new ScreenFragment(endGameSnapshot.getSubimage(i * WIDTH / COLUMNS, j * HEIGHT / ROWS, WIDTH / COLUMNS, HEIGHT / ROWS), new Position(i * WIDTH / COLUMNS, j * HEIGHT / ROWS + HEIGHT / ROWS), Math.random() * 2 * Math.PI, 50));
 
-			state = GameState.OVERVIEW;
+			if (leftTeamPoints > 8 || rightTeamPoints > 8) {
+				map = MapCache.getMap("congratulations");
+				map.resetLevel();
+				state = GameState.GAME_OVER;
+			} else {
+				state = GameState.OVERVIEW;
+			}
 		}
 	}
 
 	private void updatePauseOverlay() {
 		for (Button btn : pauseScreenButtons) {
+			if (btn.isPointInButton(controller.getMousePosition()))
+				if (controller.getCodesOfPressedMouseButtons().contains(MouseEvent.BUTTON1) && btn.isMouseDown())
+					btn.act();
+				else if (controller.getCodesOfPressedMouseButtons().contains(MouseEvent.BUTTON1) && !btn.isMouseDown())
+					btn.setMouseDown();
+				else if (!controller.getCodesOfPressedMouseButtons().contains(MouseEvent.BUTTON1) && btn.isMouseDown())
+					btn.setMouseOver();
+				else
+					btn.setMouseOver();
+			else if (btn.isMouseOver())
+				btn.setMouseUp();
+		}
+	}
+
+	private void updateCongratulations(double tDelta) {
+		map.updateEntityPositions(tDelta);
+		map.updateParticlePositions(tDelta);
+		map.cleanParticles();
+		for (Button btn : gameOverButtons) {
 			if (btn.isPointInButton(controller.getMousePosition()))
 				if (controller.getCodesOfPressedMouseButtons().contains(MouseEvent.BUTTON1) && btn.isMouseDown())
 					btn.act();
@@ -389,6 +430,9 @@ public class Game1 extends Canvas {
 				break;
 			case PAUSE:
 				updatePauseOverlay();
+				break;
+			case GAME_OVER:
+				updateCongratulations(tDelta);
 				break;
 		}
 	}
@@ -423,8 +467,7 @@ public class Game1 extends Canvas {
 		g2d.drawString(s, (WIDTH * 5 / 3 - g2d.getFontMetrics().stringWidth(s)) / 2, BUTTON_HEIGHT);
 	}
 
-	private void drawGame(Graphics2D g2d) {
-		g2d.setColor(Color.WHITE);
+	private void drawMapEntities(Graphics2D g2d) {
 		for (Layer layer : map.getLayers().values()) {
 			AffineTransform originalTransform = g2d.getTransform();
 			g2d.setTransform(c.getViewMatrix(layer.getParallaxFactor()));
@@ -437,22 +480,27 @@ public class Game1 extends Canvas {
 				} else {
 					g2d.drawImage(ent.getTexture(), ent.getTransformationMatrix(), null);
 				}
-				//if (ent instanceof CollidableDrawable) {
-					//for (Polygon p : ((CollidableDrawable) ent).getBoundingPolygon().getPolygons()) {
-						//Point2D[] vertices = p.getVertices();
-						//int[] xPoints = new int[vertices.length];
-						//int[] yPoints = new int[vertices.length];
-						//for (int i = 0; i < vertices.length; i++) {
-							//xPoints[i] = (int) Math.round(vertices[i].getX());
-							//yPoints[i] = (int) Math.round(vertices[i].getY());
-						//}
-						//g2d.drawPolygon(xPoints, yPoints, vertices.length);
-					//}
-				//}
+				if (ent instanceof CollidableDrawable) {
+					for (Polygon p : ((CollidableDrawable) ent).getBoundingPolygon().getPolygons()) {
+						Point2D[] vertices = p.getVertices();
+						int[] xPoints = new int[vertices.length];
+						int[] yPoints = new int[vertices.length];
+						for (int i = 0; i < vertices.length; i++) {
+							xPoints[i] = (int) Math.round(vertices[i].getX());
+							yPoints[i] = (int) Math.round(vertices[i].getY());
+						}
+						g2d.drawPolygon(xPoints, yPoints, vertices.length);
+					}
+				}
 			}
 
 			g2d.setTransform(originalTransform);
 		}
+	}
+
+	private void drawGame(Graphics2D g2d) {
+		g2d.setColor(Color.WHITE);
+		drawMapEntities(g2d);
 
 		g2d.setFont(new Font("Arial", Font.PLAIN, 36));
 		g2d.setColor(Color.BLACK);
@@ -482,6 +530,17 @@ public class Game1 extends Canvas {
 			btn.draw(g2d);
 	}
 
+	private void drawCongratulations(Graphics2D g2d) {
+		g2d.setColor(Color.BLACK);
+		g2d.setFont(new Font("Arial", Font.BOLD, 72));
+		String s = "Congratulations " + (leftTeamWins > rightTeamWins ? LEFT_TEAM_NAME : RIGHT_TEAM_NAME) + " team!";
+		g2d.drawString(s, (WIDTH - g2d.getFontMetrics().stringWidth(s)) / 2, (HEIGHT - g2d.getFontMetrics().getHeight()) / 2);
+		for (Button btn : gameOverButtons)
+			btn.draw(g2d);
+
+		drawMapEntities(g2d);
+	}
+
 	private void paint() {
 		do {
 			Graphics2D g2d = null;
@@ -498,6 +557,9 @@ public class Game1 extends Canvas {
 						case OVERVIEW:
 							g2d.setColor(Color.WHITE);
 							drawMainMenu(g2d);
+							break;
+						case GAME_OVER:
+							drawCongratulations(g2d);
 							break;
 						default:
 							g2d.setColor(Color.BLACK);

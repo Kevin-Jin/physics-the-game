@@ -14,5 +14,6 @@ public class MapCache {
 		loaded.put("Electron Invaders", new ChargeGameMap("Electron Invaders"));
 		loaded.put("Tank", new PongGameMap("Tank"));
 		loaded.put("The Awesome Game", new CannonGameMap("The Awesome Game"));
+		loaded.put("congratulations", new CongratulationsMap());
 	}
 }

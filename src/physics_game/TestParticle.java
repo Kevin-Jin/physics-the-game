@@ -26,8 +26,8 @@ public class TestParticle extends Particle {
 		vel.setX(vel.getX() + acc.getX() * tDelta);
 		pos.setX(pos.getX() + vel.getX() * tDelta);
 		pos.setY(pos.getY() + vel.getY() * tDelta);
-		--width;
-		--height;
+		width++;
+		height++;
 		--alpha;
 	}
 
