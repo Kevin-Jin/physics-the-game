@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 public class ChargeGameMap extends GameMap {
+	public static final double COULOMBS_CONSTANT = 8.99e9;
+
 	private static LevelLayout constructLayout() {
 		Map<Byte, Platform> platforms = new HashMap<Byte, Platform>();
 		platforms.put(Byte.valueOf((byte) 0), new Platform(-10, 1930, -100, 0));
@@ -28,7 +30,7 @@ public class ChargeGameMap extends GameMap {
 	private static List<Spawner<?>> getSpawners(){
 		ArrayList<Spawner<?>> spawners = new ArrayList<Spawner<?>>();
 		spawners.add(new StarSpawner(.25, .6));
-		spawners.add(new AsteroidSpawner(15, 20));
+		spawners.add(new AsteroidSpawner(5, 15));
 		return spawners;
 	}
 
@@ -59,22 +61,22 @@ public class ChargeGameMap extends GameMap {
 	@Override
 	public void drawSpecificDetails(Graphics2D g2d) {
 		g2d.setFont(new Font("Arial", Font.PLAIN, 16));
-		String s = "q[blue]=-" + Star.CHARGE + "C";
+		String s = "q[blue star]=-" + Star.CHARGE + "C, q[red star]=" + Star.CHARGE + "C";
 		g2d.drawString(s, Game1.WIDTH / 4 - g2d.getFontMetrics().stringWidth(s) / 2, Game1.HEIGHT - g2d.getFontMetrics().getDescent() - 0 * g2d.getFontMetrics().getHeight());
-		s = "q[red]=" + Star.CHARGE + "C";
+		s = "q[blue asteroid]=-" + Asteroid.CHARGE + "C, q[red asteroid]=" + Asteroid.CHARGE + "C";
 		g2d.drawString(s, Game1.WIDTH / 4 - g2d.getFontMetrics().stringWidth(s) / 2, Game1.HEIGHT - g2d.getFontMetrics().getDescent() - 1 * g2d.getFontMetrics().getHeight());
 		s = "q[source]=" + leftGun.getCharge() + "C";
 		g2d.drawString(s, Game1.WIDTH / 4 - g2d.getFontMetrics().stringWidth(s) / 2, Game1.HEIGHT - g2d.getFontMetrics().getDescent() - 2 * g2d.getFontMetrics().getHeight());
-		s = "k[e]=" + Star.COULOMBS_CONSTANT + "N*m*m/C/C";
+		s = "k[e]=" + COULOMBS_CONSTANT + "N*m*m/C/C";
 		g2d.drawString(s, Game1.WIDTH / 4 - g2d.getFontMetrics().stringWidth(s) / 2, Game1.HEIGHT - g2d.getFontMetrics().getDescent() - 3 * g2d.getFontMetrics().getHeight());
 
-		s = "q[blue]=-" + Star.CHARGE + "C";
+		s = "q[blue star]=-" + Star.CHARGE + "C, q[red star]=" + Star.CHARGE + "C";
 		g2d.drawString(s, Game1.WIDTH * 3 / 4 - g2d.getFontMetrics().stringWidth(s) / 2, Game1.HEIGHT - g2d.getFontMetrics().getDescent() - 0 * g2d.getFontMetrics().getHeight());
-		s = "q[red]=" + Star.CHARGE + "C";
+		s = "q[blue asteroid]=-" + Asteroid.CHARGE + "C, q[red asteroid]=" + Asteroid.CHARGE + "C";
 		g2d.drawString(s, Game1.WIDTH * 3 / 4 - g2d.getFontMetrics().stringWidth(s) / 2, Game1.HEIGHT - g2d.getFontMetrics().getDescent() - 1 * g2d.getFontMetrics().getHeight());
 		s = "q[source]=" + rightGun.getCharge() + "C";
 		g2d.drawString(s, Game1.WIDTH * 3 / 4 - g2d.getFontMetrics().stringWidth(s) / 2, Game1.HEIGHT - g2d.getFontMetrics().getDescent() - 2 * g2d.getFontMetrics().getHeight());
-		s = "k[e]=" + Star.COULOMBS_CONSTANT + "N*m*m/C/C";
+		s = "k[e]=" + COULOMBS_CONSTANT + "N*m*m/C/C";
 		g2d.drawString(s, Game1.WIDTH * 3 / 4 - g2d.getFontMetrics().stringWidth(s) / 2, Game1.HEIGHT - g2d.getFontMetrics().getDescent() - 3 * g2d.getFontMetrics().getHeight());
 	}
 }

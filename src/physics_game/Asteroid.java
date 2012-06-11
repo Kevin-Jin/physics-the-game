@@ -6,7 +6,6 @@ import java.util.List;
 
 public class Asteroid extends StationaryEntity implements Expirable{
 	public static final double CHARGE = 0.01;
-	public static final double COULOMBS_CONSTANT = 8.99e9;
 	
 	private static final BoundingPolygon BOUNDING_POLYGON = new BoundingPolygon(new Polygon[] { new Polygon(new Point2D.Double[] { 
 			new Point2D.Double(0, 34),
@@ -45,7 +44,7 @@ public class Asteroid extends StationaryEntity implements Expirable{
 			if (other instanceof ChargeGun) {
 				double xDelta = other.getPosition().getX() - getPosition().getX();
 				double yDelta = other.getPosition().getY() - getPosition().getY();
-				double acceleration = -COULOMBS_CONSTANT * Game1.METERS_PER_PIXEL * getCharge() * ((ChargeGun) other).getCharge() / (xDelta * xDelta + yDelta * yDelta);
+				double acceleration = -ChargeGameMap.COULOMBS_CONSTANT * Game1.METERS_PER_PIXEL * getCharge() * ((ChargeGun) other).getCharge() / (xDelta * xDelta + yDelta * yDelta);
 				double angle = Math.atan2(yDelta, xDelta);
 				accel.setX(accel.getX() + Math.cos(angle) * acceleration);
 				accel.setY(accel.getY() + Math.sin(angle) * acceleration);

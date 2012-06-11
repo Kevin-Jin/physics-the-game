@@ -6,7 +6,6 @@ import java.util.List;
 
 public class Star extends CenterOriginedProp implements Expirable {
 	public static final double CHARGE = 0.2;
-	public static final double COULOMBS_CONSTANT = 8.99e9;
 
 	private boolean positive;
 	private boolean expired;
@@ -35,7 +34,7 @@ public class Star extends CenterOriginedProp implements Expirable {
 			if (other instanceof ChargeGun) {
 				double xDelta = other.getPosition().getX() - getPosition().getX();
 				double yDelta = other.getPosition().getY() - getPosition().getY();
-				double acceleration = -COULOMBS_CONSTANT * Game1.METERS_PER_PIXEL * getCharge() * ((ChargeGun) other).getCharge() / (xDelta * xDelta + yDelta * yDelta);
+				double acceleration = -ChargeGameMap.COULOMBS_CONSTANT * Game1.METERS_PER_PIXEL * getCharge() * ((ChargeGun) other).getCharge() / (xDelta * xDelta + yDelta * yDelta);
 				double angle = Math.atan2(yDelta, xDelta);
 				accel.setX(accel.getX() + Math.cos(angle) * acceleration);
 				accel.setY(accel.getY() + Math.sin(angle) * acceleration);
