@@ -18,7 +18,7 @@ public class Wave extends CenterOriginedProp {
 	private double incidence;
 	private double remainingHoldTime;
 	protected double rot;
-	private boolean ignoreRefraction;
+	private boolean ignoreRefraction, increaseOnRefract;
 
 	public Wave() {
 		super(0);
@@ -56,6 +56,7 @@ public class Wave extends CenterOriginedProp {
 		rot = angle;
 		remainingHoldTime = HOLD_TIME;
 		ignoreRefraction = true;
+		increaseOnRefract = true;
 	}
 
 
@@ -109,6 +110,7 @@ public class Wave extends CenterOriginedProp {
 		CollidableDrawable collidedWith = collisionInfo.getCollidedWith();
 		if (collidedWith instanceof RefractionRectangle){
 			if (!ignoreRefraction) {
+				
 				//clamp rotation from [0, 2*pi)
 				rot = angleMod(rot, 2 * Math.PI);
 
@@ -123,8 +125,16 @@ public class Wave extends CenterOriginedProp {
 					rot = Math.PI - rot;
 					reflectOverYAxis = true;
 				}
-
-				rot = Math.asin(AIR_REFRACTION_INDEX * Math.sin(rot) / RefractionRectangle.REFRACTION_INDEX);
+				
+				rot += (Math.toRadians(Spawner.RANDOM.nextInt(10)+5)  * ((increaseOnRefract) ?1 : -1));
+				if (rot < .4){
+					rot = .4;
+					increaseOnRefract = true;
+				}
+				if (rot >= Math.PI/2 - .4){
+					rot = Math.PI/2 - .4;
+					increaseOnRefract = false;
+				}
 				incidence = rot;
 
 				//convert normal back to rotation
@@ -133,6 +143,7 @@ public class Wave extends CenterOriginedProp {
 				if (reflectOverXEqualsY)
 					rot += Math.PI;
 				vel = new Velocity(rot, 500);
+				
 			}
 			ignoreRefraction =true;
 			return;

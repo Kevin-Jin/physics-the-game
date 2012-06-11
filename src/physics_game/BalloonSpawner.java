@@ -10,7 +10,7 @@ public class BalloonSpawner extends Spawner<Balloon> {
 	@Override
 	public Balloon getRandomEntity() {
 		int x = RANDOM.nextInt(600) + 300;
-		int y = RANDOM.nextInt(150);
+		int y = RANDOM.nextInt(200);
 		return new Balloon(new Position(x, y), getRandomBalloonColor(), .5f, .5f, .5f);
 	}
 

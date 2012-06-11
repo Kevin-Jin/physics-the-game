@@ -50,6 +50,7 @@ public class Balloon extends CenterOriginedProp implements Expirable {
 	private double maxScale;
 	private int entityId;
 	private boolean expired;
+	private double velocityY;
 
 	public Balloon(BalloonColor color) {
 		super(250);
@@ -76,8 +77,10 @@ public class Balloon extends CenterOriginedProp implements Expirable {
 		this.minScale = minScale;
 		this.maxScale = maxScale;
 		color = c;
+		vel.setY(Spawner.RANDOM.nextInt(200) + 100);
 		baseBoundPoly = BOUNDING_POLYGON;
 		boundPoly = BOUNDING_POLYGON;
+		
 	}
 
 	public void recalculate(List<CollidableDrawable> others, double xMin, double yAcceleration, double yVelocityMin, double tDelta) {

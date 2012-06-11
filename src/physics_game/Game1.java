@@ -99,7 +99,6 @@ public class Game1 extends Canvas {
 		addMouseListener(controller);
 		c = new Camera(WIDTH, HEIGHT);
 		s = new FrameRateState();
-
 		gameRunning = new CountDownLatch(0);
 		state = GameState.OVERVIEW;
 
