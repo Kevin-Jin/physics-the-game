@@ -96,7 +96,6 @@ public class Game1 extends Canvas {
 		addKeyListener(controller);
 		addMouseMotionListener(controller);
 		addMouseListener(controller);
-
 		c = new Camera(WIDTH, HEIGHT);
 		s = new FrameRateState();
 

@@ -10,7 +10,11 @@ import java.util.Set;
 
 public class InfoScreenGameMap extends GameMap{
 	private boolean expired;
-	private final static String s = "Press any key to continue...";
+	private final static String s = "Press any key to continue";
+	private String dots;
+	private final int y;
+	private double time;
+	private final double MAX_TIME = .5D;
 
 	private static LevelLayout constructLayout(String bg, String target) {
 		Map<Byte, Platform> platforms = new HashMap<Byte, Platform>();
@@ -19,6 +23,13 @@ public class InfoScreenGameMap extends GameMap{
 
 	public InfoScreenGameMap(String name){
 		super(name, constructLayout(nameToInfo(name), name), 0);
+		if (name.equalsIgnoreCase("Electron Invaders"))
+			y = 340;
+		else if (name.equalsIgnoreCase("Tank"))
+			y = 325;
+		else
+			y = 400;
+		dots = "";
 	}
 
 	private static String nameToInfo(String s){
@@ -47,6 +58,13 @@ public class InfoScreenGameMap extends GameMap{
 
 	@Override
 	public boolean isMapExpired(double tDelta){
+		time += tDelta;
+		if (time > MAX_TIME){
+			time = 0;
+			dots +='.';
+			if (dots.length() >3)
+				dots = "";
+		}
 		return expired || super.isMapExpired(tDelta);
 	}
 
@@ -59,6 +77,7 @@ public class InfoScreenGameMap extends GameMap{
 	public void drawSpecificDetails(Graphics2D g2d) {
 		g2d.setColor(Color.WHITE);
 		g2d.setFont(new Font("Arial", Font.PLAIN, 36));
-		g2d.drawString(s, (Game1.WIDTH - g2d.getFontMetrics().stringWidth(s)) / 2, 300);
+		
+		g2d.drawString(s+dots, (Game1.WIDTH - g2d.getFontMetrics().stringWidth(s)) / 2, y);
 	}
 }
