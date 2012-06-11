@@ -7,27 +7,21 @@ import java.util.List;
 public class ChargeGun extends StationaryEntity implements Player {
 	private static final double CHARGE = 1;
 
-	private static final BoundingPolygon BOUNDING_POLYGON = new BoundingPolygon(new Polygon[] { new Polygon(new Point2D[] { new Point2D.Double(0, 15),
-			new Point2D.Double(11, 4),
-			new Point2D.Double(25, 4),
-			new Point2D.Double(40, 19),
-			new Point2D.Double(40, 46),
-			new Point2D.Double(24, 62),
-			new Point2D.Double(12, 62),
-			new Point2D.Double(0, 50),
-	}), new Polygon(new Point2D[] {
-			new Point2D.Double(40, 23),
-			new Point2D.Double(57, 8),
-			new Point2D.Double(106, 8),
-			new Point2D.Double(149, 28),
-			new Point2D.Double(155, 37),
-			new Point2D.Double(155, 40),
-			new Point2D.Double(149, 46),
-			new Point2D.Double(113, 46),
-			new Point2D.Double(105, 61),
-			new Point2D.Double(57, 61),
-			new Point2D.Double(48, 44),
-			new Point2D.Double(40, 43),
+	private static final BoundingPolygon BOUNDING_POLYGON = new BoundingPolygon(new Polygon[] { new Polygon(new Point2D[] {
+			new Point2D.Double(60, 0),
+			new Point2D.Double(11, 17),
+			new Point2D.Double(1, 26),
+			new Point2D.Double(1, 35),
+			new Point2D.Double(11, 43),
+			new Point2D.Double(28, 49),
+			new Point2D.Double(57, 54),
+			new Point2D.Double(103, 54),
+			new Point2D.Double(135, 48),
+			new Point2D.Double(154, 40),
+			new Point2D.Double(159, 32),
+			new Point2D.Double(159, 27),
+			new Point2D.Double(149, 17),
+			new Point2D.Double(94, 0)
 	}) });
 
 	private boolean flip;
