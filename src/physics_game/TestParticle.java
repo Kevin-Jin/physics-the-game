@@ -11,7 +11,7 @@ public class TestParticle extends Particle {
 
 	public TestParticle() {
 		pos.setX(rnd.nextInt(Game1.WIDTH));
-		pos.setY(rnd.nextInt(Game1.HEIGHT));
+		pos.setY(rnd.nextInt(Game1.HEIGHT)-100);
 		acc.setX(.5);
 		acc.setY(.5);
 		alpha = 0xFF;
@@ -30,6 +30,7 @@ public class TestParticle extends Particle {
 		width++;
 		height++;
 		--alpha;
+		
 	}
 
 	@Override

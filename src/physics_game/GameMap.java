@@ -16,7 +16,7 @@ public abstract class GameMap {
 	private final String name;
 	protected final LevelLayout layout;
 	private final SortedMap<Integer, Entity> entities;
-	private final List<Particle> particles;
+	protected final List<Particle> particles;
 	protected final SortedMap<Byte, Layer> layers;
 
 	protected List<Spawner<?>> spawners;
