@@ -148,7 +148,8 @@ public class Game1 extends Canvas {
 		TextureCache.setTexture("refraction", readImage("refraction.png"));
 		TextureCache.setTexture("chest", readImage("redchest.png"));
 		TextureCache.setTexture("pillar", readImage("pillar.png"));
-		TextureCache.setTexture("particletest", readImage("particletest.png"));
+		for (int i =0; i < 8; ++i)
+		TextureCache.setTexture("particletest" + i, readImage("particletest" + i + ".png"));
 		
 		BufferedImage texture = new BufferedImage(3, 3, BufferedImage.TYPE_INT_RGB);
 		int whiteRgb = Color.WHITE.getRGB();
@@ -212,6 +213,11 @@ public class Game1 extends Canvas {
 				state = GameState.OVERVIEW;
 			}
 		}));
+		map = MapCache.getMap("congratulations");
+		map.resetLevel();
+		state = GameState.GAME_OVER;
+		leftTeamWins = 8;
+	
 	}
 
 	public void unloadContent() {

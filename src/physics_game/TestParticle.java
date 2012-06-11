@@ -7,7 +7,7 @@ public class TestParticle extends Particle {
 	private static final Random rnd = new Random();
 
 	private int alpha;
-	private int width, height;
+	private int width, height, color;
 
 	public TestParticle() {
 		pos.setX(rnd.nextInt(Game1.WIDTH));
@@ -18,6 +18,7 @@ public class TestParticle extends Particle {
 		int length = rnd.nextInt(100) + 1;
 		width = length;
 		height = length;
+		color = rnd.nextInt(8);
 	}
 
 	@Override
@@ -38,7 +39,7 @@ public class TestParticle extends Particle {
 
 	@Override
 	public BufferedImage getTexture() {
-		return TextureCache.getTexture("particletest");
+		return TextureCache.getTexture("particletest" + color);
 	}
 
 	@Override
