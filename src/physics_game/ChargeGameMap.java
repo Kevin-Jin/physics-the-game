@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ChargeGameMap extends GameMap {
@@ -17,13 +18,18 @@ public class ChargeGameMap extends GameMap {
 	}
 
 	private final ChargeGun leftGun, rightGun;
-	private Asteroid basteroid;
+	
 
 	public ChargeGameMap(String name) {
-		super(name, constructLayout(), new StarSpawner(.25, .6));
+		super(name, constructLayout(), getSpawners());
 		leftGun = new ChargeGun(true);
 		rightGun = new ChargeGun(false);
-		basteroid  = new Asteroid(true);
+	}
+	private static List<Spawner<?>> getSpawners(){
+		ArrayList<Spawner<?>> spawners = new ArrayList<Spawner<?>>();
+		spawners.add(new StarSpawner(.25, .6));
+		spawners.add(new AsteroidSpawner(15, 20));
+		return spawners;
 	}
 
 	@Override
@@ -48,9 +54,6 @@ public class ChargeGameMap extends GameMap {
 		rightGun.setPosition(layout.getRightPlayerPosition());
 		addEntity(1, rightGun);
 		
-		basteroid.setEntityId(2);
-		basteroid.setPosition(new Position(660,300));
-		addEntity(2,basteroid);
 	}
 
 	@Override

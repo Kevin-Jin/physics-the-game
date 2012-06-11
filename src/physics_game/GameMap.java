@@ -19,14 +19,27 @@ public abstract class GameMap {
 	private final List<Particle> particles;
 	protected final SortedMap<Byte, Layer> layers;
 
-	protected Spawner<?> spawner;
+	protected List<Spawner<?>> spawners;
 
 	private double remainingTime;
 
 	public GameMap(String name, LevelLayout layout, Spawner<?> spawner) {
 		this.name = name;
 		this.layout = layout;
-		this.spawner = spawner;
+		spawners = new ArrayList<Spawner<?>>();
+		spawners.add(spawner);
+		entities = new TreeMap<Integer, Entity>();
+		particles = new ArrayList<Particle>();
+		layers = new TreeMap<Byte, Layer>();
+		layers.put(Layer.FAR_BACKGROUND, new Layer(0.25));
+		layers.put(Layer.MAIN_BACKGROUND, new Layer(0.5));
+		layers.put(Layer.MIDGROUND, new Layer(1));
+		layers.put(Layer.FOREGROUND, new Layer(2));
+	}
+	public GameMap(String name, LevelLayout layout, List<Spawner<?>> spawners) {
+		this.name = name;
+		this.layout = layout;
+		this.spawners = spawners;
 		entities = new TreeMap<Integer, Entity>();
 		particles = new ArrayList<Particle>();
 		layers = new TreeMap<Byte, Layer>();
@@ -96,11 +109,13 @@ public abstract class GameMap {
 	public void updateEntityPositions(double tDelta) {
 		if (remainingTime <= 0)
 			return;
-		if (spawner != null && spawner.update(tDelta)) {
-			Entity spawned = spawner.getRandomEntity();
-			int id = addEntity(spawned);
-			if (spawned instanceof Expirable)
-				((Expirable)spawned).setEntityId(id);
+		for (Spawner<?> spawner : spawners){
+			if (spawner.update(tDelta)) {
+				Entity spawned = spawner.getRandomEntity();
+				int id = addEntity(spawned);
+				if (spawned instanceof Expirable)
+					((Expirable)spawned).setEntityId(id);
+			}
 		}
 		for (Entity ent : entities.values())
 			ent.recalculate(getCollidables(), 0, layout.getGravitationalFieldStrength(), layout.getTerminalVelocity(), tDelta);

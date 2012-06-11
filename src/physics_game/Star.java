@@ -43,9 +43,8 @@ public class Star extends CenterOriginedProp implements Expirable {
 		}
 		vel.setX(vel.getX() + accel.getX() * tDelta);
 		vel.setY(vel.getY() + accel.getY() * tDelta);
-		//stars have no mass, therefore they are not affected by gravity
 		super.recalculate(others, xMin, 0, yVelocityMin, tDelta);
-		if (pos.getY() >= Game1.HEIGHT || pos.getY() < 0 || pos.getX() < 0 || pos.getX() >= Game1.WIDTH)
+		if (pos.getY() >= Game1.HEIGHT+50 || pos.getY() < 0 || pos.getX() < -50 || pos.getX() >= Game1.WIDTH+50)
 			expired = true;
 	}
 

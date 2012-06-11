@@ -24,7 +24,7 @@ public class PongGameMap extends GameMap {
 	private RefractionRectangle refraction;
 	
 	public PongGameMap(String name) {
-		super(name, constructLayout(), null);
+		super(name, constructLayout(), new ArrayList<Spawner<?>>());
 		p1 = new Paddle(true);
 		p2 = new Paddle(false);
 		wave = new Wave();
