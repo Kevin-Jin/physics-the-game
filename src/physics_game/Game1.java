@@ -59,11 +59,11 @@ public class Game1 extends Canvas {
 
 	private BufferedImage endGameSnapshot;
 	private List<ScreenFragment> endGamePieces;
-	private int leftTeamWins, rightTeamWins, ties;
+	private int leftTeamWins, rightTeamWins;
 	private int leftTeamPoints, rightTeamPoints;
 
 	private CustomImageButton makeGamePreviewButton(final String mapName) {
-		int x = WIDTH - BUTTON_WIDTH, y = HEIGHT - BUTTON_HEIGHT;
+		int x = (WIDTH - BUTTON_WIDTH) / 2, y = BUTTON_HEIGHT * 2;
 		GameMap originalMap = map;
 		map = MapCache.getMap(mapName);
 		map.resetLevel();
@@ -71,7 +71,7 @@ public class Game1 extends Canvas {
 		c.lookAt(new Position(0, 0));
 		map.updateEntityPositions(0);
 		try {
-			return new CustomImageButton(gameScreenShot(), mapName, new Rectangle(x, y, BUTTON_WIDTH, BUTTON_HEIGHT), new MenuButton.MenuButtonHandler() {
+			return new CustomImageButton(gameScreenShot(), "Next Game:\n" + mapName, new Rectangle(x, y, BUTTON_WIDTH, BUTTON_HEIGHT), new MenuButton.MenuButtonHandler() {
 				@Override
 				public void clicked() {
 					map = MapCache.getMap(mapName);
@@ -163,20 +163,20 @@ public class Game1 extends Canvas {
 
 		setCursor(getToolkit().createCustomCursor(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB), new Point(0, 0), "blank cursor"));
 
-		titleScreenModel.getButtons().add(0, new MenuButton("Exit Game", new Rectangle(0, HEIGHT - BUTTON_HEIGHT, 150, BUTTON_HEIGHT), new Button.MenuButtonHandler() {
+		titleScreenModel.getButtons().add(0, new MenuButton("Reset Results", new Rectangle((WIDTH - BUTTON_WIDTH) / 2, BUTTON_HEIGHT * 3, BUTTON_WIDTH, BUTTON_HEIGHT), new Button.MenuButtonHandler() {
 			@Override
 			public void clicked() {
-				
-			}
-		}));
-		titleScreenModel.getButtons().add(1, new MenuButton("Reset Results", new Rectangle(150, HEIGHT - BUTTON_HEIGHT, 150, BUTTON_HEIGHT), new Button.MenuButtonHandler() {
-			@Override
-			public void clicked() {
-				leftTeamWins = ties = rightTeamWins = 0;
+				leftTeamWins = rightTeamWins = 0;
 				leftTeamPoints = rightTeamPoints = 0;
 				titleScreenModel.getButtons().subList(3, titleScreenModel.getButtons().size()).clear();
 				titleScreenModel.getButtons().set(2, makeGamePreviewButton("pong"));
 				endGamePieces = null;
+			}
+		}));
+		titleScreenModel.getButtons().add(1, new MenuButton("Exit Game", new Rectangle((WIDTH - BUTTON_WIDTH) / 2, BUTTON_HEIGHT * 4, BUTTON_WIDTH, BUTTON_HEIGHT), new Button.MenuButtonHandler() {
+			@Override
+			public void clicked() {
+				System.exit(0);
 			}
 		}));
 		titleScreenModel.getButtons().add(2, makeGamePreviewButton("chargeguns"));
@@ -336,7 +336,7 @@ public class Game1 extends Canvas {
 				y = HEIGHT - BUTTON_HEIGHT - rightTeamWins * BUTTON_HEIGHT;
 			}
 			if (leftTeamPoints != rightTeamPoints) {
-				titleScreenModel.getButtons().add(new CustomImageButton(endGameSnapshot, name, new Rectangle(x, y, BUTTON_WIDTH, BUTTON_HEIGHT), new MenuButton.MenuButtonHandler() {
+				titleScreenModel.getButtons().add(new CustomImageButton(endGameSnapshot, "Replay\n" + name, new Rectangle(x, y, BUTTON_WIDTH, BUTTON_HEIGHT), new MenuButton.MenuButtonHandler() {
 					@Override
 					public void clicked() {
 						map = MapCache.getMap(name);
@@ -395,6 +395,8 @@ public class Game1 extends Canvas {
 	}
 
 	private void drawMainMenu(Graphics2D g2d) {
+		g2d.drawImage(TextureCache.getTexture("pillar"), (WIDTH - TextureCache.getTexture("pillar").getWidth()) / 2, BUTTON_HEIGHT, null);
+		g2d.drawImage(TextureCache.getTexture("chest"), (WIDTH - TextureCache.getTexture("chest").getWidth()) / 2, BUTTON_HEIGHT - TextureCache.getTexture("chest").getHeight(), null);
 		titleScreenModel.draw(g2d);
 		if (endGamePieces != null) {
 			String s;
@@ -420,8 +422,6 @@ public class Game1 extends Canvas {
 		g2d.drawString(s, (WIDTH * 5 / 3 - g2d.getFontMetrics().stringWidth(s)) / 2, HEIGHT - BUTTON_HEIGHT - g2d.getFontMetrics().getDescent());
 		s = "Goal";
 		g2d.drawString(s, (WIDTH * 5 / 3 - g2d.getFontMetrics().stringWidth(s)) / 2, BUTTON_HEIGHT);
-		g2d.drawImage(TextureCache.getTexture("chest"), (WIDTH - TextureCache.getTexture("chest").getWidth()) / 2, BUTTON_HEIGHT - TextureCache.getTexture("chest").getHeight(), null);
-		g2d.drawImage(TextureCache.getTexture("pillar"), (WIDTH - TextureCache.getTexture("pillar").getWidth()) / 2, BUTTON_HEIGHT, null);
 	}
 
 	private void drawGame(Graphics2D g2d) {

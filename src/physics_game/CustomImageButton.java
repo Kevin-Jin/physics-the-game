@@ -12,12 +12,12 @@ public class CustomImageButton extends Button {
 	private static final Font FONT = new Font("Arial", Font.BOLD, 16);
 
 	private final BufferedImage image;
-	private final String text;
+	private final String[] text;
 
 	public CustomImageButton(BufferedImage image, String text, Rectangle bounds, MenuButtonHandler handler) {
 		super(bounds, handler);
 		this.image = image;
-		this.text = text;
+		this.text = text.split("\n");
 	}
 
 	@Override
@@ -27,7 +27,9 @@ public class CustomImageButton extends Button {
 		Composite originalComposite = graphics.getComposite();
 		graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, isMouseOver() ? 1 : 0.75f));
 		graphics.drawImage(image, bounds.x, bounds.y, bounds.width, bounds.height, null);
-		graphics.drawString(text, (bounds.width - textBounds.stringWidth(text)) / 2 + bounds.x, (bounds.height + textBounds.getHeight()) / 2 + bounds.y);
+		int start = bounds.y + (bounds.height + graphics.getFontMetrics().getAscent() - graphics.getFontMetrics().getHeight() * text.length) / 2;
+		for (int i = 0; i < text.length; i++)
+			graphics.drawString(text[i], (bounds.width - textBounds.stringWidth(text[i])) / 2 + bounds.x, start + i * graphics.getFontMetrics().getHeight());
 		graphics.setComposite(originalComposite);
 	}
 }
