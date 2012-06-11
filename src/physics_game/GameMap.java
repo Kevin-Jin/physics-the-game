@@ -3,16 +3,17 @@ package physics_game;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
 public abstract class GameMap {
-	private static final int FLOOR_VISIBLE_PIXELS = 80;
-	private static final int CEILING_VISIBLE_PIXELS = 0;
-	private static final int LEFT_WALL_VISIBLE_PIXELS = 0;
-	private static final int RIGHT_WALL_VISIBLE_PIXELS = 0;
+	private final int bottomPadding;
+	private final int topPadding;
+	private final int leftPadding;
+	private final int rightPadding;
 
 	private final String name;
 	protected final LevelLayout layout;
@@ -25,10 +26,13 @@ public abstract class GameMap {
 	private double remainingTime;
 
 	public GameMap(String name, LevelLayout layout, Spawner<?> spawner) {
+		this(name, layout, Collections.<Spawner<?>>singletonList(spawner));
+	}
+
+	public GameMap(String name, LevelLayout layout, int bottomPadding) {
 		this.name = name;
 		this.layout = layout;
-		spawners = new ArrayList<Spawner<?>>();
-		spawners.add(spawner);
+		spawners = Collections.emptyList();
 		entities = new TreeMap<Integer, Entity>();
 		particles = new ArrayList<Particle>();
 		layers = new TreeMap<Byte, Layer>();
@@ -36,7 +40,10 @@ public abstract class GameMap {
 		layers.put(Layer.MAIN_BACKGROUND, new Layer(0.5));
 		layers.put(Layer.MIDGROUND, new Layer(1));
 		layers.put(Layer.FOREGROUND, new Layer(2));
+		this.bottomPadding = bottomPadding;
+		topPadding = leftPadding = rightPadding = 0;
 	}
+
 	public GameMap(String name, LevelLayout layout, List<Spawner<?>> spawners) {
 		this.name = name;
 		this.layout = layout;
@@ -48,6 +55,8 @@ public abstract class GameMap {
 		layers.put(Layer.MAIN_BACKGROUND, new Layer(0.5));
 		layers.put(Layer.MIDGROUND, new Layer(1));
 		layers.put(Layer.FOREGROUND, new Layer(2));
+		bottomPadding = 80;
+		topPadding = leftPadding = rightPadding = 0;
 	}
 
 	public abstract Player getLeftPlayer();
@@ -62,7 +71,7 @@ public abstract class GameMap {
 	}
 
 	public Rectangle getCameraBounds() {
-		return new Rectangle(-LEFT_WALL_VISIBLE_PIXELS, -FLOOR_VISIBLE_PIXELS, layout.getWidth() + LEFT_WALL_VISIBLE_PIXELS + RIGHT_WALL_VISIBLE_PIXELS, layout.getHeight() + FLOOR_VISIBLE_PIXELS + CEILING_VISIBLE_PIXELS);
+		return new Rectangle(-leftPadding, -bottomPadding, layout.getWidth() + leftPadding + rightPadding, layout.getHeight() + bottomPadding + topPadding);
 	}
 
 	public List<CollidableDrawable> getCollidables() {
@@ -89,6 +98,10 @@ public abstract class GameMap {
 			layers.get(Layer.FOREGROUND).getDrawables().add(new DrawableTexture(info.getWidth(), info.getHeight(), info.getImageName(), info.getPosition()));
 
 		remainingTime = layout.getExpiration();
+	}
+
+	public String getNextMap() {
+		return layout.getNextMap();
 	}
 
 	public void addEntity(int entId, Entity ent) {
@@ -121,6 +134,7 @@ public abstract class GameMap {
 		for (Entity ent : entities.values())
 			ent.recalculate(getCollidables(), 0, layout.getGravitationalFieldStrength(), layout.getTerminalVelocity(), tDelta);
 	}
+
 	public void respondToInput(Set<Integer> keys, double tDelta){
 		int lx = 0, rx = 0, ly = 0, ry = 0;
 		boolean la = false, ra = false;

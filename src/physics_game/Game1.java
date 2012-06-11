@@ -304,51 +304,51 @@ public class Game1 extends Canvas {
 			map.removeEntity(entId.intValue());
 
 		if (map.isMapExpired(tDelta)) {
-			
-			if (map instanceof InfoScreenGameMap){
-				map = ((InfoScreenGameMap) map).getLink();
+			if (map.getNextMap() != null) {
+				map = MapCache.getMap(map.getNextMap());
 				map.resetLevel();
-			}
-			else{
-			endGameSnapshot = gameScreenShot();
-			endGamePieces = new ArrayList<ScreenFragment>();
-
-			leftTeamPoints = map.getLeftPlayer().getPoints();
-			rightTeamPoints = map.getRightPlayer().getPoints();
-			int x = 0, y = 0;
-			if (leftTeamPoints > rightTeamPoints) {
-				leftTeamWins++;
-				x = (WIDTH / 3 - BUTTON_WIDTH) / 2;
-				y = HEIGHT - BUTTON_HEIGHT - leftTeamWins * BUTTON_HEIGHT;
-			} else if (rightTeamPoints > leftTeamPoints) {
-				rightTeamWins++;
-				x = (WIDTH * 5 / 3 - BUTTON_WIDTH) / 2;
-				y = HEIGHT - BUTTON_HEIGHT - rightTeamWins * BUTTON_HEIGHT;
-			}
-			if (leftTeamPoints != rightTeamPoints) {
-				titleScreenModel.getButtons().add(new CustomImageButton(endGameSnapshot, map.getName(), new Rectangle(x, y, BUTTON_WIDTH, BUTTON_HEIGHT), new MenuButton.MenuButtonHandler() {
-					@Override
-					public void clicked() {
-						
-					}
-				}));
-			}
-			currentGameIndex = (currentGameIndex + 1) % gameOrder.length;
-			titleScreenModel.getButtons().set(2, makeGamePreviewButton(gameOrder[currentGameIndex]));
-
-			final int COLUMNS = 20, ROWS = 20;
-			for (int i = 0; i < COLUMNS; i++)
-				for (int j = 0; j < ROWS; j++)
-					endGamePieces.add(new ScreenFragment(endGameSnapshot.getSubimage(i * WIDTH / COLUMNS, j * HEIGHT / ROWS, WIDTH / COLUMNS, HEIGHT / ROWS), new Position(i * WIDTH / COLUMNS, j * HEIGHT / ROWS + HEIGHT / ROWS), Math.random() * 2 * Math.PI, 50));
-
-			if (leftTeamWins == 8 || rightTeamWins == 8) {
-				map = MapCache.getMap("congratulations");
-				map.resetLevel();
-				state = GameState.GAME_OVER;
+				c.setLimits(map.getCameraBounds());
+				c.lookAt(new Position(0, 0));
 			} else {
-				state = GameState.OVERVIEW;
+				endGameSnapshot = gameScreenShot();
+				endGamePieces = new ArrayList<ScreenFragment>();
+
+				leftTeamPoints = map.getLeftPlayer().getPoints();
+				rightTeamPoints = map.getRightPlayer().getPoints();
+				int x = 0, y = 0;
+				if (leftTeamPoints > rightTeamPoints) {
+					leftTeamWins++;
+					x = (WIDTH / 3 - BUTTON_WIDTH) / 2;
+					y = HEIGHT - BUTTON_HEIGHT - leftTeamWins * BUTTON_HEIGHT;
+				} else if (rightTeamPoints > leftTeamPoints) {
+					rightTeamWins++;
+					x = (WIDTH * 5 / 3 - BUTTON_WIDTH) / 2;
+					y = HEIGHT - BUTTON_HEIGHT - rightTeamWins * BUTTON_HEIGHT;
+				}
+				if (leftTeamPoints != rightTeamPoints) {
+					titleScreenModel.getButtons().add(new CustomImageButton(endGameSnapshot, map.getName(), new Rectangle(x, y, BUTTON_WIDTH, BUTTON_HEIGHT), new MenuButton.MenuButtonHandler() {
+						@Override
+						public void clicked() {
+
+						}
+					}));
+				}
+				currentGameIndex = (currentGameIndex + 1) % gameOrder.length;
+				titleScreenModel.getButtons().set(2, makeGamePreviewButton(gameOrder[currentGameIndex]));
+
+				final int COLUMNS = 20, ROWS = 20;
+				for (int i = 0; i < COLUMNS; i++)
+					for (int j = 0; j < ROWS; j++)
+						endGamePieces.add(new ScreenFragment(endGameSnapshot.getSubimage(i * WIDTH / COLUMNS, j * HEIGHT / ROWS, WIDTH / COLUMNS, HEIGHT / ROWS), new Position(i * WIDTH / COLUMNS, j * HEIGHT / ROWS + HEIGHT / ROWS), Math.random() * 2 * Math.PI, 50));
+
+				if (leftTeamWins == 8 || rightTeamWins == 8) {
+					map = MapCache.getMap("congratulations");
+					map.resetLevel();
+					state = GameState.GAME_OVER;
+				} else {
+					state = GameState.OVERVIEW;
+				}
 			}
-		}
 		}
 	}
 
