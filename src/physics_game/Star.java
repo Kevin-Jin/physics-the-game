@@ -12,12 +12,31 @@ public class Star extends CenterOriginedProp implements Expirable {
 	private int entityId;
 
 	private static final BoundingPolygon BOUNDING_POLYGON = new BoundingPolygon(new Polygon[] { new Polygon(new Point2D[] {
-			new Point2D.Double(22,0),
-			new Point2D.Double(45,19),
-			new Point2D.Double(36, 50),
-			new Point2D.Double(9, 50),
-			new Point2D.Double(0, 19),
-	})});
+			new Point2D.Double(25, 0),
+			new Point2D.Double(19, 18),
+			new Point2D.Double(25, 26),
+			new Point2D.Double(31, 18)
+	}), new Polygon(new Point2D[] {
+			new Point2D.Double(0, 18),
+			new Point2D.Double(15, 31),
+			new Point2D.Double(25, 26),
+			new Point2D.Double(19, 18)
+	}), new Polygon(new Point2D[] {
+			new Point2D.Double(15, 31),
+			new Point2D.Double(10, 49),
+			new Point2D.Double(25, 38),
+			new Point2D.Double(25, 26)
+	}), new Polygon(new Point2D[] {
+			new Point2D.Double(25, 38),
+			new Point2D.Double(39, 49),
+			new Point2D.Double(34, 31),
+			new Point2D.Double(25, 26)
+	}), new Polygon(new Point2D[] {
+			new Point2D.Double(31, 18),
+			new Point2D.Double(49, 18),
+			new Point2D.Double(34, 31),
+			new Point2D.Double(25, 26)
+	}) });
 
 	public Star(Position pos, Velocity v, boolean positive) {
 		super(0);
