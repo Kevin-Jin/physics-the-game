@@ -39,6 +39,7 @@ public class Game1 extends Canvas {
 	public static final double METERS_PER_PIXEL = 1d / 100;
 	private static final int BUTTON_WIDTH = WIDTH / 10, BUTTON_HEIGHT = HEIGHT / 10;
 	public static final String LEFT_TEAM_NAME = "Black", RIGHT_TEAM_NAME = "White";
+	public static final boolean DEBUG_MODE = false;
 
 	private NumberFormat FPS_FMT = new DecimalFormat("##");
 
@@ -63,7 +64,7 @@ public class Game1 extends Canvas {
 	private int leftTeamWins, rightTeamWins;
 	private int leftTeamPoints, rightTeamPoints;
 	private final String[] gameOrder = { "Electron Invaders", "Tank", "The Awesome Game" };
-	private int currentGameIndex;
+	private int currentGameIndex = 2;
 
 	private CustomImageButton makeGamePreviewButton(final String mapName) {
 		int x = (WIDTH - BUTTON_WIDTH) / 2, y = BUTTON_HEIGHT * 2;
@@ -452,7 +453,7 @@ public class Game1 extends Canvas {
 				} else {
 					g2d.drawImage(ent.getTexture(), ent.getTransformationMatrix(), null);
 				}
-				if (ent instanceof CollidableDrawable) {
+				if (DEBUG_MODE && ent instanceof CollidableDrawable) {
 					for (Polygon p : ((CollidableDrawable) ent).getBoundingPolygon().getPolygons()) {
 						Point2D[] vertices = p.getVertices();
 						int[] xPoints = new int[vertices.length];
@@ -477,22 +478,22 @@ public class Game1 extends Canvas {
 
 		g2d.setFont(new Font("Arial", Font.PLAIN, 36));
 		g2d.setColor(Color.BLACK);
-		if (map.shouldDrawPlayerDetail()){
-		 s = map.getLeftPlayer().getPoints() + "|" + map.getRightPlayer().getPoints();
-		g2d.drawString(s, (WIDTH - g2d.getFontMetrics().stringWidth(s)) / 2, HEIGHT - g2d.getFontMetrics().getHeight());
-		
-		int milliseconds = (int) (map.getRemainingTime() * 1000);
-		long minutes = milliseconds / (1000 * 60);
-		long seconds = (milliseconds - (minutes * 1000 * 60)) / 1000;
-		s = String.format("%d:%02d", minutes, seconds);
-		g2d.drawString(s, (WIDTH - g2d.getFontMetrics().stringWidth(s)) / 2, HEIGHT);
+		if (map.shouldDrawPlayerDetail()) {
+			s = map.getLeftPlayer().getPoints() + "|" + map.getRightPlayer().getPoints();
+			g2d.drawString(s, (WIDTH - g2d.getFontMetrics().stringWidth(s)) / 2, HEIGHT - g2d.getFontMetrics().getHeight());
 
-		final int SCALE_THICKNESS = 5, SCALE_EDGE_HEIGHT = 15, PADDING = 10;
-		g2d.fillRect(PADDING, HEIGHT - SCALE_EDGE_HEIGHT - PADDING, SCALE_THICKNESS, SCALE_EDGE_HEIGHT);
-		g2d.fillRect(PADDING, HEIGHT - PADDING - SCALE_THICKNESS, (int) (1 / METERS_PER_PIXEL), SCALE_THICKNESS);
-		g2d.fillRect((int) (1 / METERS_PER_PIXEL) + PADDING - SCALE_THICKNESS, HEIGHT - SCALE_EDGE_HEIGHT - PADDING, SCALE_THICKNESS, SCALE_EDGE_HEIGHT);
-		s = "1m";
-		g2d.drawString(s, (int) (1 / METERS_PER_PIXEL) / 2 - g2d.getFontMetrics().stringWidth(s) / 2 + PADDING, HEIGHT - PADDING - SCALE_THICKNESS - g2d.getFontMetrics().getDescent());
+			int milliseconds = (int) (map.getRemainingTime() * 1000);
+			long minutes = milliseconds / (1000 * 60);
+			long seconds = (milliseconds - (minutes * 1000 * 60)) / 1000;
+			s = String.format("%d:%02d", minutes, seconds);
+			g2d.drawString(s, (WIDTH - g2d.getFontMetrics().stringWidth(s)) / 2, HEIGHT);
+
+			final int SCALE_THICKNESS = 5, SCALE_EDGE_HEIGHT = 15, PADDING = 10;
+			g2d.fillRect(PADDING, HEIGHT - SCALE_EDGE_HEIGHT - PADDING, SCALE_THICKNESS, SCALE_EDGE_HEIGHT);
+			g2d.fillRect(PADDING, HEIGHT - PADDING - SCALE_THICKNESS, (int) (1 / METERS_PER_PIXEL), SCALE_THICKNESS);
+			g2d.fillRect((int) (1 / METERS_PER_PIXEL) + PADDING - SCALE_THICKNESS, HEIGHT - SCALE_EDGE_HEIGHT - PADDING, SCALE_THICKNESS, SCALE_EDGE_HEIGHT);
+			s = "1m";
+			g2d.drawString(s, (int) (1 / METERS_PER_PIXEL) / 2 - g2d.getFontMetrics().stringWidth(s) / 2 + PADDING, HEIGHT - PADDING - SCALE_THICKNESS - g2d.getFontMetrics().getDescent());
 		}
 		map.drawSpecificDetails(g2d);
 	}

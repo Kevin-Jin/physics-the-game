@@ -69,7 +69,7 @@ public class Launch extends Applet {
 		System.setProperty("sun.java2d.d3d", "true");
 
 		final Game1 t = new Game1();
-		Frame frame = new Frame("TSA Game");
+		Frame frame = new Frame("Physics: The Game");
 
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
