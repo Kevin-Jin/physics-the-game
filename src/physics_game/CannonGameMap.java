@@ -44,16 +44,14 @@ public class CannonGameMap extends GameMap {
 		addEntity(0, leftCannon.getRearWheel());
 		addEntity(1, leftCannon.getBody());
 		addEntity(2, leftCannon.getFrontWheel());
-		addEntity(3, leftCannon.getSmoke());
 		layers.get(Layer.FOREGROUND).getDrawables().add(leftCannon.getBarOutline());
 		layers.get(Layer.FOREGROUND).getDrawables().add(leftCannon.getBarFill());
 
 		rightCannon.reset();
 		rightCannon.setPosition(layout.getRightPlayerPosition());
-		addEntity(4, rightCannon.getRearWheel());
-		addEntity(5, rightCannon.getBody());
-		addEntity(6, rightCannon.getFrontWheel());
-		addEntity(7, rightCannon.getSmoke());
+		addEntity(3, rightCannon.getRearWheel());
+		addEntity(4, rightCannon.getBody());
+		addEntity(5, rightCannon.getFrontWheel());
 		layers.get(Layer.FOREGROUND).getDrawables().add(rightCannon.getBarOutline());
 		layers.get(Layer.FOREGROUND).getDrawables().add(rightCannon.getBarFill());
 	}

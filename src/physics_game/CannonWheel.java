@@ -20,11 +20,8 @@ public class CannonWheel extends BottomLeftOriginedProp {
 			new Point2D.Double(72, 40)
 	}) });
 
-	private Cannon parent;
-
-	public CannonWheel(Cannon parent) {
+	public CannonWheel() {
 		super(0);
-		this.parent = parent;
 		baseBoundPoly = BOUNDING_POLYGON;
 		boundPoly = baseBoundPoly;
 	}
