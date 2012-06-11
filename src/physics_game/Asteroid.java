@@ -5,8 +5,8 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 
 public class Asteroid extends StationaryEntity implements Expirable{
-	public static final double CHARGE = 0.01;
-	
+	public static final double CHARGE = 0.025;
+
 	private static final BoundingPolygon BOUNDING_POLYGON = new BoundingPolygon(new Polygon[] { new Polygon(new Point2D.Double[] { 
 			new Point2D.Double(0, 34),
 			new Point2D.Double(21, 5),
@@ -21,7 +21,6 @@ public class Asteroid extends StationaryEntity implements Expirable{
 			new Point2D.Double(21,89),
 			new Point2D.Double(0, 64)
 	}) });
-	
 
 	private boolean positive, expired;
 	private int id;
@@ -38,6 +37,7 @@ public class Asteroid extends StationaryEntity implements Expirable{
 	public BufferedImage getTexture() {
 		return TextureCache.getTexture((positive ? "r" : "b") + "asteroid");
 	}
+
 	public void recalculate(List<CollidableDrawable> others, double xMin, double yAcceleration, double yVelocityMin, double tDelta) {
 		Acceleration accel = new Acceleration();
 		for (CollidableDrawable other : others) {
@@ -57,8 +57,6 @@ public class Asteroid extends StationaryEntity implements Expirable{
 		if (pos.getY() >= Game1.HEIGHT+50 || pos.getY() < 0 || pos.getX() < -50 || pos.getX() >= Game1.WIDTH+50)
 			expired = true;
 	}
-	
-	
 
 	@Override
 	public boolean transformAboutCenter() {

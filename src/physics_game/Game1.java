@@ -61,6 +61,8 @@ public class Game1 extends Canvas {
 	private List<ScreenFragment> endGamePieces;
 	private int leftTeamWins, rightTeamWins;
 	private int leftTeamPoints, rightTeamPoints;
+	private final String[] gameOrder = { "Electron Invaders", "Tank", "The Awesome Game" };
+	private int currentGameIndex;
 
 	private CustomImageButton makeGamePreviewButton(final String mapName) {
 		int x = (WIDTH - BUTTON_WIDTH) / 2, y = BUTTON_HEIGHT * 2;
@@ -169,7 +171,8 @@ public class Game1 extends Canvas {
 				leftTeamWins = rightTeamWins = 0;
 				leftTeamPoints = rightTeamPoints = 0;
 				titleScreenModel.getButtons().subList(3, titleScreenModel.getButtons().size()).clear();
-				titleScreenModel.getButtons().set(2, makeGamePreviewButton("pong"));
+				currentGameIndex = 0;
+				titleScreenModel.getButtons().set(2, makeGamePreviewButton(gameOrder[currentGameIndex]));
 				endGamePieces = null;
 			}
 		}));
@@ -179,7 +182,7 @@ public class Game1 extends Canvas {
 				System.exit(0);
 			}
 		}));
-		titleScreenModel.getButtons().add(2, makeGamePreviewButton("chargeguns"));
+		titleScreenModel.getButtons().add(2, makeGamePreviewButton(gameOrder[currentGameIndex]));
 
 		pauseScreenButtons.add(new MenuButton("Exit to Overview", new Rectangle((WIDTH - 200) / 2, 50, 200, 50), new Button.MenuButtonHandler() {
 			@Override
@@ -322,7 +325,6 @@ public class Game1 extends Canvas {
 			endGameSnapshot = gameScreenShot();
 			endGamePieces = new ArrayList<ScreenFragment>();
 
-			final String name = map.getName();
 			leftTeamPoints = map.getLeftPlayer().getPoints();
 			rightTeamPoints = map.getRightPlayer().getPoints();
 			int x = 0, y = 0;
@@ -336,18 +338,15 @@ public class Game1 extends Canvas {
 				y = HEIGHT - BUTTON_HEIGHT - rightTeamWins * BUTTON_HEIGHT;
 			}
 			if (leftTeamPoints != rightTeamPoints) {
-				titleScreenModel.getButtons().add(new CustomImageButton(endGameSnapshot, "Replay\n" + name, new Rectangle(x, y, BUTTON_WIDTH, BUTTON_HEIGHT), new MenuButton.MenuButtonHandler() {
+				titleScreenModel.getButtons().add(new CustomImageButton(endGameSnapshot, map.getName(), new Rectangle(x, y, BUTTON_WIDTH, BUTTON_HEIGHT), new MenuButton.MenuButtonHandler() {
 					@Override
 					public void clicked() {
-						map = MapCache.getMap(name);
-						map.resetLevel();
-						c.setLimits(map.getCameraBounds());
-						c.lookAt(new Position(0, 0));
-						state = GameState.GAME;
+						
 					}
 				}));
 			}
-			titleScreenModel.getButtons().set(2, makeGamePreviewButton("cannons"));
+			currentGameIndex = (currentGameIndex + 1) % gameOrder.length;
+			titleScreenModel.getButtons().set(2, makeGamePreviewButton(gameOrder[currentGameIndex]));
 
 			final int COLUMNS = 20, ROWS = 20;
 			for (int i = 0; i < COLUMNS; i++)
