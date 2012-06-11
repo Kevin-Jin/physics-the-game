@@ -59,7 +59,7 @@ public class MainMenuManager {
 	public void draw(Graphics2D g2d) {
 		AffineTransform originalTransform = g2d.getTransform();
 		BufferedImage logoTexture = TextureCache.getTexture("logo");
-		AffineTransform newTransform = AffineTransform.getTranslateInstance((bounds.width - logoTexture.getWidth()) / 2d + logoTexture.getWidth() / 2d, 75);
+		AffineTransform newTransform = AffineTransform.getTranslateInstance((bounds.width - logoTexture.getWidth()) / 2d + logoTexture.getWidth() / 2d, 100);
 		newTransform.concatenate(AffineTransform.getScaleInstance(logoScale, logoScale));
 		newTransform.concatenate(AffineTransform.getTranslateInstance(-logoTexture.getWidth() / 2d, -logoTexture.getHeight() / 2d));
 		g2d.drawImage(logoTexture, newTransform, null);

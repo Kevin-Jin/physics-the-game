@@ -171,7 +171,7 @@ public class Game1 extends Canvas {
 
 		setCursor(getToolkit().createCustomCursor(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB), new Point(0, 0), "blank cursor"));
 
-		titleScreenModel.getButtons().add(0, new MenuButton("Reset Results", new Rectangle((WIDTH - BUTTON_WIDTH) / 2, BUTTON_HEIGHT * 3, BUTTON_WIDTH, BUTTON_HEIGHT), new Button.MenuButtonHandler() {
+		titleScreenModel.getButtons().add(0, new MenuButton("Reset Results", new Rectangle((WIDTH - BUTTON_WIDTH) / 2, BUTTON_HEIGHT * 4, BUTTON_WIDTH, BUTTON_HEIGHT), new Button.MenuButtonHandler() {
 			@Override
 			public void clicked() {
 				leftTeamWins = rightTeamWins = 0;
@@ -182,7 +182,7 @@ public class Game1 extends Canvas {
 				endGamePieces = null;
 			}
 		}));
-		titleScreenModel.getButtons().add(1, new MenuButton("Exit Game", new Rectangle((WIDTH - BUTTON_WIDTH) / 2, BUTTON_HEIGHT * 4, BUTTON_WIDTH, BUTTON_HEIGHT), new Button.MenuButtonHandler() {
+		titleScreenModel.getButtons().add(1, new MenuButton("Exit Game", new Rectangle((WIDTH - BUTTON_WIDTH) / 2, BUTTON_HEIGHT * 5, BUTTON_WIDTH, BUTTON_HEIGHT), new Button.MenuButtonHandler() {
 			@Override
 			public void clicked() {
 				System.exit(0);
