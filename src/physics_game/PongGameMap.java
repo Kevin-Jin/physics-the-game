@@ -16,7 +16,7 @@ public class PongGameMap extends GameMap {
 		Map<Byte, Platform> platforms = new HashMap<Byte, Platform>();
 		platforms.put(Byte.valueOf((byte) 0), new Platform(-10, 1930, -100, 0));
 		platforms.put(Byte.valueOf((byte) 1), new Platform(-10, 1930, 620, 720));
-		return new LevelLayout(1920, 1080, platforms, new Position(100,290), new Position(1168, 290), (int) (-9.8 / Game1.METERS_PER_PIXEL), Integer.MIN_VALUE, new ArrayList<OverlayInfo>(), null, "pongBG", "pongBG", 90);
+		return new LevelLayout(1920, 1080, platforms, new Position(100,290), new Position(1168, 290), (int) (-9.8 / Game1.METERS_PER_PIXEL), Integer.MIN_VALUE, new ArrayList<OverlayInfo>(), null, "pongBG", "pongBG", 150);
 	}
 	
 	private Paddle p1, p2;
