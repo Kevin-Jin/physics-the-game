@@ -31,7 +31,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class Game1 extends Canvas {
 	private enum GameState {
-		OVERVIEW, GAME, PAUSE, GAME_OVER
+		OVERVIEW,  GAME, PAUSE, GAME_OVER
 	}
 
 	private static final long serialVersionUID = -273053717092253478L;
@@ -78,6 +78,7 @@ public class Game1 extends Canvas {
 				@Override
 				public void clicked() {
 					map = MapCache.getMap(mapName);
+					map = new InfoScreenGameMap(mapName,map);
 					map.resetLevel();
 					c.setLimits(map.getCameraBounds());
 					c.lookAt(new Position(0, 0));
@@ -92,7 +93,7 @@ public class Game1 extends Canvas {
 	public Game1() {
 		setFocusable(true);
 		requestFocusInWindow();
-
+		currentGameIndex = 2;
 		controller = new InputHandler();
 		addKeyListener(controller);
 		addMouseMotionListener(controller);
@@ -121,6 +122,10 @@ public class Game1 extends Canvas {
 		TextureCache.setTexture("pongBG", readImage("pngBg.png"));
 		TextureCache.setTexture("cannonBG", readImage("cannonBackground.png"));
 		TextureCache.setTexture("starBG", readImage("stars.png"));
+		TextureCache.setTexture("pongInfo", readImage("tank.png"));
+		TextureCache.setTexture("cannonInfo", readImage("AwesomeGame.png"));
+		TextureCache.setTexture("chargesInfo", readImage("electron invaders.png"));
+		
 		TextureCache.setTexture("body", readImage("body.png"));
 		TextureCache.setTexture("rbody", readImage("rbody.png"));
 		TextureCache.setTexture("wheel", readImage("wheel.png"));
@@ -213,11 +218,6 @@ public class Game1 extends Canvas {
 				state = GameState.OVERVIEW;
 			}
 		}));
-		map = MapCache.getMap("congratulations");
-		map.resetLevel();
-		state = GameState.GAME_OVER;
-		leftTeamWins = 8;
-	
 	}
 
 	public void unloadContent() {
@@ -253,44 +253,6 @@ public class Game1 extends Canvas {
 		controller.cleanHeldKeys();
 	}
 
-	private void respondToGameInput(double tDelta) {
-		KeyBindings left = map.getLeftPlayer().getKeyBindings();
-		KeyBindings right = map.getRightPlayer().getKeyBindings();
-
-		int lx = 0, rx = 0, ly = 0, ry = 0;
-		boolean la = false, ra = false;
-
-		for (Integer key : controller.getCodesOfPressedKeys()) {
-			if (key.intValue() == left.rightBinding())
-				lx++;
-			if (key.intValue() == left.leftBinding())
-				lx--;
-			if (key.intValue() == left.upBinding())
-				ly++;
-			if (key.intValue() == left.downBinding())
-				ly--;
-			if (key.intValue() == left.actionBinding())
-				la = true;
-			
-
-			if (key.intValue() == right.rightBinding())
-				rx++;
-			if (key.intValue() == right.leftBinding())
-				rx--;
-			if (key.intValue() == right.upBinding())
-				ry++;
-			if (key.intValue() == right.downBinding())
-				ry--;
-			if (key.intValue() == right.actionBinding())
-				ra = true;
-		}
-
-		if (map.getLeftPlayer().update(lx,ly, la, tDelta))
-			map.getLeftPlayer().triggered(map);
-		if (map.getRightPlayer().update(rx,ry, ra, tDelta))
-			map.getRightPlayer().triggered(map);
-	}
-
 	private void updateTitle(double tDelta) {
 		titleScreenModel.update(controller, tDelta);
 		if (endGamePieces != null) {
@@ -309,7 +271,7 @@ public class Game1 extends Canvas {
 	}
 
 	private void updateGame(double tDelta) {
-		respondToGameInput(tDelta);
+		map.respondToInput(controller.getCodesOfPressedKeys(), tDelta);
 
 		map.updateEntityPositions(tDelta);
 		map.updateParticlePositions(tDelta);
@@ -344,6 +306,12 @@ public class Game1 extends Canvas {
 			map.removeEntity(entId.intValue());
 
 		if (map.isMapExpired(tDelta)) {
+			
+			if (map instanceof InfoScreenGameMap){
+				map = ((InfoScreenGameMap) map).getLink();
+				map.resetLevel();
+			}
+			else{
 			endGameSnapshot = gameScreenShot();
 			endGamePieces = new ArrayList<ScreenFragment>();
 
@@ -382,6 +350,7 @@ public class Game1 extends Canvas {
 			} else {
 				state = GameState.OVERVIEW;
 			}
+		}
 		}
 	}
 
@@ -507,12 +476,14 @@ public class Game1 extends Canvas {
 	private void drawGame(Graphics2D g2d) {
 		g2d.setColor(Color.WHITE);
 		drawMapEntities(g2d);
+		String s = null;
 
 		g2d.setFont(new Font("Arial", Font.PLAIN, 36));
 		g2d.setColor(Color.BLACK);
-		String s = map.getLeftPlayer().getPoints() + "|" + map.getRightPlayer().getPoints();
+		if (map.shouldDrawPlayerDetail()){
+		 s = map.getLeftPlayer().getPoints() + "|" + map.getRightPlayer().getPoints();
 		g2d.drawString(s, (WIDTH - g2d.getFontMetrics().stringWidth(s)) / 2, HEIGHT - g2d.getFontMetrics().getHeight());
-
+		
 		int milliseconds = (int) (map.getRemainingTime() * 1000);
 		long minutes = milliseconds / (1000 * 60);
 		long seconds = (milliseconds - (minutes * 1000 * 60)) / 1000;
@@ -525,7 +496,7 @@ public class Game1 extends Canvas {
 		g2d.fillRect((int) (1 / METERS_PER_PIXEL) + PADDING - SCALE_THICKNESS, HEIGHT - SCALE_EDGE_HEIGHT - PADDING, SCALE_THICKNESS, SCALE_EDGE_HEIGHT);
 		s = "1m";
 		g2d.drawString(s, (int) (1 / METERS_PER_PIXEL) / 2 - g2d.getFontMetrics().stringWidth(s) / 2 + PADDING, HEIGHT - PADDING - SCALE_THICKNESS - g2d.getFontMetrics().getDescent());
-
+		}
 		map.drawSpecificDetails(g2d);
 	}
 
