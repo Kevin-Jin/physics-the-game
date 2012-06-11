@@ -64,7 +64,7 @@ public class Game1 extends Canvas {
 	private int leftTeamWins, rightTeamWins;
 	private int leftTeamPoints, rightTeamPoints;
 	private final String[] gameOrder = { "Electron Invaders", "Tank", "The Awesome Game" };
-	private int currentGameIndex = 2;
+	private int currentGameIndex;
 
 	private CustomImageButton makeGamePreviewButton(final String mapName) {
 		int x = (WIDTH - BUTTON_WIDTH) / 2, y = BUTTON_HEIGHT * 2;
