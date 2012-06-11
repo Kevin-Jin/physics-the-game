@@ -437,18 +437,18 @@ public class Game1 extends Canvas {
 				} else {
 					g2d.drawImage(ent.getTexture(), ent.getTransformationMatrix(), null);
 				}
-				if (ent instanceof CollidableDrawable) {
-					for (Polygon p : ((CollidableDrawable) ent).getBoundingPolygon().getPolygons()) {
-						Point2D[] vertices = p.getVertices();
-						int[] xPoints = new int[vertices.length];
-						int[] yPoints = new int[vertices.length];
-						for (int i = 0; i < vertices.length; i++) {
-							xPoints[i] = (int) Math.round(vertices[i].getX());
-							yPoints[i] = (int) Math.round(vertices[i].getY());
-						}
-						g2d.drawPolygon(xPoints, yPoints, vertices.length);
-					}
-				}
+				//if (ent instanceof CollidableDrawable) {
+					//for (Polygon p : ((CollidableDrawable) ent).getBoundingPolygon().getPolygons()) {
+						//Point2D[] vertices = p.getVertices();
+						//int[] xPoints = new int[vertices.length];
+						//int[] yPoints = new int[vertices.length];
+						//for (int i = 0; i < vertices.length; i++) {
+							//xPoints[i] = (int) Math.round(vertices[i].getX());
+							//yPoints[i] = (int) Math.round(vertices[i].getY());
+						//}
+						//g2d.drawPolygon(xPoints, yPoints, vertices.length);
+					//}
+				//}
 			}
 
 			g2d.setTransform(originalTransform);
