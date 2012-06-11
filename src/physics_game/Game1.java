@@ -415,11 +415,11 @@ public class Game1 extends Canvas {
 		g2d.setColor(Color.BLACK);
 		g2d.setFont(new Font("Arial", Font.PLAIN, 12));
 		String s = "Games won by " + LEFT_TEAM_NAME + " team";
-		g2d.drawString(s, (WIDTH / 3 - g2d.getFontMetrics().stringWidth(s)) / 2, HEIGHT - BUTTON_HEIGHT - g2d.getFontMetrics().getDescent());
+		g2d.drawString(s, (WIDTH / 3 - g2d.getFontMetrics().stringWidth(s)) / 2, HEIGHT - BUTTON_HEIGHT + g2d.getFontMetrics().getHeight());
 		s = "Goal";
 		g2d.drawString(s, (WIDTH / 3 - g2d.getFontMetrics().stringWidth(s)) / 2, BUTTON_HEIGHT);
 		s = "Games won by " + RIGHT_TEAM_NAME + " team";
-		g2d.drawString(s, (WIDTH * 5 / 3 - g2d.getFontMetrics().stringWidth(s)) / 2, HEIGHT - BUTTON_HEIGHT - g2d.getFontMetrics().getDescent());
+		g2d.drawString(s, (WIDTH * 5 / 3 - g2d.getFontMetrics().stringWidth(s)) / 2, HEIGHT - BUTTON_HEIGHT + g2d.getFontMetrics().getHeight());
 		s = "Goal";
 		g2d.drawString(s, (WIDTH * 5 / 3 - g2d.getFontMetrics().stringWidth(s)) / 2, BUTTON_HEIGHT);
 	}
