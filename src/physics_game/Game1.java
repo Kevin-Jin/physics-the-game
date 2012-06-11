@@ -77,8 +77,7 @@ public class Game1 extends Canvas {
 			return new CustomImageButton(gameScreenShot(), "Next Game:\n" + mapName, new Rectangle(x, y, BUTTON_WIDTH, BUTTON_HEIGHT), new MenuButton.MenuButtonHandler() {
 				@Override
 				public void clicked() {
-					map = MapCache.getMap(mapName);
-					map = new InfoScreenGameMap(mapName,map);
+					map = new InfoScreenGameMap(mapName);
 					map.resetLevel();
 					c.setLimits(map.getCameraBounds());
 					c.lookAt(new Position(0, 0));
@@ -93,7 +92,6 @@ public class Game1 extends Canvas {
 	public Game1() {
 		setFocusable(true);
 		requestFocusInWindow();
-		currentGameIndex = 2;
 		controller = new InputHandler();
 		addKeyListener(controller);
 		addMouseMotionListener(controller);
@@ -124,7 +122,7 @@ public class Game1 extends Canvas {
 		TextureCache.setTexture("starBG", readImage("stars.png"));
 		TextureCache.setTexture("pongInfo", readImage("tank.png"));
 		TextureCache.setTexture("cannonInfo", readImage("AwesomeGame.png"));
-		TextureCache.setTexture("chargesInfo", readImage("electron invaders.png"));
+		TextureCache.setTexture("chargesInfo", readImage("electronInvaders.png"));
 		
 		TextureCache.setTexture("body", readImage("body.png"));
 		TextureCache.setTexture("rbody", readImage("rbody.png"));

@@ -12,16 +12,14 @@ public class InfoScreenGameMap extends GameMap{
 	
 	private boolean expired;
 	private final static String s = "Press any key to continue...";
-	private final GameMap link;
 	
 	private static LevelLayout constructLayout(String bg) {
 		Map<Byte, Platform> platforms = new HashMap<Byte, Platform>();
 		return new LevelLayout(1920, 1080, platforms, new Position(100,0), new Position(1000, 0), (int) (-9.8 / Game1.METERS_PER_PIXEL), Integer.MIN_VALUE, new ArrayList<OverlayInfo>(), "", bg, bg, 30);
 	}
 
-	public InfoScreenGameMap(String name, GameMap linkingTo){
+	public InfoScreenGameMap(String name){
 		super(name, constructLayout(nameToInfo(name)), new ArrayList<Spawner<?>>());
-		link = linkingTo;
 	}
 	private static String nameToInfo(String s){
 		if (s.equalsIgnoreCase("Electron Invaders"))
@@ -31,7 +29,7 @@ public class InfoScreenGameMap extends GameMap{
 		return "cannonInfo";
 	}
 	public GameMap getLink(){
-		return link;
+		return MapCache.getMap(getName());
 	}
 	
 
