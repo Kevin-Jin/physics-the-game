@@ -129,6 +129,12 @@ public class ChargeGun extends StationaryEntity implements Player {
 				return;
 			}
 		}
+		if (other instanceof Asteroid){
+			totalPoints -= 100;
+			if (totalPoints < 0)
+				totalPoints = 0;
+			((Asteroid)other).setExpired();
+		}
 		super.collision(collisionInfo, others);
 	}
 

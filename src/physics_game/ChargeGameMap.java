@@ -17,11 +17,13 @@ public class ChargeGameMap extends GameMap {
 	}
 
 	private final ChargeGun leftGun, rightGun;
+	private Asteroid basteroid;
 
 	public ChargeGameMap(String name) {
 		super(name, constructLayout(), new StarSpawner(.25, .6));
 		leftGun = new ChargeGun(true);
 		rightGun = new ChargeGun(false);
+		basteroid  = new Asteroid(true);
 	}
 
 	@Override
@@ -45,6 +47,10 @@ public class ChargeGameMap extends GameMap {
 		rightGun.reset();
 		rightGun.setPosition(layout.getRightPlayerPosition());
 		addEntity(1, rightGun);
+		
+		basteroid.setEntityId(2);
+		basteroid.setPosition(new Position(660,300));
+		addEntity(2,basteroid);
 	}
 
 	@Override

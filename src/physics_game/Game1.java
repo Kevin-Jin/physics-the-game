@@ -425,7 +425,7 @@ public class Game1 extends Canvas {
 	}
 
 	private void drawGame(Graphics2D g2d) {
-		g2d.setColor(Color.BLACK);
+		g2d.setColor(Color.WHITE);
 		for (Layer layer : map.getLayers().values()) {
 			AffineTransform originalTransform = g2d.getTransform();
 			g2d.setTransform(c.getViewMatrix(layer.getParallaxFactor()));

@@ -2,63 +2,81 @@ package physics_game;
 
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
+import java.util.List;
 
-public class Asteroid extends StationaryEntity {
-	private static final BoundingPolygon BOUNDING_POLYGON = new BoundingPolygon(new Polygon[] { new Polygon(new Point2D.Double[] { new Point2D.Double(89, 45),
-			new Point2D.Double(54, 58),
-			new Point2D.Double(28, 75),
-			new Point2D.Double(15, 93),
-			new Point2D.Double(9, 117),
-			new Point2D.Double(10, 186),
-			new Point2D.Double(125, 205),
-			new Point2D.Double(191, 114),
-			new Point2D.Double(98, 45)
-	}), new Polygon(new Point2D.Double[] { new Point2D.Double(89, 45),
-			new Point2D.Double(135, 72),
-			new Point2D.Double(228, 0),
-			new Point2D.Double(237, 0),
-			new Point2D.Double(243, 6),
-			new Point2D.Double(247, 21),
-			new Point2D.Double(247, 28),
-			new Point2D.Double(244, 48),
-			new Point2D.Double(233, 77),
-			new Point2D.Double(221, 90),
-			new Point2D.Double(191, 114)
-	}), new Polygon(new Point2D.Double[] { new Point2D.Double(89, 45),
-			new Point2D.Double(191, 115),
-			new Point2D.Double(233, 158),
-			new Point2D.Double(233, 205),
-			new Point2D.Double(225, 226),
-			new Point2D.Double(214, 244),
-			new Point2D.Double(202, 250),
-			new Point2D.Double(187, 250),
-			new Point2D.Double(128, 201)
-	}), new Polygon(new Point2D.Double[] { new Point2D.Double(89, 45),
-			new Point2D.Double(121, 204),
-			new Point2D.Double(90, 239),
-			new Point2D.Double(56, 248),
-			new Point2D.Double(27, 248),
-			new Point2D.Double(11, 244),
-			new Point2D.Double(0, 233),
-			new Point2D.Double(0, 221),
-			new Point2D.Double(10, 186)
+public class Asteroid extends StationaryEntity implements Expirable{
+	private static final BoundingPolygon BOUNDING_POLYGON = new BoundingPolygon(new Polygon[] { new Polygon(new Point2D.Double[] { 
+			new Point2D.Double(0, 34),
+			new Point2D.Double(21, 5),
+			new Point2D.Double(39, 0),
+			new Point2D.Double(67, 0),
+			new Point2D.Double(83,15),
+			new Point2D.Double(95, 34),
+			new Point2D.Double(95, 67),
+			new Point2D.Double(71, 93),
+			new Point2D.Double(55, 97),
+			new Point2D.Double(37, 97),
+			new Point2D.Double(21,89),
+			new Point2D.Double(0, 64)
 	}) });
 
-	private boolean red;
+	private boolean positive, expired;
+	private int id;
 
-	public Asteroid(boolean red) {
-		this.red = red;
+	public Asteroid(boolean red_as_in_positive_greg_johnson) {
+		this.positive = red_as_in_positive_greg_johnson;
 		baseBoundPoly = BOUNDING_POLYGON;
 		boundPoly = BOUNDING_POLYGON;
 	}
 
 	@Override
 	public BufferedImage getTexture() {
-		return TextureCache.getTexture((red ? "r" : "b") + "asteroid");
+		return TextureCache.getTexture((positive ? "r" : "b") + "asteroid");
 	}
+	public void recalculate(List<CollidableDrawable> others, double xMin, double yAcceleration, double yVelocityMin, double tDelta) {
+		super.recalculate(others, xMin, 0, yVelocityMin, tDelta);
+	}
+	
 
 	@Override
 	public boolean transformAboutCenter() {
 		return true;
+	}
+
+	@Override
+	public int getEntityId() {
+		return id;
+	}
+
+	@Override
+	public void setEntityId(int id) {
+		this.id=id;
+	}
+	public void setPosition(Position pos){
+		this.pos = pos;
+	}
+	public double getWidth(){
+		return super.getWidth() *.5;
+	}
+	public double getHeight(){
+		return super.getHeight() *.5;
+	}
+
+	@Override
+	public boolean isExpired() {
+		return expired;
+	}
+	public void setExpired(){
+		expired = true;
+	}
+
+	public void collision(CollisionInformation collisionInfo, List<CollidableDrawable> others) {
+		CollidableDrawable other = collisionInfo.getCollidedWith();
+		if (other instanceof ChargeGun) {
+			collisionInfo.setCollidedWith(this);
+			collisionInfo.negateMinimumTranslationVector();
+			other.collision(collisionInfo, others);
+			return;
+		}
 	}
 }
